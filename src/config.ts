@@ -1,9 +1,6 @@
 // required env variables
-
 if (
-  !process.env.NEXT_PUBLIC_ENDPOINT ||
   !process.env.NEXT_PUBLIC_PRODUCTS_PER_PAGE ||
-  !process.env.NEXT_PUBLIC_APP_MODE ||
   !process.env.NEXT_PUBLIC_EPAYCO_KEY ||
   !process.env.NEXT_PUBLIC_FRONTEND_URL ||
   !process.env.NEXT_PUBLIC_EPAYCO_ID
@@ -11,7 +8,6 @@ if (
   throw new Error('Missing environment variables');
 }
 
-export const endpoint = process.env.NEXT_PUBLIC_ENDPOINT;
 export const perPage = process.env.NEXT_PUBLIC_PRODUCTS_PER_PAGE
   ? parseInt(process.env.NEXT_PUBLIC_PRODUCTS_PER_PAGE)
   : 3;

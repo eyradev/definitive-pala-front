@@ -1,9 +1,9 @@
 import Image from 'next/image';
-import logoCart from '../../../../public/images/cart.svg';
-import logoIcon from '../../../../public/images/logoCart.svg';
-import logoFull from '../../../../public/images/logoFull.svg';
-import logoHorizontal from '../../../../public/images/logoText.svg';
-import logoTypography from '../../../../public/images/logoTypography.svg';
+import logoCart from 'public/images/cart.svg';
+import logoIcon from 'public/images/logoCart.svg';
+import logoFull from 'public/images/logoFull.svg';
+import logoHorizontal from 'public/images/logoText.svg';
+import logoTypography from 'public/images/logoTypography.svg';
 
 interface Props {
   variant: 'horizontal' | 'full' | 'icon' | 'typography' | 'cart';

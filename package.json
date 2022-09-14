@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "download-schema": "apollo service:download --endpoint=http://localhost:3000/api/graphql/ graphql-schema.json",
+    "generate-types": "apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql"
   },
   "dependencies": {
     "next": "12.3.0",
@@ -31,6 +33,7 @@
     "@apollo/client": "^3.4.8"
   },
   "devDependencies": {
+    "apollo": "^2.33.6",
     "@types/graphql": "^14.5.0",
     "@netlify/plugin-nextjs": "^4.16.0",
     "@types/node": "18.7.18",

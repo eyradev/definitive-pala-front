@@ -1,0 +1,27 @@
+.boton{
+    margin: 60px 0 60px 45%;
+    background-color: #EC8213;
+}
+  
+.boton:hover {
+    background-color: #F2733F;
+    text-decoration: none;
+}
+  
+.boton:focus{
+    background-color: #F2733F;
+}
+
+.boton:active{
+    background-color: #F2733F;
+}
+
+.formato{
+    padding-top: 25px;
+}
+
+@media (max-width: 1024px) {
+    .formato2{
+        padding-top: 25px;
+    }
+  }

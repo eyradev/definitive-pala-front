@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.searchResults {
+  margin-top: 40px;
+  position: absolute;
+  background-color: white;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 0 3px 10px 0 lightgray;
+  z-index: 5;
+}
+
+.searchResults ul {
+  width: 100%;
+  padding: 0;
+  list-style: none;
+}
+.searchResults li {
+  padding-left: 1rem;
+  width: 100%;
+}
+
+.searchResults li:not(.header):hover {
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+.searchResults li.header {
+  font-weight: bold;
+  margin-top: 10px;
+}

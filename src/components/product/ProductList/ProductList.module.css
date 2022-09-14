@@ -1,0 +1,11 @@
+.scrollingWrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  display: flex;
+}
+
+.scrollingWrapper .card {
+  display: inline-block;
+  margin: 10px;
+}

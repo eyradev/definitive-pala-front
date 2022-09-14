@@ -1,0 +1,30 @@
+ul.coupon {
+  list-style: none;
+  padding: 0;
+  padding-left: 10px;
+}
+
+.coupon i {
+  font-size: 0.8rem;
+  color: var(--danger);
+  display: inline;
+}
+
+.coupon i:hover {
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.coupon p {
+  margin: 0;
+  display: inline;
+}
+
+.coupon p:hover {
+  cursor: help;
+}
+
+.spinner {
+  font-size: 0.8rem;
+  display: inline;
+}

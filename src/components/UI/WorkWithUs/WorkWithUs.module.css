@@ -1,0 +1,38 @@
+.boton{
+    background-color: #EC8213;
+}
+  
+.boton:hover {
+    background-color: #F2733F;
+    text-decoration: none;
+}
+  
+.boton:focus{
+    background-color: #F2733F;
+}
+
+.boton:active{
+    background-color: #F2733F;
+}
+
+.Title{
+    text-align: center;
+}
+
+.Description{
+    margin-bottom: 50px;
+}
+
+.FormField{
+    margin-bottom: 40px;
+}
+
+.links{
+    color: black;
+    text-decoration: none;
+}
+
+.links:hover{
+    color: black;
+    text-decoration: none;
+}

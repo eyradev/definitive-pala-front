@@ -1,0 +1,16 @@
+.infoList {
+  display: flex;
+  align-items: center;
+}
+
+.infoList li {
+  list-style-type: none;
+}
+
+.Navlink {
+  cursor: pointer;
+}
+
+.cart:hover {
+  cursor: pointer;
+}

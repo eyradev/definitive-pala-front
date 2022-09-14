@@ -1,0 +1,45 @@
+.storeCard {
+  text-align: center;
+  height: 350px;
+}
+
+.storeCard .cardImage {
+  height: 100px;
+  background-color: white;
+}
+
+.storeCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.storeCard .storeLogo {
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  background-color: white;
+  position: relative;
+  margin-top: -40px;
+  margin-left: -40px;
+  left: 50%;
+}
+
+.storeCard .storeLogo img {
+  border-radius: 50%;
+}
+
+.cardFooter {
+  position: absolute;
+  width: 100%;
+  margin-bottom: 20px;
+  bottom: 0;
+}
+
+.cardFooter a {
+  color: var(--info) !important;
+}
+
+.cardText {
+  white-space: pre-line !important;
+}

@@ -1,0 +1,8 @@
+.sectionSmall {
+  color: var(--info);
+  white-space: nowrap;
+}
+
+.sectionSmall a {
+  color: inherit;
+}

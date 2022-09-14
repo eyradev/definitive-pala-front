@@ -1,0 +1,31 @@
+.root {
+  width: 100%;
+}
+.root ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.root ul li {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0;
+}
+
+.root ul li h5 {
+  padding: 0;
+  margin: 0;
+}
+
+.root ul li h3 {
+  margin-bottom: 5px;
+}
+
+.root a {
+  font-size: 1rem;
+  color: var(--info);
+  float: right;
+}

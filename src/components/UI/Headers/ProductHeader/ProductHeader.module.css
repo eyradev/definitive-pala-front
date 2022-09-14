@@ -1,0 +1,8 @@
+.playIcon {
+  font-size: 2rem !important;
+}
+
+.playIcon:hover {
+  padding: 15px !important;
+  cursor: pointer;
+}

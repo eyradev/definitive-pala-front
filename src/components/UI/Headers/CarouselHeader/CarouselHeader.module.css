@@ -1,0 +1,7 @@
+.header {
+  min-height: 80vh !important;
+}
+
+.header.clickable:hover {
+  cursor: pointer;
+}

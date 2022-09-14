@@ -1,0 +1,23 @@
+.titulo{
+    font-weight: bold;
+}
+
+.footer{
+    background-color: #EC8213;
+    color: white;
+    width: 100vw;
+}
+
+.vinculo{
+    padding-top: 7px;
+}
+
+.copyright{
+    color:white;
+    text-decoration: none;
+}
+
+.copyright:hover{
+    color:blue;
+    text-decoration: none;
+}

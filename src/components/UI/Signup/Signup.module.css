@@ -1,0 +1,22 @@
+
+.Titulo{
+    padding: 25px 0 25px 0;
+}
+
+.TyC{
+    padding: 10px 0 0px 0;
+    color: black;
+
+}
+
+
+.Checkbox{
+    transform: translateY(25%);
+    opacity: 0.5;
+    color: #555;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+

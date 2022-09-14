@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import { Transaction, TransactionResponse } from '../models/transaction';

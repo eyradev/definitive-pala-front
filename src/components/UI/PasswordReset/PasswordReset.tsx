@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';

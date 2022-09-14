@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useMutation } from '@apollo/client';
 import { Formik, FormikHelpers } from 'formik';
 import Link from 'next/link';

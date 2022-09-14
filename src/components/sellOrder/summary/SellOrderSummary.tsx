@@ -1,6 +1,6 @@
 import { Card, CardBody, CardProps, CardTitle } from 'reactstrap';
-import { Transaction } from '../../models/transaction';
-import { formatCurrency } from '../../util/currency';
+import { Transaction } from 'models/transaction';
+import { formatCurrency } from 'util/currency';
 import { SellOrderTable } from './table';
 
 interface Props extends CardProps {

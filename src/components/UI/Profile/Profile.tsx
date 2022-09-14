@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation, useQuery } from '@apollo/client';
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';

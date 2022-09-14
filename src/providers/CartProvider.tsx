@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-empty-function */
 import {
   ApolloCache,
   DefaultContext,
@@ -26,10 +24,10 @@ import {
   ALL_LINE_ITEMS,
   ALL_LINE_ITEMSVariables
 } from '../queries/__generated__/ALL_LINE_ITEMS';
-import { CART_BY_USERVariables } from '../queries/__generated__/CART_BY_USER';
 import {
   CART_BY_USER_QUERY,
-  CART_BY_USER_QUERY_allSellOrders
+  CART_BY_USER_QUERY_allSellOrders,
+  CART_BY_USER_QUERYVariables
 } from '../queries/__generated__/CART_BY_USER_QUERY';
 import {
   CART_DETAILS_QUERY,
@@ -94,7 +92,7 @@ export default function CartProvider({ children }: Props): JSX.Element {
 
   const { data: cartData, loading: cartLoading } = useQuery<
     CART_BY_USER_QUERY,
-    CART_BY_USERVariables
+    CART_BY_USER_QUERYVariables
   >(CART_BY_USER, {
     variables: { userId: user?.id || '' }
   });

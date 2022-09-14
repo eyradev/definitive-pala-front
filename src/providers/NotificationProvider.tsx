@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import { createContext, ReactNode, useCallback, useState } from 'react';
 import { Notification } from '../models/notification';
 

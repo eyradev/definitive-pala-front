@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useMutation, useQuery } from '@apollo/client';
 import { useFormikContext } from 'formik';
 import { Button, Col, FormGroup, Input, Label } from 'reactstrap';

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from '@apollo/client';
 import { Formik } from 'formik';
 import { useRouter } from 'next/router';
@@ -53,7 +51,7 @@ function PersonalInfo(): JSX.Element {
     if (!user) {
       router.push('/');
     }
-  }, []);
+  }, [router, user]);
 
   const { data: illness } = useQuery<ALL_ILLNESSES>(GET_ALL_ILLNESSES);
   const { data: preferences } = useQuery<ALL_PREFERENCES>(GET_ALL_PREFERENCES);

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation } from '@apollo/client';
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import {

@@ -1,11 +1,11 @@
 import { useQuery } from '@apollo/client';
 import { Spinner, Table } from 'reactstrap';
-import { SELL_ORDER } from '../../../queries/sell-order';
+import { SELL_ORDER } from 'queries/sell-order';
 import {
   SELL_ORDER_QUERY,
   SELL_ORDER_QUERYVariables
-} from '../../../queries/__generated__/SELL_ORDER_QUERY';
-import { formatCurrency } from '../../../util/currency';
+} from 'queries/__generated__/SELL_ORDER_QUERY';
+import { formatCurrency } from 'util/currency';
 import styles from './styles.module.css';
 
 interface Props {

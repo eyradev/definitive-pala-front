@@ -1,6 +1,6 @@
-import { Form, Formik, FormikHelpers } from 'formik';
-import Link from 'next/link';
-import { useState } from 'react';
+import { Form, Formik, FormikHelpers } from "formik";
+import Link from "next/link";
+import { useState } from "react";
 import {
   Button,
   Card,
@@ -12,19 +12,20 @@ import {
   FormGroup,
   FormText,
   Input,
-  Row
-} from 'reactstrap';
-import breakpoints from '../../../constants/breakpoints';
-import useCart from '../../../hooks/useCart';
-import { useMediaQuery } from '../../../hooks/useMediaQuery';
-import useUserPP from '../../../hooks/useUserPP';
-import { ProductStock } from '../../../models/product';
-import { PRODUCT_BY_ID_allProducts } from '../../../queries/__generated__/PRODUCT_BY_ID';
-import { productStockSchema } from '../../../schemas/productStock';
-import { CategoryIcon } from '../../category';
-import { ProductMediaCarousel } from '../ProductMediaCarousel';
-import { ProductTimeEstimation } from '../ProductTimeEstimation';
-import styles from './ProductDetails.module.css';
+  Row,
+} from "reactstrap";
+import { roundNumber } from "util/math";
+import breakpoints from "../../../constants/breakpoints";
+import useCart from "../../../hooks/useCart";
+import { useMediaQuery } from "../../../hooks/useMediaQuery";
+import useUserPP from "../../../hooks/useUserPP";
+import { ProductStock } from "../../../models/product";
+import { PRODUCT_BY_ID_allProducts } from "../../../queries/__generated__/PRODUCT_BY_ID";
+import { productStockSchema } from "../../../schemas/productStock";
+import { CategoryIcon } from "../../category";
+import { ProductMediaCarousel } from "../ProductMediaCarousel";
+import { ProductTimeEstimation } from "../ProductTimeEstimation";
+import styles from "./ProductDetails.module.css";
 
 interface Props {
   product: PRODUCT_BY_ID_allProducts | null | undefined;
@@ -61,9 +62,9 @@ export default function ProductDetails({ product }: Props): JSX.Element {
     <div
       className={styles.categoryWrapper}
       style={{
-        display: isMD ? 'flex' : undefined,
-        alignItems: isMD ? 'center' : undefined,
-        justifyContent: isMD ? 'space-evenly' : undefined
+        display: isMD ? "flex" : undefined,
+        alignItems: isMD ? "center" : undefined,
+        justifyContent: isMD ? "space-evenly" : undefined,
       }}
     >
       {product?.category.map((category) => (
@@ -99,37 +100,39 @@ export default function ProductDetails({ product }: Props): JSX.Element {
         </Col>
         <Col className="ml-auto mr-auto" md="6">
           <h2 className="title">
-            {product?.name}{' '}
-            {visibleReviews && visibleReviews.length > 0 && (
-              <small style={{ fontWeight: 'lighter' }}>{score}⭐</small>
+            {product?.name}{" "}
+            {score && visibleReviews && visibleReviews.length > 0 && (
+              <small style={{ fontWeight: "lighter" }}>
+                {roundNumber(score, 2)}⭐
+              </small>
             )}
           </h2>
           <h5
             className="category"
-            style={{ display: 'inline-block', color: 'var(--info)' }}
+            style={{ display: "inline-block", color: "var(--info)" }}
           >
             <Link
               href={`/search?key=${encodeURIComponent(
-                'Tienda ' + product?.store?.name
+                "Tienda " + product?.store?.name
               )}&store=${product?.store?.id}`}
             >
               {product?.store?.name}
             </Link>
           </h5>
-          <h5 className="category" style={{ display: 'inline-block' }}>
+          <h5 className="category" style={{ display: "inline-block" }}>
             &nbsp;/&nbsp;{product?.sku}
           </h5>
-          <div style={{ display: 'flex', fontSize: '0.7rem' }}>
+          <div style={{ display: "flex", fontSize: "0.7rem" }}>
             <h2
               className="main-price"
               style={{
-                textDecoration: product?.salePrice ? 'line-through' : 'none'
+                textDecoration: product?.salePrice ? "line-through" : "none",
               }}
             >
               ${product?.price}
             </h2>
             {product?.salePrice && (
-              <h2 className="main-price" style={{ fontWeight: 'normal' }}>
+              <h2 className="main-price" style={{ fontWeight: "normal" }}>
                 &nbsp;${product?.salePrice}
               </h2>
             )}
@@ -186,7 +189,7 @@ export default function ProductDetails({ product }: Props): JSX.Element {
                     <ul>
                       {product?.calories100gr && (
                         <li>
-                          <strong>Calorias (100gr)</strong>:{' '}
+                          <strong>Calorias (100gr)</strong>:{" "}
                           {product.calories100gr}
                         </li>
                       )}
@@ -212,13 +215,13 @@ export default function ProductDetails({ product }: Props): JSX.Element {
                   <Col lg="8" sm="12" className={styles.stockForm}>
                     <div
                       style={{
-                        width: '100%',
-                        marginTop: isSM ? '10px' : undefined
+                        width: "100%",
+                        marginTop: isSM ? "10px" : undefined,
                       }}
                     >
                       <FormGroup
                         className={
-                          errors.stock && touched.stock ? 'has-danger' : ''
+                          errors.stock && touched.stock ? "has-danger" : ""
                         }
                       >
                         {!isSM && <label htmlFor="stock">Unidades</label>}
@@ -232,7 +235,7 @@ export default function ProductDetails({ product }: Props): JSX.Element {
                           className={`form-control-lg ${
                             errors.stock &&
                             touched.stock &&
-                            'form-control-danger'
+                            "form-control-danger"
                           }`}
                           name="stock"
                           onChange={handleChange}
@@ -252,10 +255,10 @@ export default function ProductDetails({ product }: Props): JSX.Element {
                       <Button
                         className="mr-3"
                         color="info"
-                        style={{ whiteSpace: 'nowrap' }}
+                        style={{ whiteSpace: "nowrap" }}
                         type="submit"
                       >
-                        Agregar al Carrito{' '}
+                        Agregar al Carrito{" "}
                         <i className="now-ui-icons shopping_cart-simple" />
                       </Button>
                     ) : (

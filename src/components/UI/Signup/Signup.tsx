@@ -1,7 +1,8 @@
-import { useQuery } from '@apollo/client';
-import { Field, Formik } from 'formik';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useQuery } from "@apollo/client";
+import { Field, Formik } from "formik";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -17,22 +18,22 @@ import {
   InputGroupAddon,
   InputGroupText,
   Label,
-  Row
-} from 'reactstrap';
-import { tcUrl } from '../../../config';
-import { sections } from '../../../constants/sectionNames';
-import useNotification from '../../../hooks/useNotification';
-import useUserPP from '../../../hooks/useUserPP';
-import { landScapeImages } from '../../../mock/images';
-import { CONTENT_BY_SECTION_QUERY } from '../../../queries/customContent';
-import { SIGNUP_CONTENT_QUERY } from '../../../queries/signUpContent';
+  Row,
+} from "reactstrap";
+import { tcUrl } from "../../../config";
+import { sections } from "../../../constants/sectionNames";
+import useNotification from "../../../hooks/useNotification";
+import useUserPP from "../../../hooks/useUserPP";
+import { landScapeImages } from "../../../mock/images";
+import { CONTENT_BY_SECTION_QUERY } from "../../../queries/customContent";
+import { SIGNUP_CONTENT_QUERY } from "../../../queries/signUpContent";
 import {
   CONTENT_BY_SECTION,
-  CONTENT_BY_SECTIONVariables
-} from '../../../queries/__generated__/CONTENT_BY_SECTION';
-import { SIGNUP_CONTENT } from '../../../queries/__generated__/SIGNUP_CONTENT';
-import { SignupSchema } from '../../../schemas/user';
-import styles from './Signup.module.css';
+  CONTENT_BY_SECTIONVariables,
+} from "../../../queries/__generated__/CONTENT_BY_SECTION";
+import { SIGNUP_CONTENT } from "../../../queries/__generated__/SIGNUP_CONTENT";
+import { SignupSchema } from "../../../schemas/user";
+import styles from "./Signup.module.css";
 
 export interface UserProps {
   firstName: string;
@@ -62,34 +63,31 @@ export default function Signup(): JSX.Element {
     CONTENT_BY_SECTION,
     CONTENT_BY_SECTIONVariables
   >(CONTENT_BY_SECTION_QUERY, {
-    variables: { section: sections.signupBackground }
+    variables: { section: sections.signupBackground },
   });
 
   const { data: signUpContent } =
     useQuery<SIGNUP_CONTENT>(SIGNUP_CONTENT_QUERY);
 
   useEffect(() => {
-    document.body.classList.add('signup-page');
-    document.body.classList.add('sidebar-collapse');
-    document.documentElement.classList.remove('nav-open');
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
+    document.body.classList.add("signup-page");
+    document.body.classList.add("sidebar-collapse");
+    document.documentElement.classList.remove("nav-open");
     background?.allCustomContents
       ? setBackgroundImage(
           background?.allCustomContents[0]?.image1?.publicUrlTransformed
         )
       : setBackgroundImage(landScapeImages[0]);
     return function cleanup() {
-      document.body.classList.remove('signup-page');
-      document.body.classList.remove('sidebar-collapse');
+      document.body.classList.remove("signup-page");
+      document.body.classList.remove("sidebar-collapse");
     };
-  }, []);
+  }, [background?.allCustomContents]);
 
   useEffect(() => {
-    if (user) {
-      router.push('/');
-    }
-  }, []);
+    if (!router?.isReady) return;
+    if (user) router.push("/");
+  }, [user, router]);
 
   return (
     <>
@@ -97,7 +95,7 @@ export default function Signup(): JSX.Element {
         <div
           className={`page-header-image ${styles.pageImage}`}
           style={{
-            backgroundImage: `url(${backgroundImage})`
+            backgroundImage: `url(${backgroundImage})`,
           }}
         ></div>
         <div className="content">
@@ -138,34 +136,16 @@ export default function Signup(): JSX.Element {
                     >
                       Registro
                     </CardTitle>
-                    {/* <div className="social text-center">
-                      <Button
-                        className="btn-icon btn-round mr-2"
-                        color="twitter"
-                      >
-                        <i className="fab fa-twitter"></i>
-                      </Button>
-                      <Button
-                        className="btn-icon btn-round mr-2"
-                        color="dribbble"
-                      >
-                        <i className="fab fa-dribbble"></i>
-                      </Button>
-                      <Button className="btn-icon btn-round" color="facebook">
-                        <i className="fab fa-facebook"></i>
-                      </Button>
-                      <h5 className="card-description">or be classical</h5>
-                    </div> */}
                     <Formik
                       initialValues={{
-                        firstName: '',
-                        lastName: '',
-                        email: '',
-                        password: '',
-                        phone: '',
-                        docType: '13',
-                        docNumber: '',
-                        acceptTerms: false
+                        firstName: "",
+                        lastName: "",
+                        email: "",
+                        password: "",
+                        phone: "",
+                        docType: "13",
+                        docNumber: "",
+                        acceptTerms: false,
                       }}
                       validationSchema={SignupSchema}
                       onSubmit={(values) => {
@@ -180,7 +160,7 @@ export default function Signup(): JSX.Element {
                           onSubmit={handleSubmit}
                         >
                           <InputGroup
-                            className={firstFocus ? 'input-group-focus' : ''}
+                            className={firstFocus ? "input-group-focus" : ""}
                           >
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>
@@ -198,7 +178,7 @@ export default function Signup(): JSX.Element {
                             ></Input>
                           </InputGroup>
                           <InputGroup
-                            className={lastNameFocus ? 'input-group-focus' : ''}
+                            className={lastNameFocus ? "input-group-focus" : ""}
                           >
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>
@@ -217,7 +197,7 @@ export default function Signup(): JSX.Element {
                             ></Input>
                           </InputGroup>
                           <InputGroup
-                            className={phoneFocus ? 'input-group-focus' : ''}
+                            className={phoneFocus ? "input-group-focus" : ""}
                           >
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>
@@ -235,7 +215,7 @@ export default function Signup(): JSX.Element {
                             ></Input>
                           </InputGroup>
                           <InputGroup
-                            className={emailFocus ? 'input-group-focus' : ''}
+                            className={emailFocus ? "input-group-focus" : ""}
                           >
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>
@@ -253,7 +233,7 @@ export default function Signup(): JSX.Element {
                             ></Input>
                           </InputGroup>
                           <InputGroup
-                            className={lastFocus ? 'input-group-focus' : ''}
+                            className={lastFocus ? "input-group-focus" : ""}
                           >
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>
@@ -271,7 +251,7 @@ export default function Signup(): JSX.Element {
                             ></Input>
                           </InputGroup>
                           <InputGroup
-                            className={docTypeFocus ? 'input-group-focus' : ''}
+                            className={docTypeFocus ? "input-group-focus" : ""}
                           >
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>
@@ -305,7 +285,7 @@ export default function Signup(): JSX.Element {
                             </Input>
                           </InputGroup>
                           <InputGroup
-                            className={docNumFocus ? 'input-group-focus' : ''}
+                            className={docNumFocus ? "input-group-focus" : ""}
                           >
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>
@@ -327,23 +307,38 @@ export default function Signup(): JSX.Element {
                               type="checkbox"
                               name="acceptTerms"
                               className={styles.Checkbox}
-                            ></Field>{' '}
+                            ></Field>{" "}
                             <Label>
-                              Acepto los{' '}
-                              <a href={tcUrl || '#'}>términos y condiciones</a>.
+                              Acepto los{" "}
+                              <a
+                                href={tcUrl || "#"}
+                                style={{ color: "var(--info)" }}
+                              >
+                                términos y condiciones
+                              </a>
+                              .
                             </Label>
+                            <div style={{ marginTop: "20px" }}>
+                              ¿Ya tienes cuenta?
+                              <Link href="/login">
+                                <a style={{ color: "var(--info)" }}>
+                                  {" "}
+                                  ingresa!
+                                </a>
+                              </Link>
+                            </div>
                           </FormGroup>
                           <CardFooter className="text-center">
                             <Button
                               className={`btn-round`}
                               onClick={() => {
                                 if (
-                                  values.email == '' ||
-                                  values.password == '' ||
-                                  values.firstName == '' ||
-                                  values.lastName == '' ||
-                                  values.phone == '' ||
-                                  values.docNumber == '' ||
+                                  values.email == "" ||
+                                  values.password == "" ||
+                                  values.firstName == "" ||
+                                  values.lastName == "" ||
+                                  values.phone == "" ||
+                                  values.docNumber == "" ||
                                   errors.phone ||
                                   errors.password ||
                                   errors.docNumber ||
@@ -359,7 +354,7 @@ export default function Signup(): JSX.Element {
                                       errors.docNumber ||
                                       errors.acceptTerms
                                     }`,
-                                    type: 'danger'
+                                    type: "danger",
                                   });
                                 }
                               }}

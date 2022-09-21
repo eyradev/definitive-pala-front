@@ -45,6 +45,7 @@ export interface PRODUCT_BY_ID_allProducts_review {
   points: string | null;
   comments: string | null;
   visible: boolean | null;
+  dateCreated: string | null;
 }
 
 export interface PRODUCT_BY_ID_allProducts_category_icon {

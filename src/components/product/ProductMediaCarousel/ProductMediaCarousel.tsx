@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import { Button, Carousel, CarouselIndicators, CarouselItem } from 'reactstrap';
-import { PRODUCT_BY_ID_allProducts_photo } from '../../../queries/__generated__/PRODUCT_BY_ID';
-import { VideoPopup } from '../../UI';
-import styles from './ProductMediaCarousel.module.css';
+import ImagePopUp from "components/UI/ImagePopUp/ImagePopUp";
+import { useState } from "react";
+import { Button, Carousel, CarouselIndicators, CarouselItem } from "reactstrap";
+import { PRODUCT_BY_ID_allProducts_photo } from "../../../queries/__generated__/PRODUCT_BY_ID";
+import { VideoPopup } from "../../UI";
+import styles from "./ProductMediaCarousel.module.css";
 
 interface Props {
   content: PRODUCT_BY_ID_allProducts_photo[];
@@ -11,7 +12,7 @@ interface Props {
 
 export default function ProductMediaCarousel({
   content,
-  productVideo
+  productVideo,
 }: Props): JSX.Element {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAnimating, setAnimating] = useState(false);
@@ -38,17 +39,17 @@ export default function ProductMediaCarousel({
   };
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: "relative" }}>
       {productVideo && (
         <div
           style={{
             zIndex: 1001,
-            position: 'absolute',
-            height: '40px',
-            width: '40px',
+            position: "absolute",
+            height: "40px",
+            width: "40px",
             right: 10,
             bottom: 10,
-            textAlign: 'center'
+            textAlign: "center",
           }}
         >
           <VideoPopup
@@ -59,11 +60,11 @@ export default function ProductMediaCarousel({
             <div
               className={styles.playIcon}
               style={{
-                backgroundColor: 'var(--info)',
-                padding: '10px',
-                borderRadius: '0.5rem',
-                display: 'flex',
-                alignItems: 'center'
+                backgroundColor: "var(--info)",
+                padding: "10px",
+                borderRadius: "0.5rem",
+                display: "flex",
+                alignItems: "center",
               }}
             >
               <i className="now-ui-icons media-1_button-play" />
@@ -84,25 +85,28 @@ export default function ProductMediaCarousel({
           />
         )}
         {content.map((content) => {
+          if (!content.image?.publicUrlTransformed) return null;
           return (
             <CarouselItem
               onExiting={handleExitStart}
               onExited={handleExitEnd}
               key={content.image?.publicUrlTransformed}
             >
-              <div
-                className="d-block img-raised"
-                style={{
-                  backgroundImage: `url(${content.image?.publicUrlTransformed})`,
-                  backgroundRepeat: 'no-repeat',
-                  backgroundSize: 'cover',
-                  backgroundClip: 'border-box',
-                  backgroundPosition: 'center',
-                  width: '100%',
-                  height: '0',
-                  paddingBottom: '100%'
-                }}
-              />
+              <ImagePopUp imageUrl={content.image.publicUrlTransformed}>
+                <div
+                  className="d-block img-raised"
+                  style={{
+                    backgroundImage: `url(${content.image?.publicUrlTransformed})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover",
+                    backgroundClip: "border-box",
+                    backgroundPosition: "center",
+                    width: "100%",
+                    height: "0",
+                    paddingBottom: "100%",
+                  }}
+                />
+              </ImagePopUp>
             </CarouselItem>
           );
         })}

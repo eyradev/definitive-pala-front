@@ -1,8 +1,8 @@
-import { useQuery } from '@apollo/client';
-import { Formik } from 'formik';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useQuery } from "@apollo/client";
+import { Formik } from "formik";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -17,27 +17,26 @@ import {
   InputGroupAddon,
   InputGroupText,
   Label,
-  Row
-} from 'reactstrap';
-import { sections } from '../../../constants/sectionNames';
-import useNotification from '../../../hooks/useNotification';
-import useUserPP from '../../../hooks/useUserPP';
-import { landScapeImages } from '../../../mock/images';
-import { CONTENT_BY_SECTION_QUERY } from '../../../queries/customContent';
+  Row,
+} from "reactstrap";
+import { sections } from "../../../constants/sectionNames";
+import useNotification from "../../../hooks/useNotification";
+import useUserPP from "../../../hooks/useUserPP";
+import { landScapeImages } from "../../../mock/images";
+import { CONTENT_BY_SECTION_QUERY } from "../../../queries/customContent";
 import {
   CONTENT_BY_SECTION,
-  CONTENT_BY_SECTIONVariables
-} from '../../../queries/__generated__/CONTENT_BY_SECTION';
-import { LoginSchema } from '../../../schemas/user';
-import { Logo } from '../Logo';
-import styles from './Login.module.css';
+  CONTENT_BY_SECTIONVariables,
+} from "../../../queries/__generated__/CONTENT_BY_SECTION";
+import { LoginSchema } from "../../../schemas/user";
+import { Logo } from "../Logo";
+import styles from "./Login.module.css";
 
 export default function Login(): JSX.Element {
   const [firstFocus, setFirstFocus] = useState(false);
   const [lastFocus, setLastFocus] = useState(false);
   const [backgroundImage, setBackgroundImage] = useState<string | null>();
   const router = useRouter();
-  const { addNotification } = useNotification();
   const { user } = useUserPP();
   const { signin } = useUserPP();
 
@@ -45,7 +44,7 @@ export default function Login(): JSX.Element {
     CONTENT_BY_SECTION,
     CONTENT_BY_SECTIONVariables
   >(CONTENT_BY_SECTION_QUERY, {
-    variables: { section: sections.loginBackground }
+    variables: { section: sections.loginBackground },
   });
 
   /* async function handleSignIn(values: UserProps) {
@@ -72,9 +71,9 @@ export default function Login(): JSX.Element {
   } */
 
   useEffect(() => {
-    document.body.classList.add('login-page');
-    document.body.classList.add('sidebar-collapse');
-    document.documentElement.classList.remove('nav-open');
+    document.body.classList.add("login-page");
+    document.body.classList.add("sidebar-collapse");
+    document.documentElement.classList.remove("nav-open");
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
     background?.allCustomContents
@@ -83,16 +82,18 @@ export default function Login(): JSX.Element {
         )
       : setBackgroundImage(landScapeImages[0]);
     return function cleanup() {
-      document.body.classList.remove('login-page');
-      document.body.classList.remove('sidebar-collapse');
+      document.body.classList.remove("login-page");
+      document.body.classList.remove("sidebar-collapse");
     };
-  }, []);
+  }, [background?.allCustomContents]);
 
   useEffect(() => {
+    if (!router.isReady) return;
+
     if (user) {
-      router.push('/');
+      router.push("/");
     }
-  }, []);
+  }, [router, user]);
 
   return (
     <>
@@ -100,7 +101,7 @@ export default function Login(): JSX.Element {
         <div
           className={`page-header-image ${styles.pageImage}`}
           style={{
-            backgroundImage: `url(${backgroundImage})`
+            backgroundImage: `url(${backgroundImage})`,
           }}
         ></div>
         <div className="content">
@@ -109,7 +110,7 @@ export default function Login(): JSX.Element {
               <Col className="ml-auto mr-auto" md="5">
                 <Card className="card-login card-plain">
                   <Formik
-                    initialValues={{ email: '', password: '' }}
+                    initialValues={{ email: "", password: "" }}
                     onSubmit={(values) => {
                       signin && signin(values);
                     }}
@@ -120,7 +121,7 @@ export default function Login(): JSX.Element {
                       errors,
                       touched,
                       handleChange,
-                      handleSubmit
+                      handleSubmit,
                     }) => (
                       <Form onSubmit={handleSubmit}>
                         <CardHeader className="text-center">
@@ -134,8 +135,8 @@ export default function Login(): JSX.Element {
                           {errors.email && touched.email && errors.email}
                           <InputGroup
                             className={
-                              'no-border input-lg' +
-                              (firstFocus ? ' input-group-focus' : '')
+                              "no-border input-lg" +
+                              (firstFocus ? " input-group-focus" : "")
                             }
                           >
                             <InputGroupAddon addonType="prepend">
@@ -159,8 +160,8 @@ export default function Login(): JSX.Element {
                             errors.password}
                           <InputGroup
                             className={
-                              'no-border input-lg' +
-                              (lastFocus ? ' input-group-focus' : '')
+                              "no-border input-lg" +
+                              (lastFocus ? " input-group-focus" : "")
                             }
                           >
                             <InputGroupAddon addonType="prepend">
@@ -177,6 +178,15 @@ export default function Login(): JSX.Element {
                               onChange={handleChange}
                             ></Input>
                           </InputGroup>
+                          <div>
+                            ¿No tienes cuenta?
+                            <Link href="/signup">
+                              <a style={{ color: "var(--info)" }}>
+                                {" "}
+                                registrate!
+                              </a>
+                            </Link>
+                          </div>
                         </CardBody>
                         <CardFooter className="text-center">
                           <Button
@@ -190,7 +200,7 @@ export default function Login(): JSX.Element {
                           </Button>
                         </CardFooter>
                         <Link href="/forgot-password">
-                          <Label style={{ cursor: 'pointer' }}>
+                          <Label style={{ cursor: "pointer" }}>
                             Olvidé mi contraseña
                           </Label>
                         </Link>

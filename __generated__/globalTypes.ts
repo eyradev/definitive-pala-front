@@ -1159,6 +1159,7 @@ export interface ReviewCreateInput {
   product?: ProductRelateToOneInput | null;
   user?: UserRelateToOneInput | null;
   visible?: boolean | null;
+  dateCreated?: string | null;
 }
 
 export interface ReviewRelateToManyInput {
@@ -1217,6 +1218,14 @@ export interface ReviewWhereInput {
   user_is_null?: boolean | null;
   visible?: boolean | null;
   visible_not?: boolean | null;
+  dateCreated?: string | null;
+  dateCreated_not?: string | null;
+  dateCreated_lt?: string | null;
+  dateCreated_lte?: string | null;
+  dateCreated_gt?: string | null;
+  dateCreated_gte?: string | null;
+  dateCreated_in?: (string | null)[] | null;
+  dateCreated_not_in?: (string | null)[] | null;
 }
 
 export interface ReviewWhereUniqueInput {

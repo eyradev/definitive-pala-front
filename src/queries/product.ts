@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const ALL_PRODUCTS_QUERY = gql`
   query ALL_PRODUCTS {
@@ -50,6 +50,7 @@ export const GET_PRODUCT_BY_ID = gql`
         points
         comments
         visible
+        dateCreated
       }
       category {
         id

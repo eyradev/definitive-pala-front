@@ -33,3 +33,12 @@ export const getMinBetween = (
 ): number => {
   return Math.min(Math.max(min, val), max);
 };
+
+export const roundNumber = (num: number, scale: number) => {
+  let scaleMulti = 10;
+  for (let i = 1; i < scale; i++) {
+    scaleMulti *= 10;
+  }
+
+  return Math.round((num + Number.EPSILON) * scaleMulti) / scaleMulti;
+};

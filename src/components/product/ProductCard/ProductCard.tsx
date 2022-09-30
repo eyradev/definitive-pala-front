@@ -1,4 +1,5 @@
-import Link from 'next/link';
+/* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
 import {
   Card,
   CardBody,
@@ -6,14 +7,15 @@ import {
   CardSubtitle,
   CardTitle,
   Col,
-  Row
-} from 'reactstrap';
-import useUserPP from '../../../hooks/useUserPP';
-import { landScapeImages } from '../../../mock/images';
-import { PRODUCT_SEARCH_allProducts } from '../../../queries/__generated__/PRODUCT_SEARCH';
-import { CategoryIcon } from '../../category';
-import { Star } from '../../UI';
-import styles from './ProductCard.module.css';
+  Row,
+} from "reactstrap";
+import { formatCurrency } from "util/currency";
+import useUserPP from "../../../hooks/useUserPP";
+import { landScapeImages } from "../../../mock/images";
+import { PRODUCT_SEARCH_allProducts } from "../../../queries/__generated__/PRODUCT_SEARCH";
+import { CategoryIcon } from "../../category";
+import { Star } from "../../UI";
+import styles from "./ProductCard.module.css";
 
 const maxCategoryLength = 3;
 
@@ -33,11 +35,11 @@ export default function ProductCard({
       : undefined;
   return (
     <Card className={`${styles.productCard}`} {...cardProps}>
-      <div className={`${styles['card-image']} card-image`}>
+      <div className={`${styles["card-image"]} card-image`}>
         <Link href={`/products/${product.id}`}>
           <a>
             <img
-              alt={photo.altText || '...'}
+              alt={photo.altText || "..."}
               src={photo.image?.publicUrlTransformed || landScapeImages[0]}
               className={styles.cardImage}
             />
@@ -46,16 +48,16 @@ export default function ProductCard({
       </div>
       <div
         style={{
-          position: 'absolute',
+          position: "absolute",
           top: 0,
-          right: 0
+          right: 0,
         }}
       >
         {discount && (
-          <Star style={{ height: '50px', width: '50px' }}>{discount}% Off</Star>
+          <Star style={{ height: "50px", width: "50px" }}>{discount}% Off</Star>
         )}
       </div>
-      <CardBody style={{ whiteSpace: 'pre' }}>
+      <CardBody style={{ whiteSpace: "pre" }}>
         <Link href={`/products/${product.id}`}>
           <a>
             <CardTitle tag="h4" className={styles.title}>
@@ -66,7 +68,7 @@ export default function ProductCard({
         {product.store && product.store.name && (
           <Link
             href={`/search?key=${encodeURIComponent(
-              'Tienda ' + product.store?.name
+              "Tienda " + product.store?.name
             )}&store=${product.store?.id}`}
           >
             <a>
@@ -87,7 +89,7 @@ export default function ProductCard({
         <div className={styles.footer}>
           <div className={styles.priceContainer}>
             <span className="price">
-              ${discount ? product.salePrice : product.price}
+              {formatCurrency(discount ? product.salePrice : product.price)}
             </span>
           </div>
           <Row>
@@ -100,8 +102,8 @@ export default function ProductCard({
                   backgroundColor: user?.category.find(
                     (c) => c.id === category.id
                   )
-                    ? 'var(--success)'
-                    : undefined
+                    ? "var(--success)"
+                    : undefined,
                 }}
               >
                 <CategoryIcon category={category} />

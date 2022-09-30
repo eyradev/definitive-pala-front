@@ -14,6 +14,7 @@ import {
   Input,
   Row,
 } from "reactstrap";
+import { formatCurrency } from "util/currency";
 import { roundNumber } from "util/math";
 import breakpoints from "../../../constants/breakpoints";
 import useCart from "../../../hooks/useCart";
@@ -123,17 +124,19 @@ export default function ProductDetails({ product }: Props): JSX.Element {
             &nbsp;/&nbsp;{product?.sku}
           </h5>
           <div style={{ display: "flex", fontSize: "0.7rem" }}>
-            <h2
-              className="main-price"
-              style={{
-                textDecoration: product?.salePrice ? "line-through" : "none",
-              }}
-            >
-              ${product?.price}
-            </h2>
+            {product?.price && (
+              <h2
+                className="main-price"
+                style={{
+                  textDecoration: product?.salePrice ? "line-through" : "none",
+                }}
+              >
+                {formatCurrency(product.price)}
+              </h2>
+            )}
             {product?.salePrice && (
               <h2 className="main-price" style={{ fontWeight: "normal" }}>
-                &nbsp;${product?.salePrice}
+                &nbsp;{formatCurrency(product.salePrice)}
               </h2>
             )}
           </div>

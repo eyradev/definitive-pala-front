@@ -42,6 +42,8 @@ import { CART_STORE_QUERY } from "queries/store";
 import { CART_STORE } from "queries/__generated__/CART_STORE";
 import { UPDATE_CART_STOCK_MUTATION } from "queries/__generated__/UPDATE_CART_STOCK_MUTATION";
 import { formatCurrency } from "util/currency";
+import Image from "next/image";
+import epaycoLogo from "public/images/epayco.png";
 
 export default function CheckoutPage(): JSX.Element {
   const { lineItems, cartData, cartTotals } = useCart();
@@ -264,10 +266,25 @@ export default function CheckoutPage(): JSX.Element {
                               alignItems: "center",
                             }}
                           >
-                            <img
-                              src="/images/epayco.png"
-                              style={{ maxWidth: 100 }}
-                            />
+                            <div
+                              id="epayco-logo-container"
+                              style={{
+                                width: "60%",
+                                height: "100%",
+                                position: "relative",
+                              }}
+                            >
+                              <Image
+                                src={epaycoLogo}
+                                alt="epayco logo"
+                                width={400}
+                                height={132}
+                                layout="responsive"
+                                objectFit="contain"
+                                sizes="100vw"
+                              />
+                            </div>
+
                             <Button
                               className={`btn-raised btn-round`}
                               style={{ width: 200 }}

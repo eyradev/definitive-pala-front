@@ -1,7 +1,7 @@
-import { useMutation, useQuery } from '@apollo/client';
-import { Form, Formik } from 'formik';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useMutation, useQuery } from "@apollo/client";
+import { Form, Formik } from "formik";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -12,31 +12,31 @@ import {
   InputGroupAddon,
   InputGroupText,
   Label,
-  Row
-} from 'reactstrap';
-import * as Yup from 'yup';
-import { CategoryWhereUniqueInput } from '../../../../__generated__/globalTypes';
-import useNotification from '../../../hooks/useNotification';
-import useUserPP from '../../../hooks/useUserPP';
+  Row,
+} from "reactstrap";
+import * as Yup from "yup";
+import { CategoryWhereUniqueInput } from "../../../../__generated__/globalTypes";
+import useNotification from "../../../hooks/useNotification";
+import useUserPP from "../../../hooks/useUserPP";
 import {
   GET_ALL_ILLNESSES,
-  GET_ALL_PREFERENCES
-} from '../../../queries/category';
-import { REQUEST_RESET_MUTATION } from '../../../queries/requestReset';
-import { CURRENT_USER_QUERY } from '../../../queries/user';
-import { UPDATE_USER_MUTATION } from '../../../queries/userUpdate';
-import { ALL_ILLNESSES } from '../../../queries/__generated__/ALL_ILLNESSES';
-import { ALL_PREFERENCES } from '../../../queries/__generated__/ALL_PREFERENCES';
+  GET_ALL_PREFERENCES,
+} from "../../../queries/category";
+import { REQUEST_RESET_MUTATION } from "../../../queries/requestReset";
+import { CURRENT_USER_QUERY } from "../../../queries/user";
+import { UPDATE_USER_MUTATION } from "../../../queries/userUpdate";
+import { ALL_ILLNESSES } from "../../../queries/__generated__/ALL_ILLNESSES";
+import { ALL_PREFERENCES } from "../../../queries/__generated__/ALL_PREFERENCES";
 import {
   REQUEST_RESET,
-  REQUEST_RESETVariables
-} from '../../../queries/__generated__/REQUEST_RESET';
+  REQUEST_RESETVariables,
+} from "../../../queries/__generated__/REQUEST_RESET";
 import {
   UPDATE_USER,
-  UPDATE_USERVariables
-} from '../../../queries/__generated__/UPDATE_USER';
-import ProfilePageHeader from '../Headers/ProfileHeader/ProfileHeader';
-import styles from './Profile.module.css';
+  UPDATE_USERVariables,
+} from "../../../queries/__generated__/UPDATE_USER";
+import ProfilePageHeader from "../Headers/ProfileHeader/ProfileHeader";
+import styles from "./Profile.module.css";
 
 export interface RequestProps {
   email: any;
@@ -80,58 +80,60 @@ function ProfilePage(): JSX.Element {
   const { data: preferences } = useQuery<ALL_PREFERENCES>(GET_ALL_PREFERENCES);
 
   const ProfileSchema = Yup.object().shape({
-    name: Yup.string().required('Se requiere el nombre'),
-    address: Yup.string().required('Se requiere la dirección'),
+    name: Yup.string().required("Se requiere el nombre"),
+    address: Yup.string().required("Se requiere la dirección"),
     addressDetails: Yup.string().required(
-      'Se requiere los detalles de la dirección'
+      "Se requiere los detalles de la dirección"
     ),
     phone: Yup.string()
-      .required('Se requiere el teléfono')
-      .min(7, 'El teléfono debe tener minimo 7 caracteres!')
-      .max(10, 'El número de teléfono es muy Largo!'),
+      .required("Se requiere el teléfono")
+      .min(7, "El teléfono debe tener minimo 7 caracteres!")
+      .max(10, "El número de teléfono es muy Largo!"),
     email: Yup.string()
-      .email('Invalid email')
-      .required('Se requiere el correo'),
+      .email("Invalid email")
+      .required("Se requiere el correo"),
     docNumber: Yup.string()
-      .required('Se requiere el número de documento')
-      .min(7, 'El número de documento debe tener minimo 7 caracteres!')
+      .required("Se requiere el número de documento")
+      .min(7, "El número de documento debe tener minimo 7 caracteres!"),
   });
 
   useEffect(() => {
-    document.body.classList.add('profile-page');
-    document.body.classList.add('sidebar-collapse');
-    document.documentElement.classList.remove('nav-open');
+    document.body.classList.add("profile-page");
+    document.body.classList.add("sidebar-collapse");
+    document.documentElement.classList.remove("nav-open");
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
     return function cleanup() {
-      document.body.classList.remove('profile-page');
-      document.body.classList.remove('sidebar-collapse');
+      document.body.classList.remove("profile-page");
+      document.body.classList.remove("sidebar-collapse");
     };
   }, []);
 
   useEffect(() => {
+    if (!router.isReady) return;
+
     if (!user) {
-      router.push('/');
+      router.push("/");
     }
-  }, []);
+  }, [user, router]);
 
   const [updateUser] = useMutation<UPDATE_USER, UPDATE_USERVariables>(
     UPDATE_USER_MUTATION,
     {
-      refetchQueries: [{ query: CURRENT_USER_QUERY }]
+      refetchQueries: [{ query: CURRENT_USER_QUERY }],
     }
   );
 
   const requestPasswordReset = async (email: any) => {
     await requestReset({
       variables: {
-        email: email
-      }
+        email: email,
+      },
     }).then(() => {
       addNotification({
         message:
-          'El correo para el cambio de contraseña ha sido enviado exitosamente',
-        type: 'success'
+          "El correo para el cambio de contraseña ha sido enviado exitosamente",
+        type: "success",
       });
     });
   };
@@ -139,7 +141,14 @@ function ProfilePage(): JSX.Element {
   const handleSubmit = async (values: UserFormProps) => {
     if (user?.address[0].addressL1 === values.address) {
       const addressId = user.address[0].id;
-      handleUserUpdate(values, addressId);
+      await handleUserUpdate(values, addressId);
+      addNotification({
+        message: "Usuario modificado exitosamente",
+        type: "success",
+      });
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
     }
   };
 
@@ -182,16 +191,8 @@ function ProfilePage(): JSX.Element {
         phone: values.phone,
         Addressconnect: AddressId,
         docType: values.docType,
-        docNumber: values.docNumber
-      }
-    }).then(() => {
-      addNotification({
-        message: 'Usuario modificado exitosamente',
-        type: 'success'
-      });
-      setTimeout(() => {
-        router.push('/profile');
-      }, 1000);
+        docNumber: values.docNumber,
+      },
     });
   }
 
@@ -214,7 +215,7 @@ function ProfilePage(): JSX.Element {
               docType: `${user?.identificationType}`,
               docNumber: `${user?.identification}`,
               categories:
-                user?.category?.map((category: any) => category.id) || []
+                user?.category?.map((category: any) => category.id) || [],
             }}
             onSubmit={(values) => {
               handleSubmit(values);
@@ -228,7 +229,7 @@ function ProfilePage(): JSX.Element {
                     <label>Nombre</label>
 
                     <InputGroup
-                      className={nameFocus ? 'input-group-focus' : ''}
+                      className={nameFocus ? "input-group-focus" : ""}
                     >
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
@@ -249,7 +250,7 @@ function ProfilePage(): JSX.Element {
                     </InputGroup>
                     <label className={styles.formato}>Apellidos</label>
                     <InputGroup
-                      className={lastNameFocus ? 'input-group-focus' : ''}
+                      className={lastNameFocus ? "input-group-focus" : ""}
                     >
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
@@ -269,7 +270,7 @@ function ProfilePage(): JSX.Element {
                     </InputGroup>
                     <label className={styles.formato}>Correo</label>
                     <InputGroup
-                      className={emailFocus ? 'input-group-focus' : ''}
+                      className={emailFocus ? "input-group-focus" : ""}
                     >
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
@@ -290,7 +291,7 @@ function ProfilePage(): JSX.Element {
                     </InputGroup>
                     <label className={styles.formato}>Dirección</label>
                     <InputGroup
-                      className={addressFocus ? 'input-group-focus' : ''}
+                      className={addressFocus ? "input-group-focus" : ""}
                     >
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
@@ -312,7 +313,7 @@ function ProfilePage(): JSX.Element {
                       Detalles de la Dirección
                     </label>
                     <InputGroup
-                      className={addressDetailFocus ? 'input-group-focus' : ''}
+                      className={addressDetailFocus ? "input-group-focus" : ""}
                     >
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
@@ -357,7 +358,7 @@ function ProfilePage(): JSX.Element {
                   <Col className="ml-auto mr-auto" md="5">
                     <label className={styles.formato2}>Teléfono</label>
                     <InputGroup
-                      className={numberFocus ? 'input-group-focus' : ''}
+                      className={numberFocus ? "input-group-focus" : ""}
                     >
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
@@ -377,7 +378,7 @@ function ProfilePage(): JSX.Element {
                     </InputGroup>
                     <label className={styles.formato}>Tipo de Documento</label>
                     <InputGroup
-                      className={docTypeFocus ? 'input-group-focus' : ''}
+                      className={docTypeFocus ? "input-group-focus" : ""}
                     >
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
@@ -414,7 +415,7 @@ function ProfilePage(): JSX.Element {
                       Número de Documento
                     </label>
                     <InputGroup
-                      className={docNumFocus ? 'input-group-focus' : ''}
+                      className={docNumFocus ? "input-group-focus" : ""}
                     >
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
@@ -459,7 +460,7 @@ function ProfilePage(): JSX.Element {
                       type="button"
                       color="primary"
                       style={{
-                        marginTop: '40px'
+                        marginTop: "40px",
                       }}
                       onClick={() => {
                         requestPasswordReset(`${user?.email}`);
@@ -478,15 +479,15 @@ function ProfilePage(): JSX.Element {
                       type="submit"
                       color="primary"
                       style={{
-                        marginTop: '60px'
+                        marginTop: "60px",
                       }}
                       onClick={() => {
                         if (
-                          values.email == '' ||
-                          values.address == '' ||
-                          values.name == '' ||
-                          values.phone == '' ||
-                          values.docNumber == '' ||
+                          values.email == "" ||
+                          values.address == "" ||
+                          values.name == "" ||
+                          values.phone == "" ||
+                          values.docNumber == "" ||
                           errors.docNumber ||
                           errors.phone ||
                           errors.addressDetails
@@ -500,7 +501,7 @@ function ProfilePage(): JSX.Element {
                               errors.addressDetails ||
                               errors.docNumber
                             }`,
-                            type: 'danger'
+                            type: "danger",
                           });
                         }
                       }}

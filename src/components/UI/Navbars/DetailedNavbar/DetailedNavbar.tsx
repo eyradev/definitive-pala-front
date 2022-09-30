@@ -1,7 +1,7 @@
-import { useQuery } from '@apollo/client';
-import Link from 'next/link';
-import router from 'next/router';
-import React, { useState } from 'react';
+import { useQuery } from "@apollo/client";
+import Link from "next/link";
+import router from "next/router";
+import React, { useState } from "react";
 import {
   Badge,
   Col,
@@ -16,24 +16,24 @@ import {
   NavItem,
   NavLink,
   Row,
-  UncontrolledDropdown
-} from 'reactstrap';
-import breakpoints from '../../../../constants/breakpoints';
-import useCart from '../../../../hooks/useCart';
-import { useMediaQuery } from '../../../../hooks/useMediaQuery';
-import useUserPP from '../../../../hooks/useUserPP';
+  UncontrolledDropdown,
+} from "reactstrap";
+import breakpoints from "../../../../constants/breakpoints";
+import useCart from "../../../../hooks/useCart";
+import { useMediaQuery } from "../../../../hooks/useMediaQuery";
+import useUserPP from "../../../../hooks/useUserPP";
 import {
   GET_ALL_ILLNESSES,
-  GET_ALL_PREFERENCES
-} from '../../../../queries/category';
-import { ALL_ILLNESSES } from '../../../../queries/__generated__/ALL_ILLNESSES';
+  GET_ALL_PREFERENCES,
+} from "../../../../queries/category";
+import { ALL_ILLNESSES } from "../../../../queries/__generated__/ALL_ILLNESSES";
 import {
   ALL_PREFERENCES,
-  ALL_PREFERENCES_allCategories
-} from '../../../../queries/__generated__/ALL_PREFERENCES';
-import { Searchbar } from '../../../search';
-import { Logo } from '../../Logo';
-import styles from './DetailedNavbar.module.css';
+  ALL_PREFERENCES_allCategories,
+} from "../../../../queries/__generated__/ALL_PREFERENCES";
+import { Searchbar } from "../../../search";
+import { Logo } from "../../Logo";
+import styles from "./DetailedNavbar.module.css";
 
 export default function DetailedNavbar(): JSX.Element {
   const [isCollapseOpen, setCollapseOpen] = useState(false);
@@ -46,7 +46,7 @@ export default function DetailedNavbar(): JSX.Element {
   const { lineItems, toggleCart } = useCart();
 
   const handleBodyClick = () => {
-    document.documentElement.classList.toggle('nav-open');
+    document.documentElement.classList.toggle("nav-open");
     setCollapseOpen(false);
   };
 
@@ -54,22 +54,22 @@ export default function DetailedNavbar(): JSX.Element {
   const { data: illnesses } = useQuery<ALL_ILLNESSES>(GET_ALL_ILLNESSES);
 
   const handleCategoryClick =
-    (item: ALL_PREFERENCES_allCategories, type: 'illness' | 'category') =>
+    (item: ALL_PREFERENCES_allCategories, type: "illness" | "category") =>
     () => {
       const query =
-        type === 'illness'
+        type === "illness"
           ? {
               key: encodeURIComponent(`Apto para ${item.name}`),
-              illness: item.id
+              illness: item.id,
             }
           : {
               key: encodeURIComponent(`Categoría ${item.name}`),
-              category: item.id
+              category: item.id,
             };
 
       router.push({
-        pathname: '/search',
-        query
+        pathname: "/search",
+        query,
       });
     };
 
@@ -82,28 +82,28 @@ export default function DetailedNavbar(): JSX.Element {
   const cart = (
     <div
       style={{
-        position: 'relative',
-        marginLeft: isNavCollapsed ? '5px' : '0',
-        marginRight: '-7px'
+        position: "relative",
+        marginLeft: isNavCollapsed ? "5px" : "0",
+        marginRight: "-7px",
       }}
       className={styles.cart}
     >
       <Badge
         className="mr-1"
         onClick={toggleCart}
-        color={isNavCollapsed ? 'light' : 'light'}
+        color={isNavCollapsed ? "light" : "light"}
         style={{
-          border: '1px solid var(--primary)'
+          border: "1px solid var(--primary)",
         }}
       >
         <div
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-            fontSize: '0.6rem',
-            paddingRight: '3px',
-            color: 'var(--primary)'
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            fontSize: "0.6rem",
+            paddingRight: "3px",
+            color: "var(--primary)",
           }}
         >
           <Logo variant="icon" height={16} width={16} />
@@ -131,7 +131,7 @@ export default function DetailedNavbar(): JSX.Element {
               category ? (
                 <DropdownItem
                   key={category.id}
-                  onClick={handleCategoryClick(category, 'category')}
+                  onClick={handleCategoryClick(category, "category")}
                 >
                   {category.name}
                 </DropdownItem>
@@ -156,7 +156,7 @@ export default function DetailedNavbar(): JSX.Element {
               illness ? (
                 <DropdownItem
                   key={illness.id}
-                  onClick={handleCategoryClick(illness, 'illness')}
+                  onClick={handleCategoryClick(illness, "illness")}
                 >
                   {illness.name}
                 </DropdownItem>
@@ -171,7 +171,7 @@ export default function DetailedNavbar(): JSX.Element {
           onClick={() =>
             router.push(
               `/search?key=${encodeURIComponent(
-                'Todas Nuestras Ofertas!'
+                "Todas Nuestras Ofertas!"
               )}&offersOnly=true`
             )
           }
@@ -182,7 +182,7 @@ export default function DetailedNavbar(): JSX.Element {
       <NavItem>
         <NavLink
           className={styles.Navlink}
-          onClick={() => router.push('/contactus')}
+          onClick={() => router.push("/contactus")}
         >
           Contactanos
         </NavLink>
@@ -204,7 +204,7 @@ export default function DetailedNavbar(): JSX.Element {
           <p>Hola {user?.name}!</p>
         </DropdownToggle>
         <DropdownMenu aria-labelledby="navbarDropdownMenuUser" right>
-          <Link href="/personal-info">
+          <Link href="/profile">
             <DropdownItem>
               <i className="now-ui-icons users_single-02" />
               Mi perfil
@@ -238,7 +238,7 @@ export default function DetailedNavbar(): JSX.Element {
       </Link>
       <Link href="/login">
         <NavItem>
-          <NavLink style={{ whiteSpace: 'nowrap' }} className={styles.Navlink}>
+          <NavLink style={{ whiteSpace: "nowrap" }} className={styles.Navlink}>
             Iniciar Sesión
           </NavLink>
         </NavItem>
@@ -262,17 +262,17 @@ export default function DetailedNavbar(): JSX.Element {
         <Container>
           <div
             className="navbar-translate"
-            style={{ display: 'flex', alignItems: 'center' }}
+            style={{ display: "flex", alignItems: "center" }}
           >
             <NavbarBrand>
               <Logo
-                variant={isXS ? 'icon' : isSM ? 'typography' : 'horizontal'}
+                variant={isXS ? "icon" : isSM ? "typography" : "horizontal"}
                 height={isSM ? 70 : 80}
               />
             </NavbarBrand>
             <Row>
               <Col xs="12" style={isXS ? { paddingLeft: 0 } : undefined}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: "flex", alignItems: "center" }}>
                   <Searchbar inputProps={{ size: isNavCollapsed ? 60 : 50 }} />
                   {isNavCollapsed && (
                     <div className={styles.infoList}>{cart}</div>
@@ -288,7 +288,7 @@ export default function DetailedNavbar(): JSX.Element {
 
             <button
               onClick={() => {
-                document.documentElement.classList.toggle('nav-open');
+                document.documentElement.classList.toggle("nav-open");
                 setCollapseOpen(!isCollapseOpen);
               }}
               aria-expanded={isCollapseOpen}
@@ -304,14 +304,14 @@ export default function DetailedNavbar(): JSX.Element {
               {isNavCollapsed ? (
                 rightLinks
               ) : (
-                <Row style={{ marginLeft: '10px' }}>
+                <Row style={{ marginLeft: "10px" }}>
                   <Col xs="12">
                     <NavItem>
                       <p
                         style={{
-                          marginLeft: '10px',
-                          whiteSpace: 'nowrap',
-                          color: 'var(--secondary)'
+                          marginLeft: "10px",
+                          whiteSpace: "nowrap",
+                          color: "var(--secondary)",
                         }}
                       >
                         De la fábrica a tu casa, buena idea !!!
@@ -320,7 +320,7 @@ export default function DetailedNavbar(): JSX.Element {
                   </Col>
 
                   <Col xs="12">
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ display: "flex", alignItems: "center" }}>
                       {rightLinks}
                     </div>
                   </Col>

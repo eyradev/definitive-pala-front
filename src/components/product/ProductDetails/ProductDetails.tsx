@@ -103,7 +103,7 @@ export default function ProductDetails({ product }: Props): JSX.Element {
             {product?.name}{" "}
             {score && visibleReviews && visibleReviews.length > 0 && (
               <small style={{ fontWeight: "lighter" }}>
-                {roundNumber(score, 2)}⭐
+                {roundNumber(score, 1)}⭐
               </small>
             )}
           </h2>

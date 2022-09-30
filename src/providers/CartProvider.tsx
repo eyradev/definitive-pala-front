@@ -4,39 +4,39 @@ import {
   FetchResult,
   MutationUpdaterFunction,
   useMutation,
-  useQuery
-} from '@apollo/client';
-import { createContext, ReactNode, useState } from 'react';
-import { Loading } from '../components/UI';
-import useNotification from '../hooks/useNotification';
-import useUserPP from '../hooks/useUserPP';
+  useQuery,
+} from "@apollo/client";
+import { createContext, ReactNode, useState } from "react";
+import { Loading } from "../components/UI";
+import useNotification from "../hooks/useNotification";
+import useUserPP from "../hooks/useUserPP";
 import {
   ADD_LINE_ITEM_MUTATION,
   ALL_LINE_ITEMS_BY_USER,
-  REMOVE_LINE_ITEM_MUTATION
-} from '../queries/lineItem';
-import { CART_BY_USER, CART_TOTALS } from '../queries/sell-order';
+  REMOVE_LINE_ITEM_MUTATION,
+} from "../queries/lineItem";
+import { CART_BY_USER, CART_TOTALS } from "../queries/sell-order";
 import {
   ADD_LINE_ITEM,
-  ADD_LINE_ITEMVariables
-} from '../queries/__generated__/ADD_LINE_ITEM';
+  ADD_LINE_ITEMVariables,
+} from "../queries/__generated__/ADD_LINE_ITEM";
 import {
   ALL_LINE_ITEMS,
-  ALL_LINE_ITEMSVariables
-} from '../queries/__generated__/ALL_LINE_ITEMS';
+  ALL_LINE_ITEMSVariables,
+} from "../queries/__generated__/ALL_LINE_ITEMS";
 import {
   CART_BY_USER_QUERY,
   CART_BY_USER_QUERY_allSellOrders,
-  CART_BY_USER_QUERYVariables
-} from '../queries/__generated__/CART_BY_USER_QUERY';
+  CART_BY_USER_QUERYVariables,
+} from "../queries/__generated__/CART_BY_USER_QUERY";
 import {
   CART_DETAILS_QUERY,
-  CART_DETAILS_QUERY_cartDetails
-} from '../queries/__generated__/CART_DETAILS_QUERY';
+  CART_DETAILS_QUERY_cartDetails,
+} from "../queries/__generated__/CART_DETAILS_QUERY";
 import {
   REMOVE_LINE_ITEM,
-  REMOVE_LINE_ITEMVariables
-} from '../queries/__generated__/REMOVE_LINE_ITEM';
+  REMOVE_LINE_ITEMVariables,
+} from "../queries/__generated__/REMOVE_LINE_ITEM";
 
 interface Props {
   children?: ReactNode;
@@ -64,7 +64,7 @@ export const CartContext = createContext<CartContextProps>({
   removeLineItem: () => new Promise(() => {}),
   cartTotals: undefined,
   isOpen: false,
-  toggleCart: () => {}
+  toggleCart: () => {},
 });
 
 const removeUpdateFunction: MutationUpdaterFunction<
@@ -87,14 +87,14 @@ export default function CartProvider({ children }: Props): JSX.Element {
     ALL_LINE_ITEMS,
     ALL_LINE_ITEMSVariables
   >(ALL_LINE_ITEMS_BY_USER, {
-    variables: { userId: user?.id || '' }
+    variables: { userId: user?.id || "" },
   });
 
   const { data: cartData, loading: cartLoading } = useQuery<
     CART_BY_USER_QUERY,
     CART_BY_USER_QUERYVariables
   >(CART_BY_USER, {
-    variables: { userId: user?.id || '' }
+    variables: { userId: user?.id || "" },
   });
 
   const [addItem, { error: addItemError }] = useMutation<
@@ -104,10 +104,10 @@ export default function CartProvider({ children }: Props): JSX.Element {
     refetchQueries: [
       {
         query: ALL_LINE_ITEMS_BY_USER,
-        variables: { userId: user?.id || '' }
+        variables: { userId: user?.id || "" },
       },
-      { query: CART_TOTALS }
-    ]
+      { query: CART_TOTALS },
+    ],
   });
 
   const [removeItem] = useMutation<REMOVE_LINE_ITEM, REMOVE_LINE_ITEMVariables>(
@@ -118,7 +118,7 @@ export default function CartProvider({ children }: Props): JSX.Element {
       //   { query: ALL_LINE_ITEMS_BY_USER, variables: { userId: user?.id || '' } }
       // ],
       update: removeUpdateFunction,
-      refetchQueries: [{ query: CART_TOTALS }]
+      refetchQueries: [{ query: CART_TOTALS }],
     }
   );
 
@@ -134,11 +134,12 @@ export default function CartProvider({ children }: Props): JSX.Element {
   const addLineItem = async (productId: string, quantity: number) => {
     if (productId.length !== 24 || quantity < 1) return;
     const pepe = await addItem({ variables: { productId, quantity } }).catch(
-      () => {
+      (e) => {
         addNotification({
-          message: addItemError?.message || 'Error agregando producto',
-          type: 'danger'
+          message: e?.message || "Error agregando producto",
+          type: "danger",
         });
+        return undefined;
       }
     );
 
@@ -146,16 +147,16 @@ export default function CartProvider({ children }: Props): JSX.Element {
       addNotification({
         message: (
           <div onClick={toggleCart}>
-            <div style={{ display: 'inline-block' }}>
+            <div style={{ display: "inline-block" }}>
               Se agrego producto al carrito
             </div>
-            <a style={{ display: 'inline-block', color: 'var(--info)' }}>
-              {' '}
+            <a style={{ display: "inline-block", color: "var(--info)" }}>
+              {" "}
               ver carrito
             </a>
           </div>
         ),
-        type: 'primary'
+        type: "primary",
       });
     }
   };
@@ -176,7 +177,7 @@ export default function CartProvider({ children }: Props): JSX.Element {
     removeLineItem,
     cartTotals: cartTotals?.cartDetails,
     isOpen,
-    toggleCart
+    toggleCart,
   };
 
   if (cartLoading && itemsLoading && totalsLoading) return <Loading />;

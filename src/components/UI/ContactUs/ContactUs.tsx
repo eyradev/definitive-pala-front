@@ -1,20 +1,19 @@
-
-import { useMutation } from '@apollo/client';
-import { Formik, FormikHelpers } from 'formik';
-import Link from 'next/link';
+import { useMutation } from "@apollo/client";
+import { Formik, FormikHelpers } from "formik";
+import Link from "next/link";
 // reactstrap components
-import { Card, CardHeader, Col, Container, Row } from 'reactstrap';
-import useNotification from '../../../hooks/useNotification';
-import { ContactRequest } from '../../../models/contactRequest';
-import { ADD_CONTACT_REQUEST_MUTATION } from '../../../queries/contactUs';
+import { Card, CardHeader, Col, Container, Row } from "reactstrap";
+import useNotification from "../../../hooks/useNotification";
+import { ContactRequest } from "../../../models/contactRequest";
+import { ADD_CONTACT_REQUEST_MUTATION } from "../../../queries/contactUs";
 import {
   ADD_CONTACT_REQUEST,
-  ADD_CONTACT_REQUESTVariables
-} from '../../../queries/__generated__/ADD_CONTACT_REQUEST';
-import { ContactRequestSchema } from '../../../schemas/contactRequest';
-import ContactUsHeader from '../Headers/ContactUsHeader/ContactUsHeader';
-import styles from './ContactUs.module.css';
-import ContactUsForm from './ContactUsForm';
+  ADD_CONTACT_REQUESTVariables,
+} from "../../../queries/__generated__/ADD_CONTACT_REQUEST";
+import { ContactRequestSchema } from "../../../schemas/contactRequest";
+import ContactUsHeader from "../Headers/ContactUsHeader/ContactUsHeader";
+import styles from "./ContactUs.module.css";
+import ContactUsForm from "./ContactUsForm";
 
 function ContactUs(): JSX.Element {
   const { addNotification } = useNotification();
@@ -29,10 +28,10 @@ function ContactUs(): JSX.Element {
     { resetForm }: FormikHelpers<ContactRequest>
   ) => {
     const { data } = await createContactUsRequest({
-      variables: { data: values }
+      variables: { data: values },
     });
     if (data) {
-      addNotification({ message: 'Petición enviada', type: 'success' });
+      addNotification({ message: "PQRSDF enviado", type: "success" });
       resetForm();
     }
   };
@@ -58,11 +57,11 @@ function ContactUs(): JSX.Element {
               <Col className="ml-auto mr-auto" md="5">
                 <Formik<ContactRequest>
                   initialValues={{
-                    email: '',
-                    type: 'P',
-                    name: '',
-                    message: '',
-                    phone: ''
+                    email: "",
+                    type: "P",
+                    name: "",
+                    message: "",
+                    phone: "",
                   }}
                   validationSchema={ContactRequestSchema}
                   onSubmit={handleSubmit}

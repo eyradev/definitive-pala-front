@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const ALL_SELL_ORDERS = gql`
   query ALL_SELL_ORDERS($userId: ID!) {
@@ -66,6 +66,7 @@ export const CART_TOTALS = gql`
       storeCouponTotal
       palanteCouponTotal
       canCheckout
+      storePaysShipment
     }
   }
 `;

@@ -1,4 +1,3 @@
-import { AddressSelector } from "components/checkout/LocationForm/AddressSelector";
 import { StandardLayout } from "components/layout";
 import PersonalInfo from "components/UI/Signup/PersonalInfo";
 

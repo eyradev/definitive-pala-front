@@ -1416,9 +1416,12 @@ export interface ShippingOrderCreateInput {
   sellOrder?: SellOrderRelateToManyInput | null;
   state?: string | null;
   price?: number | null;
+  distance?: number | null;
+  storeAddress?: AddressRelateToOneInput | null;
   address?: AddressRelateToOneInput | null;
   serviceId?: string | null;
   muResponse?: string | null;
+  dateUpdated?: string | null;
 }
 
 export interface ShippingOrderRelateToOneInput {
@@ -1464,6 +1467,16 @@ export interface ShippingOrderWhereInput {
   price_gte?: number | null;
   price_in?: (number | null)[] | null;
   price_not_in?: (number | null)[] | null;
+  distance?: number | null;
+  distance_not?: number | null;
+  distance_lt?: number | null;
+  distance_lte?: number | null;
+  distance_gt?: number | null;
+  distance_gte?: number | null;
+  distance_in?: (number | null)[] | null;
+  distance_not_in?: (number | null)[] | null;
+  storeAddress?: AddressWhereInput | null;
+  storeAddress_is_null?: boolean | null;
   address?: AddressWhereInput | null;
   address_is_null?: boolean | null;
   serviceId?: string | null;
@@ -1502,6 +1515,14 @@ export interface ShippingOrderWhereInput {
   muResponse_not_ends_with_i?: string | null;
   muResponse_in?: (string | null)[] | null;
   muResponse_not_in?: (string | null)[] | null;
+  dateUpdated?: string | null;
+  dateUpdated_not?: string | null;
+  dateUpdated_lt?: string | null;
+  dateUpdated_lte?: string | null;
+  dateUpdated_gt?: string | null;
+  dateUpdated_gte?: string | null;
+  dateUpdated_in?: (string | null)[] | null;
+  dateUpdated_not_in?: (string | null)[] | null;
 }
 
 export interface ShippingOrderWhereUniqueInput {
@@ -1533,7 +1554,7 @@ export interface StoreCreateInput {
   socialService?: string | null;
   coupons?: CouponRelateToManyInput | null;
   sales?: boolean | null;
-  payShipment?: string | null;
+  paysShipmentAfter?: number | null;
   instagramFollowers?: number | null;
   storeSales?: number | null;
   license?: boolean | null;
@@ -1842,24 +1863,14 @@ export interface StoreWhereInput {
   coupons_none?: CouponWhereInput | null;
   sales?: boolean | null;
   sales_not?: boolean | null;
-  payShipment?: string | null;
-  payShipment_not?: string | null;
-  payShipment_contains?: string | null;
-  payShipment_not_contains?: string | null;
-  payShipment_starts_with?: string | null;
-  payShipment_not_starts_with?: string | null;
-  payShipment_ends_with?: string | null;
-  payShipment_not_ends_with?: string | null;
-  payShipment_i?: string | null;
-  payShipment_not_i?: string | null;
-  payShipment_contains_i?: string | null;
-  payShipment_not_contains_i?: string | null;
-  payShipment_starts_with_i?: string | null;
-  payShipment_not_starts_with_i?: string | null;
-  payShipment_ends_with_i?: string | null;
-  payShipment_not_ends_with_i?: string | null;
-  payShipment_in?: (string | null)[] | null;
-  payShipment_not_in?: (string | null)[] | null;
+  paysShipmentAfter?: number | null;
+  paysShipmentAfter_not?: number | null;
+  paysShipmentAfter_lt?: number | null;
+  paysShipmentAfter_lte?: number | null;
+  paysShipmentAfter_gt?: number | null;
+  paysShipmentAfter_gte?: number | null;
+  paysShipmentAfter_in?: (number | null)[] | null;
+  paysShipmentAfter_not_in?: (number | null)[] | null;
   instagramFollowers?: number | null;
   instagramFollowers_not?: number | null;
   instagramFollowers_lt?: number | null;

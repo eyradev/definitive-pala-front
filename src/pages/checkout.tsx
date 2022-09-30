@@ -1,8 +1,8 @@
-import { useMutation, useQuery } from '@apollo/client';
-import moment from 'moment';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useMutation, useQuery } from "@apollo/client";
+import moment from "moment";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -13,39 +13,35 @@ import {
   FormText,
   Input,
   Label,
-  Row
-} from 'reactstrap';
-import { CartItem } from 'components/cart/CartItem';
-import {
-  CouponForm,
-  CouponList,
-  LocationForm
-} from 'components/checkout';
-import { Section } from 'components/home';
-import { StandardLayout } from 'components/layout';
+  Row,
+} from "reactstrap";
+import { CartItem } from "components/cart/CartItem";
+import { CouponForm, CouponList, LocationForm } from "components/checkout";
+import { Section } from "components/home";
+import { StandardLayout } from "components/layout";
 import {
   epaycoConfirmationURL,
   epaycoID,
   epaycoKey,
   epaycoResponseURL,
   epaycoTestMode,
-  tcUrl
-} from 'config';
-import useAddress from 'hooks/useAddress';
-import useCart from 'hooks/useCart';
-import useEpayco from 'hooks/useEpayco';
-import useNotification from 'hooks/useNotification';
-import useUserPP from 'hooks/useUserPP';
-import { ALL_LINE_ITEMS_BY_USER } from 'queries/lineItem';
+  tcUrl,
+} from "config";
+import useAddress from "hooks/useAddress";
+import useCart from "hooks/useCart";
+import useEpayco from "hooks/useEpayco";
+import useNotification from "hooks/useNotification";
+import useUserPP from "hooks/useUserPP";
+import { ALL_LINE_ITEMS_BY_USER } from "queries/lineItem";
 import {
   CART_BY_USER,
   CART_TOTALS,
-  UPDATE_CART_STOCK
-} from 'queries/sell-order';
-import { CART_STORE_QUERY } from 'queries/store';
-import { CART_STORE } from 'queries/__generated__/CART_STORE';
-import { UPDATE_CART_STOCK_MUTATION } from 'queries/__generated__/UPDATE_CART_STOCK_MUTATION';
-import { formatCurrency } from 'util/currency';
+  UPDATE_CART_STOCK,
+} from "queries/sell-order";
+import { CART_STORE_QUERY } from "queries/store";
+import { CART_STORE } from "queries/__generated__/CART_STORE";
+import { UPDATE_CART_STOCK_MUTATION } from "queries/__generated__/UPDATE_CART_STOCK_MUTATION";
+import { formatCurrency } from "util/currency";
 
 export default function CheckoutPage(): JSX.Element {
   const { lineItems, cartData, cartTotals } = useCart();
@@ -62,20 +58,20 @@ export default function CheckoutPage(): JSX.Element {
       refetchQueries: [
         {
           query: ALL_LINE_ITEMS_BY_USER,
-          variables: { userId: user?.id || '' }
+          variables: { userId: user?.id || "" },
         },
         {
           query: CART_BY_USER,
-          variables: { userId: user?.id || '' }
+          variables: { userId: user?.id || "" },
         },
-        { query: CART_TOTALS }
-      ]
+        { query: CART_TOTALS },
+      ],
     }
   );
 
   const { epayco } = useEpayco({
     key: epaycoKey,
-    test: epaycoTestMode
+    test: epaycoTestMode,
   });
 
   const handleCartUpdate = useCallback(async () => {
@@ -83,8 +79,8 @@ export default function CheckoutPage(): JSX.Element {
     if (data?.updateCartStock?.actions) {
       if (data.updateCartStock.actions.length === 0) return;
       addNotification({
-        message: data.updateCartStock.actions.join('\n'),
-        type: 'info'
+        message: data.updateCartStock.actions.join("\n"),
+        type: "info",
       });
     }
   }, []);
@@ -95,20 +91,20 @@ export default function CheckoutPage(): JSX.Element {
   useEffect(() => {
     // check if the cart is empty and redirect to home page if it is
     if (!lineItems?.allLineItems || !lineItems.allLineItems.length) {
-      router.push('/');
+      router.push("/");
     } else {
       handleCartUpdate();
     }
   }, [lineItems?.allLineItems]);
 
-  const productTotal = cartTotals?.canCheckout
-    ? cartTotals?.discountedTotal
-    : cartTotals?.total;
+  const productTotal = cartTotals?.total;
+  const deliveryTotal = cartData?.shippingOrder?.price;
+  const storePaysShipment = cartTotals?.storePaysShipment;
 
-  const deliveryTotal = cartTotals?.shippingTotal;
-
-  const total =
-    productTotal && deliveryTotal ? productTotal + deliveryTotal : undefined;
+  let total = productTotal || 0;
+  if (!storePaysShipment) {
+    total += deliveryTotal || 0;
+  }
 
   const handlePay = useCallback(async () => {
     const storeEpaycoId = cartStore?.cartStore?.epaycoId;
@@ -126,56 +122,56 @@ export default function CheckoutPage(): JSX.Element {
 
     const data = {
       //Parametros compra (obligatorio)
-      name: cartData?.id || '',
-      description: 'carrito de ' + user.name,
-      invoice: cartData?.id + moment().format('YYYYMMDDHHmm'),
-      currency: 'cop',
+      name: cartData?.id || "",
+      description: "carrito de " + user.name,
+      invoice: cartData?.id + moment().format("YYYYMMDDHHmm"),
+      currency: "cop",
       amount: 5000,
-      country: 'co',
-      lang: 'es',
+      country: "co",
+      lang: "es",
 
       // Split data
       split_app_id: epaycoID, // id principal, sera el comercio
       split_merchant_id: epaycoID, // id de a quien quedara a nombre la transaccion -> comercio
-      split_type: '01',
+      split_type: "01",
       split_primary_receiver: epaycoID, // id de la cuenta principal, de nuevo?
-      split_primary_receiver_fee: '0', // debe ir en 0
-      splitpayment: 'true', // activa la funcionalidad de split payment
-      split_rule: 'multiple', // se debe enviar multiple
+      split_primary_receiver_fee: "0", // debe ir en 0
+      splitpayment: "true", // activa la funcionalidad de split payment
+      split_rule: "multiple", // se debe enviar multiple
       split_receivers: [
         // cobrar comision para epayco y domicilio
         {
           id: storeEpaycoId,
           total: `${total}`,
-          iva: '',
-          base_iva: '',
+          iva: "",
+          base_iva: "",
           fee: `${
             cartTotals?.feeTotal && deliveryTotal
               ? cartTotals.feeTotal + deliveryTotal
               : undefined
-          }`
-        }
+          }`,
+        },
       ],
 
       //Onpage="false" - Standard="true"
-      external: 'false',
+      external: "false",
 
       //Atributos opcionales
-      extra1: 'a',
-      extra2: 'a',
-      extra3: 'a',
+      extra1: "a",
+      extra2: "a",
+      extra3: "a",
       confirmation: epaycoConfirmationURL,
       response: epaycoResponseURL,
 
       //Atributos cliente
       name_billing: user.name,
       address_billing: selectedAddress.addressL1,
-      type_doc_billing: 'cc',
+      type_doc_billing: "cc",
       mobilephone_billing: user.phone,
       number_doc_billing: user.identification,
 
       //atributo deshabilitación metodo de pago
-      methodsDisable: ['CASH']
+      methodsDisable: ["CASH"],
     };
 
     if (epayco) epayco.open(data);
@@ -212,7 +208,7 @@ export default function CheckoutPage(): JSX.Element {
                     style={{
                       padding: 8,
                       paddingLeft: 16,
-                      paddingRight: 16
+                      paddingRight: 16,
                     }}
                   >
                     <CardTitle tag="h4">Información Pago</CardTitle>
@@ -221,18 +217,30 @@ export default function CheckoutPage(): JSX.Element {
                         <Col xs={12} md={6}>
                           <div
                             style={{
-                              display: 'flex',
-                              flexDirection: 'column',
+                              display: "flex",
+                              flexDirection: "column",
                               gap: 4,
-                              alignItems: 'flex-start'
+                              alignItems: "flex-start",
                             }}
                           >
                             <CardSubtitle tag="h5" className="mb-2">
                               Precio Base: {formatCurrency(cartTotals?.total)}
                             </CardSubtitle>
                             <CardSubtitle tag="h5" className="mb-2">
-                              Envio:{' '}
-                              {formatCurrency(cartData?.shippingOrder?.price)}
+                              {typeof deliveryTotal === "number" && (
+                                <>
+                                  {storePaysShipment ? (
+                                    <>Envio Incluido</>
+                                  ) : (
+                                    <>
+                                      Envio:{" "}
+                                      {formatCurrency(
+                                        cartData?.shippingOrder?.price
+                                      )}
+                                    </>
+                                  )}
+                                </>
+                              )}
                             </CardSubtitle>
                             {cartData?.coupons &&
                               cartData.coupons.length > 0 && (
@@ -241,7 +249,7 @@ export default function CheckoutPage(): JSX.Element {
                             <CardSubtitle
                               tag="h3"
                               className="mb-2"
-                              style={{ fontWeight: 'bold' }}
+                              style={{ fontWeight: "bold" }}
                             >
                               Total {formatCurrency(total)}
                             </CardSubtitle>
@@ -250,10 +258,10 @@ export default function CheckoutPage(): JSX.Element {
                         <Col xs={12} md={6}>
                           <div
                             style={{
-                              display: 'flex',
-                              flexDirection: 'column',
+                              display: "flex",
+                              flexDirection: "column",
                               gap: 4,
-                              alignItems: 'center'
+                              alignItems: "center",
                             }}
                           >
                             <img
@@ -278,7 +286,7 @@ export default function CheckoutPage(): JSX.Element {
                                 color="danger"
                                 tag="div"
                               >
-                                Se debe comprar un monto minimo de{' '}
+                                Se debe comprar un monto minimo de{" "}
                                 {formatCurrency(15000)} para hacer checkout
                               </FormText>
                             )}
@@ -289,7 +297,7 @@ export default function CheckoutPage(): JSX.Element {
                                 type="checkbox"
                               />
                               <span className="form-check-sign"></span>
-                              <Link href={tcUrl || '#'}>
+                              <Link href={tcUrl || "#"}>
                                 Acepto términos y condiciones
                               </Link>
                             </Label>

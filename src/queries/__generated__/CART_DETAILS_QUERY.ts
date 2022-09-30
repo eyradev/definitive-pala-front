@@ -17,6 +17,7 @@ export interface CART_DETAILS_QUERY_cartDetails {
   storeCouponTotal: number | null;
   palanteCouponTotal: number | null;
   canCheckout: boolean | null;
+  storePaysShipment: boolean | null;
 }
 
 export interface CART_DETAILS_QUERY {

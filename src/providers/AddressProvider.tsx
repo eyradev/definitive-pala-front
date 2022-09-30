@@ -1,33 +1,33 @@
-import { MutationResult, useMutation, useQuery } from '@apollo/client';
-import { createContext, ReactNode } from 'react';
-import { Loading } from '../components/UI';
-import useCart from '../hooks/useCart';
-import useNotification from '../hooks/useNotification';
-import useUserPP from '../hooks/useUserPP';
+import { MutationResult, useMutation, useQuery } from "@apollo/client";
+import { createContext, ReactNode } from "react";
+import { Loading } from "../components/UI";
+import useCart from "../hooks/useCart";
+import useNotification from "../hooks/useNotification";
+import useUserPP from "../hooks/useUserPP";
 import {
   ADDRESS_BY_USER_QUERY,
   CREATE_USER_ADDRESS_MUTATION,
   DELETE_ADDRESS_MUTATION,
-  UPDATE_SHIPPING_ADDRESS
-} from '../queries/address';
-import { CART_BY_USER, CART_TOTALS } from '../queries/sell-order';
+  UPDATE_SHIPPING_ADDRESS,
+} from "../queries/address";
+import { CART_BY_USER, CART_TOTALS } from "../queries/sell-order";
 import {
   ADDRESS_BY_USER,
   ADDRESS_BY_USERVariables,
-  ADDRESS_BY_USER_allAddresses
-} from '../queries/__generated__/ADDRESS_BY_USER';
+  ADDRESS_BY_USER_allAddresses,
+} from "../queries/__generated__/ADDRESS_BY_USER";
 import {
   ADD_UPDATE_SHIPPING_ADDRESS,
-  ADD_UPDATE_SHIPPING_ADDRESSVariables
-} from '../queries/__generated__/ADD_UPDATE_SHIPPING_ADDRESS';
+  ADD_UPDATE_SHIPPING_ADDRESSVariables,
+} from "../queries/__generated__/ADD_UPDATE_SHIPPING_ADDRESS";
 import {
   CREATE_USER_ADDRESS,
-  CREATE_USER_ADDRESSVariables
-} from '../queries/__generated__/CREATE_USER_ADDRESS';
+  CREATE_USER_ADDRESSVariables,
+} from "../queries/__generated__/CREATE_USER_ADDRESS";
 import {
   DELETE_ADDRESS,
-  DELETE_ADDRESSVariables
-} from '../queries/__generated__/DELETE_ADDRESS';
+  DELETE_ADDRESSVariables,
+} from "../queries/__generated__/DELETE_ADDRESS";
 
 interface ProviderProps {
   children?: ReactNode;
@@ -50,22 +50,21 @@ export const AddressContext = createContext<AddressContextProps>({
   deleteAddress: undefined,
   addAddressData: undefined,
   selectedAddress: null,
-  selectAddress: undefined
+  selectAddress: undefined,
 });
 
 export default function AddressProvider({
-  children
+  children,
 }: ProviderProps): JSX.Element {
   const { user } = useUserPP();
   const { cartData } = useCart();
   const { addNotification } = useNotification();
   const selectedAddress = cartData?.shippingOrder?.address || null;
 
-  console.log({ user });
   // query that fetches all addresses from a user
   const addressesQuery = useQuery<ADDRESS_BY_USER, ADDRESS_BY_USERVariables>(
     ADDRESS_BY_USER_QUERY,
-    { variables: { userId: user?.id || '' } }
+    { variables: { userId: user?.id || "" } }
   );
 
   const [addOrUpdateShippingAddress] = useMutation<
@@ -75,12 +74,12 @@ export default function AddressProvider({
     refetchQueries: [
       {
         query: CART_BY_USER,
-        variables: { userId: user?.id || '' }
+        variables: { userId: user?.id || "" },
       },
       {
-        query: CART_TOTALS
-      }
-    ]
+        query: CART_TOTALS,
+      },
+    ],
   });
   // sets the selected address when called
   const handleAddressSelect = async (addressId: string) => {
@@ -94,8 +93,8 @@ export default function AddressProvider({
 
     await addOrUpdateShippingAddress({
       variables: {
-        addressId
-      }
+        addressId,
+      },
     });
   };
 
@@ -105,19 +104,19 @@ export default function AddressProvider({
     CREATE_USER_ADDRESSVariables
   >(CREATE_USER_ADDRESS_MUTATION, {
     refetchQueries: [
-      { query: ADDRESS_BY_USER_QUERY, variables: { userId: user?.id || '' } }
-    ]
+      { query: ADDRESS_BY_USER_QUERY, variables: { userId: user?.id || "" } },
+    ],
   });
 
   const addAddress = async (vars: CREATE_USER_ADDRESSVariables) => {
     const res = await createAddress({ variables: vars }).catch(() => {
-      addNotification({ type: 'danger', message: 'Error agregando dirección' });
+      addNotification({ type: "danger", message: "Error agregando dirección" });
     });
 
     if (res && res.data?.createUserAddress) {
       addNotification({
-        type: 'success',
-        message: 'Dirección creada exitosamente!'
+        type: "success",
+        message: "Dirección creada exitosamente!",
       });
     }
   };
@@ -129,27 +128,27 @@ export default function AddressProvider({
         refetchQueries: [
           {
             query: ADDRESS_BY_USER_QUERY,
-            variables: { userId: user?.id || '' }
-          }
-        ]
+            variables: { userId: user?.id || "" },
+          },
+        ],
       }
     );
 
-  const deleteAddress: AddressContextProps['deleteAddress'] = async (
+  const deleteAddress: AddressContextProps["deleteAddress"] = async (
     addressId: string
   ) => {
     if (!user) return;
     const { data, errors } = await deleteAddressMutation({
-      variables: { addressId }
+      variables: { addressId },
     });
 
     if (errors || deleteAddressMutationError || !data?.deleteAddress?.id) {
       addNotification({
-        type: 'danger',
-        message: 'Error eliminando dirección'
+        type: "danger",
+        message: "Error eliminando dirección",
       });
     } else {
-      addNotification({ type: 'info', message: 'dirección eliminada' });
+      addNotification({ type: "info", message: "dirección eliminada" });
     }
   };
 
@@ -159,7 +158,7 @@ export default function AddressProvider({
     deleteAddress,
     addAddressData: createAddressMutation,
     selectedAddress,
-    selectAddress: handleAddressSelect
+    selectAddress: handleAddressSelect,
   };
 
   if (addressesQuery.loading) return <Loading />;

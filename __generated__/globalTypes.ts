@@ -1303,14 +1303,16 @@ export interface RoleWhereUniqueInput {
 }
 
 export interface SellOrderCreateInput {
-  lineItem?: LineItemRelateToManyInput | null;
-  user?: UserRelateToOneInput | null;
   state?: string | null;
-  price?: number | null;
+  store?: StoreRelateToOneInput | null;
+  user?: UserRelateToOneInput | null;
+  address?: AddressRelateToOneInput | null;
+  lineItem?: LineItemRelateToManyInput | null;
+  coupons?: CouponRelateToManyInput | null;
   shippingOrder?: ShippingOrderRelateToOneInput | null;
+  checkedPrice?: number | null;
   message?: string | null;
   siigoId?: string | null;
-  coupons?: CouponRelateToManyInput | null;
 }
 
 export interface SellOrderRelateToManyInput {
@@ -1334,11 +1336,6 @@ export interface SellOrderWhereInput {
   id_not?: string | null;
   id_in?: (string | null)[] | null;
   id_not_in?: (string | null)[] | null;
-  lineItem_every?: LineItemWhereInput | null;
-  lineItem_some?: LineItemWhereInput | null;
-  lineItem_none?: LineItemWhereInput | null;
-  user?: UserWhereInput | null;
-  user_is_null?: boolean | null;
   state?: string | null;
   state_not?: string | null;
   state_contains?: string | null;
@@ -1357,16 +1354,28 @@ export interface SellOrderWhereInput {
   state_not_ends_with_i?: string | null;
   state_in?: (string | null)[] | null;
   state_not_in?: (string | null)[] | null;
-  price?: number | null;
-  price_not?: number | null;
-  price_lt?: number | null;
-  price_lte?: number | null;
-  price_gt?: number | null;
-  price_gte?: number | null;
-  price_in?: (number | null)[] | null;
-  price_not_in?: (number | null)[] | null;
+  store?: StoreWhereInput | null;
+  store_is_null?: boolean | null;
+  user?: UserWhereInput | null;
+  user_is_null?: boolean | null;
+  address?: AddressWhereInput | null;
+  address_is_null?: boolean | null;
+  lineItem_every?: LineItemWhereInput | null;
+  lineItem_some?: LineItemWhereInput | null;
+  lineItem_none?: LineItemWhereInput | null;
+  coupons_every?: CouponWhereInput | null;
+  coupons_some?: CouponWhereInput | null;
+  coupons_none?: CouponWhereInput | null;
   shippingOrder?: ShippingOrderWhereInput | null;
   shippingOrder_is_null?: boolean | null;
+  checkedPrice?: number | null;
+  checkedPrice_not?: number | null;
+  checkedPrice_lt?: number | null;
+  checkedPrice_lte?: number | null;
+  checkedPrice_gt?: number | null;
+  checkedPrice_gte?: number | null;
+  checkedPrice_in?: (number | null)[] | null;
+  checkedPrice_not_in?: (number | null)[] | null;
   message?: string | null;
   message_not?: string | null;
   message_contains?: string | null;
@@ -1403,9 +1412,6 @@ export interface SellOrderWhereInput {
   siigoId_not_ends_with_i?: string | null;
   siigoId_in?: (string | null)[] | null;
   siigoId_not_in?: (string | null)[] | null;
-  coupons_every?: CouponWhereInput | null;
-  coupons_some?: CouponWhereInput | null;
-  coupons_none?: CouponWhereInput | null;
 }
 
 export interface SellOrderWhereUniqueInput {
@@ -1535,6 +1541,7 @@ export interface StoreCreateInput {
   identificationType?: string | null;
   document?: string | null;
   legallyFormed?: boolean | null;
+  commissionFee?: number | null;
   address?: AddressRelateToOneInput | null;
   economicActivity?: string | null;
   maxDeliveryTime?: string | null;
@@ -1653,6 +1660,14 @@ export interface StoreWhereInput {
   document_not_in?: (string | null)[] | null;
   legallyFormed?: boolean | null;
   legallyFormed_not?: boolean | null;
+  commissionFee?: number | null;
+  commissionFee_not?: number | null;
+  commissionFee_lt?: number | null;
+  commissionFee_lte?: number | null;
+  commissionFee_gt?: number | null;
+  commissionFee_gte?: number | null;
+  commissionFee_in?: (number | null)[] | null;
+  commissionFee_not_in?: (number | null)[] | null;
   address?: AddressWhereInput | null;
   address_is_null?: boolean | null;
   economicActivity?: string | null;

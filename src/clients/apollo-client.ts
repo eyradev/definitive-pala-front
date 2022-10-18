@@ -3,19 +3,21 @@
 import {
   ApolloClient,
   HttpLink,
+  from,
   InMemoryCache,
-  NormalizedCacheObject
-} from '@apollo/client';
-import merge from 'deepmerge';
-import { IncomingHttpHeaders } from 'http';
-import isEqual from 'lodash/isEqual';
-import { AppProps } from 'next/app';
-import { useMemo } from 'react';
+  NormalizedCacheObject,
+} from "@apollo/client";
+import merge from "deepmerge";
+import { IncomingHttpHeaders } from "http";
+import isEqual from "lodash/isEqual";
+import { useMemo } from "react";
+import { onError } from "@apollo/client/link/error";
+import { PalanteError } from "errors/palante.error";
 
 const serverEndpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
 
 if (!serverEndpoint)
-  throw new Error('The NEXT_PUBLIC_SERVER_ENDPOINT variable must be defined');
+  throw new Error("The NEXT_PUBLIC_SERVER_ENDPOINT variable must be defined");
 
 // const client = new ApolloClient({
 //   cache: new InMemoryCache(),
@@ -28,7 +30,7 @@ if (!serverEndpoint)
 //   ssrMode: false // TODO: check what to do here
 // });
 
-const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
+const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
@@ -37,24 +39,43 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
       ...init,
       headers: {
         ...init.headers,
-        'Access-Control-Allow-Origin': '*',
-        Cookie: headers?.cookie ?? ''
-      }
+        "Access-Control-Allow-Origin": "*",
+        Cookie: headers?.cookie ?? "",
+      },
     }).then((res) => res);
 
   const httpLink = new HttpLink({
     uri: serverEndpoint,
-    credentials: 'include',
+    credentials: "include",
     fetch: enhancedFetch,
     headers: {
-      cookie: headers && headers.cookie
+      cookie: headers && headers.cookie,
+    },
+  });
+
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+      const palanteErrors = graphQLErrors.reduce<PalanteError[]>(
+        (errors, error) => {
+          const { message, locations, path } = error;
+          console.log(
+            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+          );
+          const palanteError = PalanteError.from(error);
+          if (palanteError) errors.push(palanteError);
+          return errors;
+        },
+        []
+      );
     }
+
+    if (networkError) console.log(`[Network error]: ${networkError}`);
   });
 
   const client = new ApolloClient({
-    ssrMode: typeof window === 'undefined',
-    link: httpLink,
-    cache: new InMemoryCache()
+    ssrMode: /*typeof window === "undefined"*/ false,
+    link: from([errorLink, httpLink]),
+    cache: new InMemoryCache(),
   });
 
   return client;
@@ -70,7 +91,7 @@ interface IInitializeApollo {
 export const initializeApollo = (
   { headers, initialState }: IInitializeApollo = {
     headers: null,
-    initialState: null
+    initialState: null,
   }
 ) => {
   const _apolloClient = apolloClient ?? createApolloClient(headers);
@@ -88,8 +109,8 @@ export const initializeApollo = (
         ...sourceArray,
         ...destinationArray.filter((d) =>
           sourceArray.every((s) => !isEqual(d, s))
-        )
-      ]
+        ),
+      ],
     });
 
     // Restore the cache with the merged data
@@ -97,7 +118,7 @@ export const initializeApollo = (
   }
 
   // For SSG and SSR always create a new Apollo Client
-  if (typeof window === 'undefined') return _apolloClient;
+  if (typeof window === "undefined") return _apolloClient;
   // Create the Apollo Client once in the client
   if (!apolloClient) apolloClient = _apolloClient;
 

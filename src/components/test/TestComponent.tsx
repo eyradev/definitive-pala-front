@@ -11,7 +11,9 @@ const TestComponent = () => {
   return (
     <>
       {data?.Cart?.sellOrder?.lineItem.map((lineItem) => (
-        <p key={lineItem?.product?.id ?? ""}>{lineItem.product?.name}</p>
+        <p key={lineItem?.product?.id ?? ""}>
+          {lineItem.product?.name} x {lineItem.quantity}
+        </p>
       ))}
     </>
   );

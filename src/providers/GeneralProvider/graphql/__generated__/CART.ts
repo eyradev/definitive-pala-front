@@ -31,6 +31,7 @@ export interface CART_Cart_sellOrder_lineItem {
   __typename: "LineItem";
   id: string;
   price: number | null;
+  quantity: number | null;
   product: CART_Cart_sellOrder_lineItem_product | null;
 }
 

@@ -27,15 +27,15 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <NotificationProvider>
         <UserProvider>
-          <CartProvider>
-            <AddressProvider>
-              <Layout pageProps={pageProps}>
-                <Notification />
-                <Component {...pageProps} />
-              </Layout>
-              <CartSidebar />
+          {/*<CartProvider>
+            <AddressProvider> */}
+          <Layout pageProps={pageProps}>
+            <Notification />
+            <Component {...pageProps} />
+          </Layout>
+          {/* <CartSidebar />
             </AddressProvider>
-          </CartProvider>
+          </CartProvider>*/}
         </UserProvider>
       </NotificationProvider>
     </ApolloProvider>

@@ -10,30 +10,24 @@ import {
 import merge from "deepmerge";
 import { IncomingHttpHeaders } from "http";
 import isEqual from "lodash/isEqual";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { onError } from "@apollo/client/link/error";
 import { PalanteError } from "errors/palante.error";
+import useNotification from "hooks/useNotification";
+import { NotificationContextProps } from "providers/NotificationProvider/NotificationProvider";
 
 const serverEndpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
 
 if (!serverEndpoint)
   throw new Error("The NEXT_PUBLIC_SERVER_ENDPOINT variable must be defined");
 
-// const client = new ApolloClient({
-//   cache: new InMemoryCache(),
-//   link: new HttpLink({
-//     uri: serverEndpoint,
-//     headers: {
-//       cookie: 'hi'
-//     }
-//   }),
-//   ssrMode: false // TODO: check what to do here
-// });
-
 const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
+const createApolloClient = (
+  headers: IncomingHttpHeaders | null = null,
+  addNotification: NotificationContextProps["addNotification"]
+) => {
   const enhancedFetch = (url: RequestInfo, init: RequestInit) =>
     fetch(url, {
       ...init,
@@ -67,6 +61,16 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
         },
         []
       );
+      if (palanteErrors?.length) {
+        addNotification &&
+          addNotification({
+            type: "danger",
+            message: palanteErrors[0].message,
+          });
+      } else {
+        addNotification &&
+          addNotification({ type: "danger", message: "error" });
+      }
     }
 
     if (networkError) console.log(`[Network error]: ${networkError}`);
@@ -92,9 +96,11 @@ export const initializeApollo = (
   { headers, initialState }: IInitializeApollo = {
     headers: null,
     initialState: null,
-  }
+  },
+  addNotification: NotificationContextProps["addNotification"]
 ) => {
-  const _apolloClient = apolloClient ?? createApolloClient(headers);
+  const _apolloClient =
+    apolloClient ?? createApolloClient(headers, addNotification);
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // get hydrated here
@@ -137,10 +143,11 @@ export const addApolloState = (
 };
 
 export function useApollo(pageProps: any /*AppProps['pageProps']*/) {
+  const { addNotification } = useNotification();
+
   const state = pageProps[APOLLO_STATE_PROP_NAME];
-  const store = useMemo(
-    () => initializeApollo({ initialState: state }),
-    [state]
-  );
+  const store = useMemo(() => {
+    return initializeApollo({ initialState: state }, addNotification);
+  }, [state, addNotification]);
   return store;
 }

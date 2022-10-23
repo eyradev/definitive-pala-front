@@ -1,10 +1,15 @@
 import { Form, Formik, FormikHelpers } from "formik";
 import { useAddCartItemMutation } from "providers/GeneralProvider/graphql/add-to-cart.query";
-
+import * as yup from "yup";
 interface FormValues {
   productId: string;
   quantity: number;
 }
+
+const formValidationSchema: yup.SchemaOf<FormValues> = yup.object().shape({
+  productId: yup.string().required(),
+  quantity: yup.number().integer().required(),
+});
 
 const AddLineItemComponent = () => {
   const [addCartItem] = useAddCartItemMutation();
@@ -22,7 +27,6 @@ const AddLineItemComponent = () => {
         quantity,
       },
     });
-    console.log({ data });
     resetForm();
   };
 
@@ -33,6 +37,7 @@ const AddLineItemComponent = () => {
         quantity: 1,
       }}
       onSubmit={handleSubmit}
+      validationSchema={formValidationSchema}
     >
       {({
         values,
@@ -53,7 +58,7 @@ const AddLineItemComponent = () => {
           {errors.productId && touched.productId ? errors.productId : null}
 
           <input
-            type="text"
+            type="number"
             name="quantity"
             onChange={handleChange}
             onBlur={handleBlur}

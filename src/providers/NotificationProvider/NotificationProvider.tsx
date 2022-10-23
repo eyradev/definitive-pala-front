@@ -1,21 +1,17 @@
-import { createContext, ReactNode, useCallback, useState } from 'react';
-import { Notification } from '../models/notification';
+import { createContext, ReactNode, useCallback, useState } from "react";
+import { Notification } from "../../models/notification";
 
 interface Props {
   children?: ReactNode;
 }
 
 export interface NotificationContextProps {
-  notification: Notification | null;
-  addNotification: (notification: Notification) => void;
-  removeNotification: () => void;
+  notification?: Notification | null;
+  addNotification?: (notification: Notification) => void;
+  removeNotification?: () => void;
 }
 
-export const NotificationContext = createContext<NotificationContextProps>({
-  notification: null,
-  addNotification: () => {},
-  removeNotification: () => {}
-});
+export const NotificationContext = createContext<NotificationContextProps>({});
 
 export default function NotificationProvider({ children }: Props): JSX.Element {
   const [notification, setNotification] = useState<Notification | null>(null);
@@ -26,8 +22,8 @@ export default function NotificationProvider({ children }: Props): JSX.Element {
 
   const addNotification = ({
     message,
-    type = 'info',
-    autoHideDuration = 8000
+    type = "info",
+    autoHideDuration = 8000,
   }: Notification) => {
     setNotification({ message, type, autoHideDuration });
   };
@@ -38,7 +34,7 @@ export default function NotificationProvider({ children }: Props): JSX.Element {
       (notification: Notification) => addNotification(notification),
       []
     ),
-    removeNotification: useCallback(() => removeNotification(), [])
+    removeNotification: useCallback(() => removeNotification(), []),
   };
 
   return (

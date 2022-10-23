@@ -6,7 +6,6 @@ const TestComponent = () => {
 
   const { data, loading, error } = cartQueryResult;
 
-  console.log({ data, loading, error });
   if (!data?.Cart) return null;
   return (
     <>

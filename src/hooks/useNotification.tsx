@@ -1,11 +1,15 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from "react";
 import {
   NotificationContext,
-  NotificationContextProps
-} from '../providers/NotificationProvider';
+  NotificationContextProps,
+} from "../providers/NotificationProvider/NotificationProvider";
 
 export default function useNotification(): NotificationContextProps {
-  const { notification, addNotification, removeNotification } =
-    useContext(NotificationContext);
-  return { notification, addNotification, removeNotification };
+  const context = useContext<NotificationContextProps>(NotificationContext);
+  useEffect(() => {
+    if (!Object.keys(context).length)
+      console.warn("Not in Notification context");
+  }, [context]);
+
+  return context;
 }

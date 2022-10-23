@@ -8,13 +8,15 @@ const TestComponent = () => {
 
   if (!data?.Cart) return null;
   return (
-    <>
+    <div style={{ border: "1px solid black", margin: 10, padding: 10 }}>
+      <h3>Line Items</h3>
       {data?.Cart?.sellOrder?.lineItem.map((lineItem) => (
         <p key={lineItem?.product?.id ?? ""}>
-          {lineItem.product?.name} x {lineItem.quantity}
+          {lineItem.product?.name} x {lineItem.quantity} -- LineItemId:{" "}
+          {lineItem.id}
         </p>
       ))}
-    </>
+    </div>
   );
 };
 

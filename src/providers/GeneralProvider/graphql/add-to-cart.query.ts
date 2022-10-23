@@ -5,9 +5,7 @@ import {
   useMutation,
 } from "@apollo/client";
 import gql from "graphql-tag";
-import useNotification from "hooks/useNotification";
 import useUserPP from "hooks/useUserPP";
-import { useEffect } from "react";
 import { CART_QUERY } from "./cart.query";
 import {
   ADD_CART_ITEM,

@@ -21,7 +21,7 @@ const AddLineItemComponent = () => {
     { resetForm }: FormikHelpers<FormValues>
   ) => {
     console.log({ productId, quantity });
-    const { data } = await addCartItem({
+    await addCartItem({
       variables: {
         productId,
         quantity,
@@ -31,47 +31,50 @@ const AddLineItemComponent = () => {
   };
 
   return (
-    <Formik<FormValues>
-      initialValues={{
-        productId: "",
-        quantity: 1,
-      }}
-      onSubmit={handleSubmit}
-      validationSchema={formValidationSchema}
-    >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        isSubmitting,
-      }) => (
-        <Form>
-          <input
-            type="text"
-            name="productId"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.productId}
-          />
-          {errors.productId && touched.productId ? errors.productId : null}
+    <div style={{ border: "1px solid black", margin: 10, padding: 10 }}>
+      <h3>Add Line Item</h3>
+      <Formik<FormValues>
+        initialValues={{
+          productId: "",
+          quantity: 1,
+        }}
+        onSubmit={handleSubmit}
+        validationSchema={formValidationSchema}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          isSubmitting,
+        }) => (
+          <Form>
+            <input
+              type="text"
+              name="productId"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.productId}
+            />
+            {errors.productId && touched.productId ? errors.productId : null}
 
-          <input
-            type="number"
-            name="quantity"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.quantity}
-          />
-          {errors.quantity && touched.quantity ? errors.quantity : null}
+            <input
+              type="number"
+              name="quantity"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.quantity}
+            />
+            {errors.quantity && touched.quantity ? errors.quantity : null}
 
-          <button type="submit" disabled={isSubmitting}>
-            submit
-          </button>
-        </Form>
-      )}
-    </Formik>
+            <button type="submit" disabled={isSubmitting}>
+              submit
+            </button>
+          </Form>
+        )}
+      </Formik>
+    </div>
   );
 };
 

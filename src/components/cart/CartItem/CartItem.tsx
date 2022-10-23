@@ -1,11 +1,13 @@
-import React from 'react';
-import { Card, CardProps } from 'reactstrap';
-import useCart from '../../../hooks/useCart';
-import useNotification from '../../../hooks/useNotification';
-import { ALL_LINE_ITEMS_allLineItems } from '../../../queries/__generated__/ALL_LINE_ITEMS';
-import styles from './CartItem.module.css';
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
+import React from "react";
+import { Card, CardProps } from "reactstrap";
+import useCart from "../../../hooks/useCart";
+import useNotification from "../../../hooks/useNotification";
+import { ALL_LINE_ITEMS_allLineItems } from "../../../queries/__generated__/ALL_LINE_ITEMS";
+import styles from "./CartItem.module.css";
 
-interface Props extends Omit<CardProps, 'className'> {
+interface Props extends Omit<CardProps, "className"> {
   lineItem: ALL_LINE_ITEMS_allLineItems;
 }
 
@@ -23,18 +25,23 @@ export default function CartItem({
   }
 
   const handleLineItemDeleteClick = async () => {
+    if (!addNotification) {
+      console.warn("add notification not set");
+      return;
+    }
+
     const deleteItem = await removeLineItem(lineItem.id);
     if (deleteItem && !deleteItem.errors) {
       addNotification({
         message: `Se elimino ${
-          deleteItem.data?.deleteLineItem?.product?.name || 'producto'
+          deleteItem.data?.deleteLineItem?.product?.name || "producto"
         } del carrito`,
-        type: 'info'
+        type: "info",
       });
     } else {
       addNotification({
-        message: 'Error eliminando producto del carrito',
-        type: 'danger'
+        message: "Error eliminando producto del carrito",
+        type: "danger",
       });
     }
   };

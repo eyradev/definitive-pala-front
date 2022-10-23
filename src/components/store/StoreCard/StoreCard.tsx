@@ -1,15 +1,16 @@
-import Link from 'next/link';
+/* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
 import {
   Card,
   CardBody,
   CardFooter,
   CardProps,
   CardSubtitle,
-  CardTitle
-} from 'reactstrap';
-import { landScapeImages, storeImages } from '../../../mock/images';
-import { TOP_STORES_allStores } from '../../../queries/__generated__/TOP_STORES';
-import styles from './StoreCard.module.css';
+  CardTitle,
+} from "reactstrap";
+import { landScapeImages, storeImages } from "../../../mock/images";
+import { TOP_STORES_allStores } from "../../../queries/__generated__/TOP_STORES";
+import styles from "./StoreCard.module.css";
 
 interface Props extends CardProps {
   store: TOP_STORES_allStores;
@@ -17,7 +18,7 @@ interface Props extends CardProps {
 
 export default function StoreCard({ store, ...cardProps }: Props): JSX.Element {
   const storeURI = `/search?key=${encodeURIComponent(
-    'Tienda ' + store.name
+    "Tienda " + store.name
   )}&store=${store.id}`;
 
   return (

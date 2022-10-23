@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardBody,
@@ -7,11 +7,11 @@ import {
   CardTitle,
   Col,
   Container,
-  Row
-} from 'reactstrap';
-import { landScapeImages } from '../../mock/images';
-import { CONTENT_BY_SECTION_allCustomContents } from '../../queries/__generated__/CONTENT_BY_SECTION';
-import { getRandomInt } from '../../util/math';
+  Row,
+} from "reactstrap";
+import { landScapeImages } from "../../mock/images";
+import { CONTENT_BY_SECTION_allCustomContents } from "../../queries/__generated__/CONTENT_BY_SECTION";
+import { getRandomInt } from "../../util/math";
 
 interface Props {
   content: (CONTENT_BY_SECTION_allCustomContents | null)[];
@@ -25,7 +25,7 @@ export default function PromoBanner({ content }: Props): JSX.Element | null {
     const rnd = getRandomInt(0, content.length - 1);
     const item = content[rnd];
     item && setSelectedItem(item);
-  }, []);
+  }, [content]);
 
   const router = useRouter();
 
@@ -44,8 +44,8 @@ export default function PromoBanner({ content }: Props): JSX.Element | null {
     ...(selectedItem.path && {
       onClick: () => {
         selectedItem.path && router.push(selectedItem.path);
-      }
-    })
+      },
+    }),
   };
 
   return (
@@ -55,7 +55,7 @@ export default function PromoBanner({ content }: Props): JSX.Element | null {
           <Card
             className="card-fashion card-background"
             style={{
-              backgroundImage: `url(${img1})`
+              backgroundImage: `url(${img1})`,
             }}
           >
             <CardBody>
@@ -88,7 +88,7 @@ export default function PromoBanner({ content }: Props): JSX.Element | null {
             <Card
               className="card-fashion card-background"
               style={{
-                backgroundImage: `url(${img2})`
+                backgroundImage: `url(${img2})`,
               }}
             />
           </div>

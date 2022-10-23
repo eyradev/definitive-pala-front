@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-const url = 'https://checkout.epayco.co/checkout.js';
+const url = "https://checkout.epayco.co/checkout.js";
 
 interface EpaycoConfig {
   key: string;
@@ -24,7 +24,7 @@ export const useEpayco = (config: EpaycoConfig): EpaycoExport => {
   const [epayco, setEpayco] = useState<Epayco>();
 
   useEffect(() => {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
 
     script.src = url;
     script.async = true;

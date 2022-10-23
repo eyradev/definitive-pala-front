@@ -1,7 +1,6 @@
-
-import { Form, Formik } from 'formik';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { Form, Formik } from "formik";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -10,12 +9,12 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Row
-} from 'reactstrap';
-import * as Yup from 'yup';
-import useUserPP from '../../../hooks/useUserPP';
-import ProfilePageHeader from '../Headers/ProfileHeader/ProfileHeader';
-import styles from './PasswordReset.module.css';
+  Row,
+} from "reactstrap";
+import * as Yup from "yup";
+import useUserPP from "../../../hooks/useUserPP";
+import ProfilePageHeader from "../Headers/ProfileHeader/ProfileHeader";
+import styles from "./PasswordReset.module.css";
 
 export interface RequestProps {
   email: string;
@@ -40,56 +39,27 @@ function PasswordReset(): JSX.Element {
   const { token } = router.query;
 
   const ProfileSchema = Yup.object().shape({
-    password: Yup.string().required('Se requiere la contraseña'),
+    password: Yup.string().required("Se requiere la contraseña"),
 
-    email: Yup.string().email('Invalid email').required('Se requiere el correo')
+    email: Yup.string()
+      .email("Invalid email")
+      .required("Se requiere el correo"),
   });
 
   useEffect(() => {
-    document.body.classList.add('profile-page');
-    document.body.classList.add('sidebar-collapse');
-    document.documentElement.classList.remove('nav-open');
-    window.scrollTo(0, 0);
-    signout && signout();
-    document.body.scrollTop = 0;
+    if (!signout) return;
+
+    document.body.classList.add("profile-page");
+    document.body.classList.add("sidebar-collapse");
+    document.documentElement.classList.remove("nav-open");
+
+    signout();
+
     return function cleanup() {
-      document.body.classList.remove('profile-page');
-      document.body.classList.remove('sidebar-collapse');
+      document.body.classList.remove("profile-page");
+      document.body.classList.remove("sidebar-collapse");
     };
-  }, []);
-
-  /* const [passwordReset, { data: resetData }] = useMutation<
-    RESET,
-    RESETVariables
-  >(RESET_MUTATION, {
-    refetchQueries: [{ query: CURRENT_USER_QUERY }]
-  });
-
-  const handleSubmit = async (values: UserFormProps, token: any) => {
-    await passwordReset({
-      variables: {
-        email: values.email,
-        password: values.password,
-        token: token
-      }
-    }).then(() => {
-      if (resetData?.redeemUserPasswordResetToken?.code == 'FAILURE') {
-        addNotification({
-          message: `${resetData.redeemUserPasswordResetToken.message}`,
-          type: 'danger'
-        });
-      }
-      if (resetData?.redeemUserPasswordResetToken == null) {
-        addNotification({
-          message: 'Contraseña Cambiada Exitosamente',
-          type: 'success'
-        });
-        setTimeout(() => {
-          router.push('/login');
-        }, 1500);
-      }
-    });
-  }; */
+  }, [signout]);
 
   const handleReset = async (values: { email: string; password: string }) => {
     if (!passwordReset) return;
@@ -119,8 +89,8 @@ function PasswordReset(): JSX.Element {
           </div>
           <Formik
             initialValues={{
-              email: '',
-              password: ''
+              email: "",
+              password: "",
             }}
             onSubmit={handleReset}
             validationSchema={ProfileSchema}
@@ -131,7 +101,7 @@ function PasswordReset(): JSX.Element {
                   <Col className="ml-auto mr-auto" md="5">
                     <label className={styles.formato}>Correo</label>
                     <InputGroup
-                      className={emailFocus ? 'input-group-focus' : ''}
+                      className={emailFocus ? "input-group-focus" : ""}
                     >
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
@@ -152,7 +122,7 @@ function PasswordReset(): JSX.Element {
                     </InputGroup>
                     <label className={styles.formato}>Contraseña</label>
                     <InputGroup
-                      className={addressFocus ? 'input-group-focus' : ''}
+                      className={addressFocus ? "input-group-focus" : ""}
                     >
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
@@ -180,7 +150,7 @@ function PasswordReset(): JSX.Element {
                       type="submit"
                       color="primary"
                       style={{
-                        marginTop: '40px'
+                        marginTop: "40px",
                       }}
                     >
                       Cambiar Contraseña

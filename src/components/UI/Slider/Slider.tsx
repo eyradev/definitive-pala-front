@@ -1,5 +1,5 @@
-import Slider from 'nouislider';
-import { useEffect } from 'react';
+import Slider from "nouislider";
+import { useEffect } from "react";
 
 interface Props {
   id: string;
@@ -20,22 +20,22 @@ export default function CaloriesSelector({
   currentMin,
   currentMax,
   step,
-  onUpdate
+  onUpdate,
 }: Props): JSX.Element {
   useEffect(() => {
     const slider = document.getElementById(id);
-    if (!slider || slider.classList.contains('noUi-target')) return;
+    if (!slider || slider.classList.contains("noUi-target")) return;
     const newSlider = Slider.create(slider, {
       start: [currentMin, currentMax],
       connect: [false, true, false],
       step: step || 1,
-      range: { min, max }
+      range: { min, max },
     });
 
     if (onUpdate) {
-      newSlider.on('update', onUpdate);
+      newSlider.on("update", onUpdate);
     }
-  }, []);
+  }, [currentMax, currentMin, min, max, onUpdate, id, step]);
 
   return (
     <>

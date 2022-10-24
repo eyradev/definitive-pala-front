@@ -1,18 +1,14 @@
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import "../styles/bootstrap.min.css";
-import "../styles/now-ui-kit.min.css";
-import { FC, ReactNode } from "react";
-import { useApollo } from "clients/apollo-client";
 import { ApolloProvider } from "@apollo/client";
-import { Loading, Notification } from "components/UI";
-import { CartSidebar } from "components/cart";
-import NotificationProvider from "providers/NotificationProvider/NotificationProvider";
-import UserProvider from "providers/UserProvider";
-import CartProvider from "providers/CartProvider";
-import AddressProvider from "providers/AddressProvider";
+import { useApollo } from "clients/apollo-client";
+import { Notification } from "components/UI";
+import type { AppProps } from "next/app";
 import Head from "next/head";
 import withNotification from "providers/NotificationProvider/withNotification";
+import UserProvider from "providers/UserProvider";
+import { FC, ReactNode } from "react";
+import "../styles/bootstrap.min.css";
+import "../styles/globals.css";
+import "../styles/now-ui-kit.min.css";
 
 const Noop: FC<{ children: ReactNode }> = ({ children }) => <>{children}</>;
 

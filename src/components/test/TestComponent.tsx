@@ -1,33 +1,45 @@
-import { useGeneralProvider } from "providers/GeneralProvider/useGeneralProvider";
+import { useCartItemsQuery } from "graphql/cart-items/cart-items.query";
 
 const TestComponent = () => {
-  const { cart: cartQueryResult } = useGeneralProvider();
-  if (!cartQueryResult) return null;
+  const { data, loading, error } = useCartItemsQuery();
 
-  const { data, loading, error } = cartQueryResult;
+  if (loading) return "Loading ...";
+  if (error) return null;
 
-  if (!data?.Cart?.sellOrder) return null;
-  const { lineItem: lineItems, address } = data?.Cart?.sellOrder;
+  const lineItems = data?.items;
+  if (!lineItems?.length) return "Empty cart";
 
   return (
     <div style={{ border: "1px solid black", margin: 10, padding: 10 }}>
       <h3>Line Items</h3>
-      {lineItems.map((lineItem) => (
-        <p key={lineItem?.product?.id ?? ""}>
-          {lineItem.product?.name} x {lineItem.quantity} -- LineItemId:{" "}
-          {lineItem.id}
-        </p>
-      ))}
-      {address ? (
-        <>
-          <h4>Address:</h4>
-          <p>{address.id}</p>
-          <p>{address.addressL1}</p>
-          <p>{address.city?.name}</p>
-        </>
-      ) : (
-        <p>Car has no address associated</p>
-      )}
+      <ol>
+        {lineItems.map((lineItem) => {
+          if (!lineItem) return null;
+          const { id, price, quantity, product } = lineItem;
+          return (
+            <li
+              key={id}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "0px 10px",
+              }}
+            >
+              <div>
+                <strong>product</strong>: {product?.name}
+              </div>
+
+              <div>
+                <strong>price</strong>: {price}
+              </div>
+              <div>
+                <strong>quantity</strong>: {quantity}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 };

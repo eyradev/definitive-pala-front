@@ -1,4 +1,5 @@
 import AddLineItemComponent from "components/test/AddLineItemComponent";
+import AdjustCartComponent from "components/test/AdjustCartComponent";
 import CartAddressComponent from "components/test/CartAddressComponent";
 import RemoveLineItemComponent from "components/test/RemoveLineItemComponent";
 import TestComponent from "components/test/TestComponent";
@@ -12,6 +13,7 @@ const TestPage = () => (
     <AddLineItemComponent />
     <RemoveLineItemComponent />
     <UpdateCartAddressComponent />
+    <AdjustCartComponent />
   </GeneralProvider>
 );
 

@@ -27,6 +27,7 @@ export interface CART_ADDRESS_cart_address {
 
 export interface CART_ADDRESS_cart {
   __typename: "SellOrder";
+  id: string;
   address: CART_ADDRESS_cart_address | null;
 }
 

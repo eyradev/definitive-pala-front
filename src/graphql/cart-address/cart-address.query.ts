@@ -9,6 +9,7 @@ import {
 export const CART_ADDRESS_QUERY = gql`
   query CART_ADDRESS($cartId: ID!) {
     cart: SellOrder(where: { id: $cartId }) {
+      id
       address {
         id
         addressL1

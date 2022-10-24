@@ -3,11 +3,11 @@ import { useCartItemsQuery } from "graphql/cart-items/cart-items.query";
 const TestComponent = () => {
   const { data, loading, error } = useCartItemsQuery();
 
-  if (loading) return "Loading ...";
+  if (loading) return <p>Loading ...</p>;
   if (error) return null;
 
   const lineItems = data?.items;
-  if (!lineItems?.length) return "Empty cart";
+  if (!lineItems?.length) return <p>Empty cart</p>;
 
   return (
     <div style={{ border: "1px solid black", margin: 10, padding: 10 }}>

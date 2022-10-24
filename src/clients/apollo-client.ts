@@ -2,19 +2,19 @@
 /* eslint-disable no-underscore-dangle */
 import {
   ApolloClient,
-  HttpLink,
   from,
+  HttpLink,
   InMemoryCache,
   NormalizedCacheObject,
 } from "@apollo/client";
-import merge from "deepmerge";
-import { IncomingHttpHeaders } from "http";
-import isEqual from "lodash/isEqual";
-import { useEffect, useMemo } from "react";
 import { onError } from "@apollo/client/link/error";
+import merge from "deepmerge";
 import { PalanteError } from "errors/palante.error";
 import useNotification from "hooks/useNotification";
+import { IncomingHttpHeaders } from "http";
+import isEqual from "lodash/isEqual";
 import { NotificationContextProps } from "providers/NotificationProvider/NotificationProvider";
+import { useMemo } from "react";
 
 const serverEndpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
 
@@ -52,9 +52,9 @@ const createApolloClient = (
       const palanteErrors = graphQLErrors.reduce<PalanteError[]>(
         (errors, error) => {
           const { message, locations, path } = error;
-          console.log(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-          );
+          // console.log(
+          //   `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+          // );
           const palanteError = PalanteError.from(error);
           if (palanteError) errors.push(palanteError);
           return errors;

@@ -27,6 +27,9 @@ const TestComponent = () => {
               }}
             >
               <div>
+                <strong>lineItemId</strong>: {id}
+              </div>
+              <div>
                 <strong>product</strong>: {product?.name}
               </div>
 

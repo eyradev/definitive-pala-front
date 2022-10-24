@@ -5,8 +5,8 @@ import {
   useMutation,
 } from "@apollo/client";
 import gql from "graphql-tag";
-import useUserPP from "hooks/useUserPP";
-import { CART_QUERY } from "./cart.query";
+import { CART_ITEMS_QUERY } from "graphql/cart-items/cart-items.query";
+import { useCurrentCartQuery } from "graphql/current-cart/current-cart.query";
 import {
   ADD_CART_ITEM,
   ADD_CART_ITEMVariables,
@@ -32,18 +32,21 @@ export const useAddCartItemMutation = (
     ApolloCache<any>
   >
 ) => {
-  const { user } = useUserPP();
+  const { data: cart } = useCurrentCartQuery();
   const mutationData = useMutation<ADD_CART_ITEM, ADD_CART_ITEMVariables>(
     ADD_TO_CART_MUTATION,
     {
       ...options,
       refetchQueries: [
         {
-          query: CART_QUERY,
+          query: CART_ITEMS_QUERY,
+          variables: {
+            cartId: cart?.id ?? "",
+          },
         },
       ],
     }
   );
 
-  return user?.id ? mutationData : [];
+  return cart?.id ? mutationData : [];
 };

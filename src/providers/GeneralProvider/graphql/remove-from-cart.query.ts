@@ -5,8 +5,8 @@ import {
   useMutation,
 } from "@apollo/client";
 import gql from "graphql-tag";
-import useUserPP from "hooks/useUserPP";
-import { CART_QUERY } from "./cart.query";
+import { CART_ITEMS_QUERY } from "graphql/cart-items/cart-items.query";
+import { useCurrentCartQuery } from "graphql/current-cart/current-cart.query";
 import {
   REMOVE_FROM_CART,
   REMOVE_FROM_CARTVariables,
@@ -32,7 +32,8 @@ export const useRemoveFromCartMutation = (
     ApolloCache<any>
   >
 ) => {
-  const { user } = useUserPP();
+  const { data: cart } = useCurrentCartQuery();
+
   const removeFromCartMutation = useMutation<
     REMOVE_FROM_CART,
     REMOVE_FROM_CARTVariables
@@ -40,10 +41,13 @@ export const useRemoveFromCartMutation = (
     ...options,
     refetchQueries: [
       {
-        query: CART_QUERY,
+        query: CART_ITEMS_QUERY,
+        variables: {
+          cartId: cart?.id ?? "",
+        },
       },
     ],
   });
 
-  return user?.id ? removeFromCartMutation : [];
+  return cart?.id ? removeFromCartMutation : [];
 };

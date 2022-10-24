@@ -6,16 +6,28 @@ const TestComponent = () => {
 
   const { data, loading, error } = cartQueryResult;
 
-  if (!data?.Cart) return null;
+  if (!data?.Cart?.sellOrder) return null;
+  const { lineItem: lineItems, address } = data?.Cart?.sellOrder;
+
   return (
     <div style={{ border: "1px solid black", margin: 10, padding: 10 }}>
       <h3>Line Items</h3>
-      {data?.Cart?.sellOrder?.lineItem.map((lineItem) => (
+      {lineItems.map((lineItem) => (
         <p key={lineItem?.product?.id ?? ""}>
           {lineItem.product?.name} x {lineItem.quantity} -- LineItemId:{" "}
           {lineItem.id}
         </p>
       ))}
+      {address ? (
+        <>
+          <h4>Address:</h4>
+          <p>{address.id}</p>
+          <p>{address.addressL1}</p>
+          <p>{address.city?.name}</p>
+        </>
+      ) : (
+        <p>Car has no address associated</p>
+      )}
     </div>
   );
 };

@@ -7,6 +7,19 @@
 // GraphQL query operation: CART
 // ====================================================
 
+export interface CART_Cart_sellOrder_address_city {
+  __typename: "City";
+  id: string;
+  name: string | null;
+}
+
+export interface CART_Cart_sellOrder_address {
+  __typename: "Address";
+  id: string;
+  addressL1: string | null;
+  city: CART_Cart_sellOrder_address_city | null;
+}
+
 export interface CART_Cart_sellOrder_lineItem_product_photo_image {
   __typename: "CloudinaryImage_File";
   publicUrlTransformed: string | null;
@@ -37,6 +50,7 @@ export interface CART_Cart_sellOrder_lineItem {
 
 export interface CART_Cart_sellOrder {
   __typename: "SellOrder";
+  address: CART_Cart_sellOrder_address | null;
   lineItem: CART_Cart_sellOrder_lineItem[];
 }
 

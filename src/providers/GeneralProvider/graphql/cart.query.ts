@@ -7,6 +7,14 @@ export const CART_QUERY = gql`
   query CART {
     Cart {
       sellOrder {
+        address {
+          id
+          addressL1
+          city {
+            id
+            name
+          }
+        }
         lineItem {
           id
           price

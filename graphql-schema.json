@@ -61386,7 +61386,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "AddToCartResponse",
+              "name": "RemoveFromCartResponse",
               "ofType": null
             },
             "isDeprecated": false,
@@ -62562,7 +62562,7 @@
         "specifiedByUrl": null,
         "fields": [
           {
-            "name": "sellOrderId",
+            "name": "storeUpdated",
             "description": null,
             "args": [],
             "type": {
@@ -62570,7 +62570,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "ID",
+                "name": "Boolean",
                 "ofType": null
               }
             },
@@ -62578,7 +62578,7 @@
             "deprecationReason": null
           },
           {
-            "name": "userId",
+            "name": "lineItemDeleted",
             "description": null,
             "args": [],
             "type": {
@@ -62586,7 +62586,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "ID",
+                "name": "Boolean",
                 "ofType": null
               }
             },

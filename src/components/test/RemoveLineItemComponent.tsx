@@ -1,5 +1,5 @@
 import { Form, Formik, FormikHelpers } from "formik";
-import { useRemoveFromCartMutation } from "providers/GeneralProvider/graphql/remove-from-cart.query";
+import { useRemoveCartItemMutation } from "graphql/remove-cart-item/remove-cart-item.mutation";
 import { FC } from "react";
 import * as yup from "yup";
 
@@ -15,9 +15,10 @@ const removeLineItemInputValidationSchema: yup.SchemaOf<RemoveLineItemInput> =
   });
 
 const RemoveLineItemComponent: FC = () => {
-  const [removeLineItem] = useRemoveFromCartMutation();
+  const removeCartItemMutation = useRemoveCartItemMutation();
 
-  if (!removeLineItem) return null;
+  if (!removeCartItemMutation) return null;
+  const [removeLineItem] = removeCartItemMutation;
 
   const handleSubmit = async (
     input: RemoveLineItemInput,
@@ -26,7 +27,6 @@ const RemoveLineItemComponent: FC = () => {
     const validatedInput = await removeLineItemInputValidationSchema.validate(
       input
     );
-    console.log({ removeLineItemInput: validatedInput });
     await removeLineItem({ variables: validatedInput });
     resetForm();
   };

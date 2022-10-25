@@ -1,5 +1,5 @@
 import { Form, Formik, FormikHelpers } from "formik";
-import { useAddCartItemMutation } from "providers/GeneralProvider/graphql/add-to-cart.query";
+import { useAddCartItemMutation } from "graphql/add-cart-item/add-cart-item.mutation";
 import * as yup from "yup";
 interface FormValues {
   productId: string;
@@ -12,9 +12,10 @@ const formValidationSchema: yup.SchemaOf<FormValues> = yup.object().shape({
 });
 
 const AddLineItemComponent = () => {
-  const [addCartItem] = useAddCartItemMutation();
+  const addCartItemMutation = useAddCartItemMutation();
 
-  if (!addCartItem) return null;
+  if (!addCartItemMutation) return null;
+  const [addCartItem] = addCartItemMutation;
 
   const handleSubmit = async (
     { productId, quantity }: FormValues,

@@ -42,14 +42,14 @@ export const useRemoveCartItemMutation = (
   >(REMOVE_CART_ITEM_MUTATION, {
     ...options,
     refetchQueries: ({ data }) => {
-      const refetchQueries = [cartItemsQuery];
+      const queries = [cartItemsQuery];
       if (data?.removeFromCart?.storeUpdated) {
-        refetchQueries.push({
+        queries.push({
           query: CART_STORE2_QUERY,
           variables: { cartId: cart?.id },
         });
       }
-      return refetchQueries;
+      return queries;
     },
   });
 

@@ -1,20 +1,28 @@
 import { Form, Formik, FormikHelpers } from "formik";
-import { useUpdateCartAddressMutation } from "providers/GeneralProvider/graphql/update-cart-address";
+import { useCartAddressQuery } from "graphql/cart-address/cart-address.query";
+import { useUpdateCartAddressMutation } from "graphql/update-cart-address/update-cart-address.mutation";
 import * as yup from "yup";
 
 interface UpdateCartAddressInput {
   addressId: string;
 }
 
-const updateCartAddressInputValidationSchema: yup.SchemaOf<UpdateCartAddressInput> =
-  yup.object().shape({
-    addressId: yup.string().required().length(24).lowercase(),
-  });
-
 const UpdateCartAddressComponent: React.FC = () => {
-  const [updateCartAddress] = useUpdateCartAddressMutation();
+  const { data } = useCartAddressQuery();
 
-  if (!updateCartAddress) return null;
+  let addressIdShape = yup.string().required().length(24).lowercase();
+  if (data?.cart?.address?.id) {
+    addressIdShape = addressIdShape.notOneOf([data.cart.address.id]);
+  }
+  const updateCartAddressInputValidationSchema: yup.SchemaOf<UpdateCartAddressInput> =
+    yup.object().shape({
+      addressId: addressIdShape,
+    });
+
+  // get update mutation
+  const updateCartAddressMutation = useUpdateCartAddressMutation();
+  if (!updateCartAddressMutation) return null;
+  const [updateCartAddress] = updateCartAddressMutation;
 
   const handleSubmit = async (
     input: UpdateCartAddressInput,
@@ -22,7 +30,6 @@ const UpdateCartAddressComponent: React.FC = () => {
   ) => {
     const validatedInput =
       await updateCartAddressInputValidationSchema.validate(input);
-    console.log({ updateAddressInput: validatedInput });
     await updateCartAddress({ variables: validatedInput });
     resetForm();
   };

@@ -62426,7 +62426,7 @@
         "specifiedByUrl": null,
         "fields": [
           {
-            "name": "sellOrderId",
+            "name": "addressUpdated",
             "description": null,
             "args": [],
             "type": {
@@ -62434,7 +62434,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "ID",
+                "name": "Boolean",
                 "ofType": null
               }
             },
@@ -62442,7 +62442,7 @@
             "deprecationReason": null
           },
           {
-            "name": "userId",
+            "name": "cartCreated",
             "description": null,
             "args": [],
             "type": {
@@ -62450,7 +62450,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "ID",
+                "name": "Boolean",
                 "ofType": null
               }
             },

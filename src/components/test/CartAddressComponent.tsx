@@ -12,7 +12,8 @@ const CartAddressComponent = () => {
     <div style={{ border: "1px solid black", margin: 10, padding: 10 }}>
       <h3>Address</h3>
       <p>
-        {address.addressL1}, {address.city?.name}, {address.city?.region?.name}
+        {address.addressL1}, {address.city?.name}, {address.city?.region?.name}{" "}
+        - {address?.id}
       </p>
     </div>
   );

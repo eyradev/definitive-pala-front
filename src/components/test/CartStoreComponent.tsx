@@ -17,7 +17,7 @@ const CartStoreComponent: FC = () => {
       </div>
       <div>
         <strong>direccion</strong>: {address?.addressL1}, {address?.city?.name},{" "}
-        {address?.city?.region?.name}
+        {address?.city?.region?.name} - {address?.id}
       </div>
     </div>
   );

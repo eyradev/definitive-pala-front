@@ -29,6 +29,7 @@ export interface CART_STORE2_cart_store {
   __typename: "Store";
   id: string;
   name: string | null;
+  paysShipmentAfter: number | null;
   address: CART_STORE2_cart_store_address | null;
 }
 

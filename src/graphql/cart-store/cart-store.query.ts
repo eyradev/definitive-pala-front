@@ -10,6 +10,7 @@ export const CART_STORE2_QUERY = gql`
       store {
         id
         name
+        paysShipmentAfter
         address {
           id
           addressL1

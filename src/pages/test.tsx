@@ -6,10 +6,9 @@ import RemoveLineItemComponent from "components/test/RemoveLineItemComponent";
 import ShippingPriceComponent from "components/test/ShippingPriceComponent";
 import TestComponent from "components/test/TestComponent";
 import UpdateCartAddressComponent from "components/test/UpdateCartAddressComponent";
-import GeneralProvider from "providers/GeneralProvider/GeneralProvider";
 
 const TestPage = () => (
-  <GeneralProvider>
+  <>
     <TestComponent />
     <CartAddressComponent />
     <CartStoreComponent />
@@ -18,7 +17,7 @@ const TestPage = () => (
     <UpdateCartAddressComponent />
     <ShippingPriceComponent />
     <AdjustCartComponent />
-  </GeneralProvider>
+  </>
 );
 
 export default TestPage;

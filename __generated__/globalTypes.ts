@@ -34,6 +34,7 @@ export interface AddressCreateInput {
   addressL1?: string | null;
   description?: string | null;
   user?: UserRelateToOneInput | null;
+  store?: StoreRelateToOneInput | null;
   city?: CityRelateToOneInput | null;
 }
 
@@ -96,6 +97,8 @@ export interface AddressWhereInput {
   description_not_in?: (string | null)[] | null;
   user?: UserWhereInput | null;
   user_is_null?: boolean | null;
+  store?: StoreWhereInput | null;
+  store_is_null?: boolean | null;
   city?: CityWhereInput | null;
   city_is_null?: boolean | null;
 }
@@ -1416,6 +1419,11 @@ export interface SellOrderWhereInput {
 
 export interface SellOrderWhereUniqueInput {
   id: string;
+}
+
+export interface ShippingAddresses {
+  fromAddressId: string;
+  toAddressId: string;
 }
 
 export interface ShippingOrderCreateInput {

@@ -1,8 +1,9 @@
 import { QueryHookOptions, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import { useCartAddressQuery } from "graphql/cart-address/cart-address.query";
+import { useCartPriceQuery } from "graphql/cart-price/cart-price.query";
 import { useCartStoreQuery } from "graphql/cart-store/cart-store.query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SHIPPING, SHIPPINGVariables } from "./__generated__/SHIPPING";
 
 export const SHIPPING_QUERY = gql`
@@ -19,9 +20,13 @@ export const useShippingQuery = (
 ) => {
   const { data: cartStoreData } = useCartStoreQuery();
   const { data: cartAddressData } = useCartAddressQuery();
+  const cartPriceQuery = useCartPriceQuery();
 
   const storeAddress = cartStoreData?.cart?.store?.address;
   const customerAddress = cartAddressData?.cart?.address;
+
+  const storePaysShipmentAfter = cartStoreData?.cart?.store?.paysShipmentAfter;
+  const baseCartPrice = cartPriceQuery?.data?.CartPrice?.basePrice;
 
   const [storePaysShipment, setStorePaysShipment] = useState(false);
 
@@ -34,18 +39,17 @@ export const useShippingQuery = (
       },
     },
     skip: !storeAddress?.id || !customerAddress?.id,
-    onCompleted: ({ Shipping: shippingData }) => {
-      if (!shippingData?.shippingPrice) return;
-      if (typeof cartStoreData?.cart?.store?.paysShipmentAfter === "number") {
-        setStorePaysShipment(
-          shippingData?.shippingPrice >=
-            cartStoreData.cart.store.paysShipmentAfter
-        );
-      } else {
-        setStorePaysShipment(false);
-      }
-    },
   });
+
+  useEffect(() => {
+    console.log({ baseCartPrice, storePaysShipmentAfter });
+    if (!baseCartPrice) return;
+    if (typeof storePaysShipmentAfter === "number") {
+      setStorePaysShipment(baseCartPrice >= storePaysShipmentAfter);
+    } else {
+      setStorePaysShipment(false);
+    }
+  }, [baseCartPrice, storePaysShipmentAfter]);
 
   if (storeAddress?.id && customerAddress?.id) {
     return {

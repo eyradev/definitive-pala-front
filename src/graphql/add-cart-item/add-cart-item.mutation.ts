@@ -6,6 +6,7 @@ import {
 } from "@apollo/client";
 import gql from "graphql-tag";
 import { CART_ITEMS_QUERY } from "graphql/cart-items/cart-items.query";
+import { CART_PRICE_QUERY } from "graphql/cart-price/cart-price.query";
 import { CART_STORE2_QUERY } from "graphql/cart-store/cart-store.query";
 import { useCurrentCartQuery } from "graphql/current-cart/current-cart.query";
 import {
@@ -38,13 +39,20 @@ export const useAddCartItemMutation = (
     },
   };
 
+  const cartPriceQuery: InternalRefetchQueryDescriptor = {
+    query: CART_PRICE_QUERY,
+    variables: {
+      cartId: cart?.id,
+    },
+  };
+
   const addCartItemMutation = useMutation<
     ADD_CART_ITEM,
     ADD_CART_ITEMVariables
   >(ADD_CART_ITEM_MUTATION, {
     ...options,
     refetchQueries: ({ data }) => {
-      const refetchQueries = [cartItemsQuery];
+      const refetchQueries = [cartItemsQuery, cartPriceQuery];
       if (data?.addToCart2?.storeUpdated) {
         refetchQueries.push({
           query: CART_STORE2_QUERY,

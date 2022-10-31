@@ -16,7 +16,7 @@ const addCouponInputValidationSchema: yup.SchemaOf<AddCouponInput> = yup
   });
 
 const CouponsComponent: FC = () => {
-  const { palanteCoupon, storeCoupon, addCoupon } = useCheckout();
+  const { palanteCoupon, storeCoupon, addCoupon, removeCoupon } = useCheckout();
 
   const cartPriceQuery = useCartPriceQuery({
     variables: {
@@ -26,7 +26,7 @@ const CouponsComponent: FC = () => {
   });
 
   // the function must be set
-  if (!addCoupon || !cartPriceQuery) return null;
+  if (!addCoupon || !cartPriceQuery || !removeCoupon) return null;
 
   const { data, error, loading } = cartPriceQuery;
 
@@ -51,6 +51,11 @@ const CouponsComponent: FC = () => {
     resetForm();
   };
 
+  const handleCouponRemoveClick = (couponId: string) => () => {
+    if (!couponId) return;
+    removeCoupon(couponId);
+  };
+
   return (
     <div style={{ border: "1px solid black", margin: 10, padding: 10 }}>
       <h3>Coupons</h3>
@@ -58,12 +63,18 @@ const CouponsComponent: FC = () => {
         <div>
           <strong>Store Coupon</strong>: {storeCoupon.name} -{" "}
           {storeCoupon.shortName} - {storeCoupon.id}
+          <button onClick={handleCouponRemoveClick(storeCoupon.id)}>
+            delete
+          </button>
         </div>
       ) : null}
       {palanteCoupon ? (
         <div>
           <strong>Palante Coupon</strong>: {palanteCoupon.name} -{" "}
           {palanteCoupon.shortName} - {palanteCoupon.id}
+          <button onClick={handleCouponRemoveClick(palanteCoupon.id)}>
+            delete
+          </button>
         </div>
       ) : null}
       <Formik<AddCouponInput>

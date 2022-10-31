@@ -14,6 +14,7 @@ interface CheckoutProviderContext {
   storeCoupon?: COUPON_coupons | null;
   palanteCoupon?: COUPON_coupons | null;
   addCoupon?: (couponCode: string) => Promise<COUPON_coupons | null>;
+  removeCoupon?: (couponId: string) => void;
   queryData?: QueryResult<COUPON, COUPONVariables>;
 }
 
@@ -26,7 +27,7 @@ const CheckoutProvider: FC<{
 
   const { data: cartStoreData } = useCartStoreQuery();
   // caching will be handled by the context
-  const couponLazyQuery = useCouponLazyQuery({ fetchPolicy: "network-only" });
+  const couponLazyQuery = useCouponLazyQuery();
 
   const store = cartStoreData?.cart?.store;
 
@@ -75,12 +76,22 @@ const CheckoutProvider: FC<{
 
     return fetchedCoupon;
   };
+
+  const removeCoupon = async (couponId: string) => {
+    if (storeCoupon?.id === couponId) {
+      setStoreCoupon(null);
+    } else if (palanteCoupon?.id === couponId) {
+      setPalanteCoupon(null);
+    }
+  };
+
   return (
     <CheckoutContext.Provider
       value={{
         palanteCoupon,
         storeCoupon,
         addCoupon,
+        removeCoupon,
         queryData: couponQueryData,
       }}
     >

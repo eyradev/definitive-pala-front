@@ -40,6 +40,7 @@ export const useCartPriceQuery = (
     {
       ...options,
       variables: {
+        ...options?.variables,
         cartId: cart?.id,
       },
       skip: notInvocable,

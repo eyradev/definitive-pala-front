@@ -42,7 +42,6 @@ export const useShippingQuery = (
   });
 
   useEffect(() => {
-    console.log({ baseCartPrice, storePaysShipmentAfter });
     if (!baseCartPrice) return;
     if (typeof storePaysShipmentAfter === "number") {
       setStorePaysShipment(baseCartPrice >= storePaysShipmentAfter);

@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const ALL_LINE_ITEMS_BY_USER = gql`
   query ALL_LINE_ITEMS($userId: ID!) {
@@ -22,30 +22,6 @@ export const ALL_LINE_ITEMS_BY_USER = gql`
             publicUrlTransformed
           }
         }
-      }
-    }
-  }
-`;
-
-export const ADD_LINE_ITEM_MUTATION = gql`
-  mutation ADD_LINE_ITEM($productId: ID!, $quantity: Int!) {
-    addToCart(productId: $productId, quantity: $quantity) {
-      id
-      product {
-        id
-        name
-      }
-      quantity
-    }
-  }
-`;
-
-export const REMOVE_LINE_ITEM_MUTATION = gql`
-  mutation REMOVE_LINE_ITEM($lineItemId: ID!) {
-    deleteLineItem(id: $lineItemId) {
-      id
-      product {
-        name
       }
     }
   }

@@ -55,38 +55,6 @@ export const CART_BY_USER = gql`
   }
 `;
 
-export const CART_TOTALS = gql`
-  query CART_DETAILS_QUERY {
-    cartDetails {
-      total
-      feeTotal
-      storeTotal
-      shippingTotal
-      discountedTotal
-      storeCouponTotal
-      palanteCouponTotal
-      canCheckout
-      storePaysShipment
-    }
-  }
-`;
-
-export const USER_ADD_COUPON = gql`
-  mutation USER_ADD_COUPON_MUTATION($code: String!) {
-    userAddCoupon(couponCode: $code) {
-      id
-    }
-  }
-`;
-
-export const USER_DELETE_COUPON = gql`
-  mutation USER_DELETE_COUPON_MUTATION($couponId: ID) {
-    userDeleteCoupon(couponId: $couponId) {
-      id
-    }
-  }
-`;
-
 export const SELL_ORDER = gql`
   query SELL_ORDER_QUERY($sellOrderId: ID!) {
     allSellOrders(where: { id: $sellOrderId }) {
@@ -103,14 +71,6 @@ export const SELL_ORDER = gql`
         name
         shortName
       }
-    }
-  }
-`;
-
-export const UPDATE_CART_STOCK = gql`
-  mutation UPDATE_CART_STOCK_MUTATION {
-    updateCartStock {
-      actions
     }
   }
 `;

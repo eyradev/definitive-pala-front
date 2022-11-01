@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const GET_ALL_STORES = gql`
   query ALL_STORES {
@@ -21,17 +21,6 @@ export const TOP_STORES_QUERY = gql`
       }
       name
       description
-    }
-  }
-`;
-
-export const CART_STORE_QUERY = gql`
-  query CART_STORE {
-    cartStore {
-      id
-      name
-      siigoId
-      epaycoId
     }
   }
 `;

@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const ADDRESS_BY_USER_QUERY = gql`
   query ADDRESS_BY_USER($userId: ID!) {
@@ -24,14 +24,6 @@ export const CREATE_USER_ADDRESS_MUTATION = gql`
       cityId: $cityId
       description: $description
     ) {
-      id
-    }
-  }
-`;
-
-export const UPDATE_SHIPPING_ADDRESS = gql`
-  mutation ADD_UPDATE_SHIPPING_ADDRESS($addressId: ID!) {
-    addShippingOrder(addressId: $addressId) {
       id
     }
   }

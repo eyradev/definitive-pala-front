@@ -28,7 +28,6 @@ export default function StandardNavbar(): JSX.Element | null {
   const { data: itemData } = useCartItemsQuery();
 
   const { toggleCart } = useApp();
-  if (!itemData?.items?.length) return null;
 
   const getCartCount = () =>
     itemData?.items?.reduce<number>(

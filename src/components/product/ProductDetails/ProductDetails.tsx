@@ -35,13 +35,10 @@ interface Props {
 export default function ProductDetails({ product }: Props): JSX.Element | null {
   const [collapses, setCollapses] = useState([1]);
   const addCartItemMutation = useAddCartItemMutation();
-  const { user } = useUserPP();
   const isSM = useMediaQuery(`(max-width: ${breakpoints.sm}px)`);
   const isMD = useMediaQuery(`(max-width: ${breakpoints.md}px)`);
 
-  if (!addCartItemMutation) return null;
-
-  const [addLineItem] = addCartItemMutation;
+  const addLineItem = addCartItemMutation?.[0];
 
   const changeCollapse = (collapse: number) => {
     if (collapses.includes(collapse)) {
@@ -55,6 +52,7 @@ export default function ProductDetails({ product }: Props): JSX.Element | null {
     values: ProductStock,
     { resetForm }: FormikHelpers<ProductStock>
   ) => {
+    if (!addLineItem) return;
     if (product?.id) {
       addLineItem({
         variables: {
@@ -261,7 +259,7 @@ export default function ProductDetails({ product }: Props): JSX.Element | null {
                     </div>
                   </Col>
                   <Col className={styles.stockForm} sm="12" lg="4">
-                    {user ? (
+                    {!!addLineItem ? (
                       <Button
                         className="mr-3"
                         color="info"

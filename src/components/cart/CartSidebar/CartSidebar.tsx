@@ -11,6 +11,7 @@ import { CartItem } from "../CartItem";
 import CartItems from "../CartItems/CartItems";
 import CartItemSection from "../CartItemsSection/CartItemsSection";
 import CartTotals from "../CartTotals/CartTotals";
+import CartTotalsSection from "../CartTotalsSection/CartTotalsSection";
 import styles from "./CartSidebar.module.css";
 
 export default function CartSidebar(): JSX.Element {
@@ -49,7 +50,7 @@ export default function CartSidebar(): JSX.Element {
         <CartItemSection />
         {user ? (
           <div className={styles.footer}>
-            <CartTotals />
+            <CartTotalsSection />
           </div>
         ) : null}
       </div>

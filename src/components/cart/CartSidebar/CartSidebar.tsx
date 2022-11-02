@@ -1,6 +1,7 @@
 import { LineItem } from "generated/graphql";
 import { useCartItemsQuery } from "graphql/cart-items/cart-items.query";
 import { CART_ITEMS_items } from "graphql/cart-items/__generated__/CART_ITEMS";
+import { useRemoveCartItemMutation } from "graphql/remove-cart-item/remove-cart-item.mutation";
 import Link from "next/link";
 import useApp from "providers/AppProvider/useApp";
 import { Col, Row } from "reactstrap";
@@ -8,17 +9,13 @@ import useUserPP from "../../../hooks/useUserPP";
 import { Backdrop } from "../../UI";
 import { CartItem } from "../CartItem";
 import CartItems from "../CartItems/CartItems";
+import CartItemSection from "../CartItemsSection/CartItemsSection";
 import CartTotals from "../CartTotals/CartTotals";
 import styles from "./CartSidebar.module.css";
 
 export default function CartSidebar(): JSX.Element {
   const { user } = useUserPP();
   const { isCartOpen, toggleCart } = useApp();
-  const { data } = useCartItemsQuery();
-
-  const lineItems: CART_ITEMS_items[] | undefined = data?.items?.filter(
-    (item) => item !== null
-  ) as any;
 
   return (
     <>
@@ -49,8 +46,8 @@ export default function CartSidebar(): JSX.Element {
             </Row>
           </div>
         )}
-        <CartItems lineItems={lineItems as any} />
-        {lineItems?.length ? (
+        <CartItemSection />
+        {user ? (
           <div className={styles.footer}>
             <CartTotals />
           </div>

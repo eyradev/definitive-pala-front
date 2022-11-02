@@ -1,15 +1,15 @@
-import { useQuery } from '@apollo/client';
-import { Form, Formik, FormikHelpers } from 'formik';
-import { useState } from 'react';
-import Select from 'react-select';
-import { Button, FormGroup, FormText, Input, Spinner } from 'reactstrap';
-import useAddress from '../../../../hooks/useAddress';
-import useUserPP from '../../../../hooks/useUserPP';
-import { Address } from '../../../../models/sellOrder';
-import { ALL_REGIONS } from '../../../../queries/regions';
-import { ALL_REGIONS_QUERY } from '../../../../queries/__generated__/ALL_REGIONS_QUERY';
-import { addressSchema } from '../../../../schemas/address';
-import { Option } from '../../../../util/types';
+import { useQuery } from "@apollo/client";
+import { Form, Formik, FormikHelpers } from "formik";
+import { useState } from "react";
+import Select from "react-select";
+import { Button, FormGroup, FormText, Input, Spinner } from "reactstrap";
+import useAddress from "../../../../hooks/useAddress";
+import useUserPP from "../../../../hooks/useUserPP";
+import { Address } from "../../../../models/sellOrder";
+import { ALL_REGIONS } from "../../../../queries/regions";
+import { ALL_REGIONS_QUERY } from "../../../../queries/__generated__/ALL_REGIONS_QUERY";
+import { addressSchema } from "../../../../schemas/address";
+import { Option } from "../../../../util/ts-types";
 
 interface RegionOption extends Option {
   cityOptions?: Option[];
@@ -20,7 +20,7 @@ interface Props {
 }
 
 export default function AddressCreationForm({
-  onAddressCreated
+  onAddressCreated,
 }: Props): JSX.Element | null {
   const [selectedRegion, setRegion] = useState<RegionOption | null>(null);
   const [selectedCity, setCity] = useState<Option | null>(null);
@@ -32,12 +32,12 @@ export default function AddressCreationForm({
       region &&
         acc.push({
           value: region.id,
-          label: region.name || '',
+          label: region.name || "",
           cityOptions: region.cities.reduce<Option[]>((cityOptions, city) => {
             city &&
-              cityOptions.push({ label: city.name || '', value: city.id });
+              cityOptions.push({ label: city.name || "", value: city.id });
             return cityOptions;
-          }, [])
+          }, []),
         });
       return acc;
     },
@@ -46,10 +46,10 @@ export default function AddressCreationForm({
 
   const cityOptions: Option[] = [
     {
-      value: '',
-      label: 'Single Option',
-      isDisabled: true
-    }
+      value: "",
+      label: "Single Option",
+      isDisabled: true,
+    },
   ];
 
   if (selectedRegion?.cityOptions && selectedRegion.cityOptions.length > 0) {
@@ -66,7 +66,7 @@ export default function AddressCreationForm({
     await addAddress({
       addresL1: values.address,
       cityId: values.city,
-      description: values.additionalInfo
+      description: values.additionalInfo,
     });
     resetForm();
     setRegion(null);
@@ -78,7 +78,7 @@ export default function AddressCreationForm({
 
   return (
     <Formik<Address>
-      initialValues={{ region: '', city: '', address: '', additionalInfo: '' }}
+      initialValues={{ region: "", city: "", address: "", additionalInfo: "" }}
       validationSchema={addressSchema}
       onSubmit={handleSubmit}
     >
@@ -87,7 +87,7 @@ export default function AddressCreationForm({
           <FormGroup>
             <label
               htmlFor="region"
-              style={{ color: errors.region ? 'var(--danger)' : undefined }}
+              style={{ color: errors.region ? "var(--danger)" : undefined }}
             >
               Departamento
             </label>
@@ -99,26 +99,26 @@ export default function AddressCreationForm({
               onChange={(region: RegionOption | null) => {
                 if (region?.value === selectedRegion?.value) return;
                 setRegion(region as RegionOption);
-                setFieldValue('region', region?.value);
+                setFieldValue("region", region?.value);
               }}
               classNamePrefix="react-select"
               placeholder="Departamento"
               value={selectedRegion}
               options={[
                 {
-                  value: '',
-                  label: 'Seleccionar Departamento',
-                  isDisabled: true
+                  value: "",
+                  label: "Seleccionar Departamento",
+                  isDisabled: true,
                 },
-                ...regionOptions
+                ...regionOptions,
               ]}
               styles={
                 touched.region && errors.region
                   ? {
                       singleValue: (base) => ({
                         ...base,
-                        color: 'red !important'
-                      })
+                        color: "red !important",
+                      }),
                     }
                   : undefined
               }
@@ -133,7 +133,8 @@ export default function AddressCreationForm({
             <label
               htmlFor="city"
               style={{
-                color: touched.city && errors.city ? 'var(--danger)' : undefined
+                color:
+                  touched.city && errors.city ? "var(--danger)" : undefined,
               }}
             >
               Ciudad
@@ -145,7 +146,7 @@ export default function AddressCreationForm({
               onChange={(city) => {
                 if (selectedCity?.value === city?.value) return;
                 setCity(city);
-                setFieldValue('city', city?.value);
+                setFieldValue("city", city?.value);
               }}
               classNamePrefix="react-select"
               placeholder="Seleccionar Ciudad"
@@ -157,8 +158,8 @@ export default function AddressCreationForm({
                   ? {
                       singleValue: (base) => ({
                         ...base,
-                        color: 'red !important'
-                      })
+                        color: "red !important",
+                      }),
                     }
                   : undefined
               }
@@ -175,8 +176,8 @@ export default function AddressCreationForm({
               style={{
                 color:
                   touched.address && errors.address
-                    ? 'var(--danger)'
-                    : undefined
+                    ? "var(--danger)"
+                    : undefined,
               }}
             >
               Dirección
@@ -190,7 +191,7 @@ export default function AddressCreationForm({
               value={values.address}
               style={
                 touched.address && errors.address
-                  ? { color: 'var(--danger)' }
+                  ? { color: "var(--danger)" }
                   : undefined
               }
             />
@@ -205,7 +206,7 @@ export default function AddressCreationForm({
               htmlFor="extraInfo"
               style={
                 touched.additionalInfo && errors.additionalInfo
-                  ? { color: 'var(--danger)' }
+                  ? { color: "var(--danger)" }
                   : undefined
               }
             >
@@ -220,7 +221,7 @@ export default function AddressCreationForm({
               onChange={handleChange}
               style={
                 touched.additionalInfo && errors.additionalInfo
-                  ? { color: 'var(--danger)' }
+                  ? { color: "var(--danger)" }
                   : undefined
               }
             />
@@ -239,7 +240,7 @@ export default function AddressCreationForm({
             color="primary"
             disabled={!addAddressData || addAddressData.loading}
           >
-            Crear Dirección{' '}
+            Crear Dirección{" "}
             {!addAddressData ||
               (addAddressData.loading && <Spinner color="white" size="sm" />)}
           </Button>

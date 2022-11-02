@@ -1,5 +1,5 @@
-import { Form, useFormikContext } from 'formik';
-import Select from 'react-select';
+import { Form, useFormikContext } from "formik";
+import Select from "react-select";
 import {
   Button,
   FormGroup,
@@ -7,22 +7,22 @@ import {
   Input,
   InputGroup,
   InputGroupAddon,
-  InputGroupText
-} from 'reactstrap';
-import { ContactRequest } from '../../../models/contactRequest';
-import { Option } from '../../../util/types';
-import styles from './ContactUs.module.css';
+  InputGroupText,
+} from "reactstrap";
+import { ContactRequest } from "../../../models/contactRequest";
+import { Option } from "../../../util/ts-types";
+import styles from "./ContactUs.module.css";
 
 const options: Option[] = [
   {
-    value: 'P',
-    label: 'Petición'
+    value: "P",
+    label: "Petición",
   },
-  { value: 'Q', label: 'Queja' },
-  { value: 'R', label: 'Reclamo' },
-  { value: 'S', label: 'Sugerencia' },
-  { value: 'D', label: 'Denuncia' },
-  { value: 'F', label: 'Felicitación' }
+  { value: "Q", label: "Queja" },
+  { value: "R", label: "Reclamo" },
+  { value: "S", label: "Sugerencia" },
+  { value: "D", label: "Denuncia" },
+  { value: "F", label: "Felicitación" },
 ];
 
 export default function ContactUsForm(): JSX.Element {
@@ -39,7 +39,7 @@ export default function ContactUsForm(): JSX.Element {
           placeholder="Elije el tema de tu solicitud..."
           onChange={(option) => {
             if (option?.value && option.value === values.type) return;
-            setFieldValue('type', option?.value);
+            setFieldValue("type", option?.value);
           }}
           value={options.find((o) => o.value === values.type) as Option}
           options={options}
@@ -48,8 +48,8 @@ export default function ContactUsForm(): JSX.Element {
               ? {
                   singleValue: (base) => ({
                     ...base,
-                    color: 'red !important'
-                  })
+                    color: "red !important",
+                  }),
                 }
               : undefined
           }
@@ -63,7 +63,7 @@ export default function ContactUsForm(): JSX.Element {
       <FormGroup>
         <label
           style={{
-            color: touched.name && errors.name ? 'var(--danger)' : undefined
+            color: touched.name && errors.name ? "var(--danger)" : undefined,
           }}
         >
           Nombre
@@ -83,7 +83,7 @@ export default function ContactUsForm(): JSX.Element {
             onChange={handleChange}
             style={
               touched.name && errors.name
-                ? { color: 'var(--danger)' }
+                ? { color: "var(--danger)" }
                 : undefined
             }
           />
@@ -97,7 +97,7 @@ export default function ContactUsForm(): JSX.Element {
       <FormGroup>
         <label
           style={{
-            color: touched.email && errors.email ? 'var(--danger)' : undefined
+            color: touched.email && errors.email ? "var(--danger)" : undefined,
           }}
         >
           Correo
@@ -118,7 +118,7 @@ export default function ContactUsForm(): JSX.Element {
             onChange={handleChange}
             style={
               touched.email && errors.email
-                ? { color: 'var(--danger)' }
+                ? { color: "var(--danger)" }
                 : undefined
             }
           />
@@ -132,7 +132,7 @@ export default function ContactUsForm(): JSX.Element {
       <FormGroup>
         <label
           style={{
-            color: touched.phone && errors.phone ? 'var(--danger)' : undefined
+            color: touched.phone && errors.phone ? "var(--danger)" : undefined,
           }}
         >
           Telefono
@@ -152,7 +152,7 @@ export default function ContactUsForm(): JSX.Element {
             onChange={handleChange}
             style={
               touched.phone && errors.phone
-                ? { color: 'var(--danger)' }
+                ? { color: "var(--danger)" }
                 : undefined
             }
           />
@@ -167,7 +167,7 @@ export default function ContactUsForm(): JSX.Element {
         <label
           style={{
             color:
-              touched.message && errors.message ? 'var(--danger)' : undefined
+              touched.message && errors.message ? "var(--danger)" : undefined,
           }}
         >
           Escribe aquí tu mensaje
@@ -181,7 +181,7 @@ export default function ContactUsForm(): JSX.Element {
           onChange={handleChange}
           style={
             touched.message && errors.message
-              ? { color: 'var(--danger)' }
+              ? { color: "var(--danger)" }
               : undefined
           }
         />

@@ -1,55 +1,46 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
+import { LineItem } from "generated/graphql";
 import { useRemoveCartItemMutation } from "graphql/remove-cart-item/remove-cart-item.mutation";
+import { FC } from "react";
 import { Card, CardProps } from "reactstrap";
+import { DeepPartial } from "util/ts-types";
 import styles from "./CartItem.module.css";
 
-interface Props extends Omit<CardProps, "className"> {
-  productName: string;
-  quantity: number;
-  productImage: string;
-  lineItemId: string;
-  price: number;
-}
-
-export default function CartItem({
-  title,
-  productImage,
-  lineItemId,
-  productName: originalProductName,
-  quantity,
-  price,
-  ...cardProps
-}: Props): JSX.Element | null {
-  const removeCartItemMutation = useRemoveCartItemMutation();
-
-  if (!removeCartItemMutation) return null;
-
-  const [removeLineItem, { loading: removeItemLoading }] =
-    removeCartItemMutation;
-
-  let productName = originalProductName;
-
-  if (productName && productName.length > 14) {
-    productName = `${productName.substring(0, 11)}...`;
+const CartItem: FC<{
+  lineItem: DeepPartial<LineItem>;
+  onDeleteClick?: () => Promise<void>;
+}> = ({ lineItem, onDeleteClick }) => {
+  // validate line line item required fields
+  const { price, product, quantity } = lineItem;
+  if (!quantity || !price || !product) {
+    return null;
   }
 
-  const handleLineItemDeleteClick = async () => {
-    if (removeItemLoading) return;
+  // validate line item product required fields
+  let productName = product?.name;
+  const productImage = product?.photo?.at(0)?.image?.publicUrlTransformed;
 
-    await removeLineItem({
-      variables: {
-        lineItemId: lineItemId,
-      },
-    });
-  };
+  if (!productName) return null;
+  if (productName.length > 20) {
+    productName = `${productName.substring(0, 17)}...`;
+  }
 
   return (
-    <Card className={styles.card} {...cardProps}>
+    <Card className={styles.card}>
       <div className={styles.imageContainer}>
-        <img src={productImage} />
+        {productImage ? (
+          <img src={productImage} />
+        ) : (
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              backgroundColor: "lightgray",
+            }}
+          />
+        )}
       </div>
-
       <div className={styles.content}>
         <h3>{productName}</h3>
         <div className={styles.footer}>
@@ -58,9 +49,13 @@ export default function CartItem({
           </p>
         </div>
       </div>
-      <p className={styles.delete} onClick={handleLineItemDeleteClick}>
-        <i className="fas fa-trash" />
-      </p>
+      {onDeleteClick ? (
+        <p className={styles.delete} onClick={onDeleteClick}>
+          <i className="fas fa-trash" />
+        </p>
+      ) : null}
     </Card>
   );
-}
+};
+
+export default CartItem;

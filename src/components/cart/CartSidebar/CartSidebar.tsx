@@ -1,16 +1,9 @@
-import { LineItem } from "generated/graphql";
-import { useCartItemsQuery } from "graphql/cart-items/cart-items.query";
-import { CART_ITEMS_items } from "graphql/cart-items/__generated__/CART_ITEMS";
-import { useRemoveCartItemMutation } from "graphql/remove-cart-item/remove-cart-item.mutation";
 import Link from "next/link";
 import useApp from "providers/AppProvider/useApp";
 import { Col, Row } from "reactstrap";
 import useUserPP from "../../../hooks/useUserPP";
 import { Backdrop } from "../../UI";
-import { CartItem } from "../CartItem";
-import CartItems from "../CartItems/CartItems";
 import CartItemSection from "../CartItemsSection/CartItemsSection";
-import CartTotals from "../CartTotals/CartTotals";
 import CartTotalsSection from "../CartTotalsSection/CartTotalsSection";
 import styles from "./CartSidebar.module.css";
 

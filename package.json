@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "download-schema": "apollo service:download --endpoint=http://localhost:3000/api/graphql/ graphql-schema.json",
-    "generate-types": "apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql"
+    "generate-types": "apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "next": "12.3.0",
@@ -34,6 +35,11 @@
   },
   "devDependencies": {
     "apollo": "^2.33.6",
+    "@graphql-codegen/cli": "2.11.6",
+    "@graphql-codegen/introspection": "2.2.1",
+    "@graphql-codegen/typescript": "2.7.3",
+    "@graphql-codegen/typescript-operations": "2.5.3",
+    "@graphql-codegen/typescript-react-apollo": "3.3.3",
     "@types/react-select": "^4.0.17",
     "@types/graphql": "^14.5.0",
     "@netlify/plugin-nextjs": "^4.16.0",

@@ -1,3 +1,4 @@
+import { LineItem } from "generated/graphql";
 import { useCartItemsQuery } from "graphql/cart-items/cart-items.query";
 import { CART_ITEMS_items } from "graphql/cart-items/__generated__/CART_ITEMS";
 import Link from "next/link";
@@ -6,6 +7,7 @@ import { Col, Row } from "reactstrap";
 import useUserPP from "../../../hooks/useUserPP";
 import { Backdrop } from "../../UI";
 import { CartItem } from "../CartItem";
+import CartItems from "../CartItems/CartItems";
 import CartTotals from "../CartTotals/CartTotals";
 import styles from "./CartSidebar.module.css";
 
@@ -47,34 +49,7 @@ export default function CartSidebar(): JSX.Element {
             </Row>
           </div>
         )}
-        <div className={styles.itemWrapper}>
-          {lineItems?.map((lineItem) => {
-            if (
-              lineItem?.id &&
-              lineItem?.price &&
-              typeof lineItem.quantity === "number" &&
-              lineItem?.product?.photo?.length &&
-              lineItem?.product?.name
-            ) {
-              const productImage =
-                lineItem.product.photo[0].image?.publicUrlTransformed;
-              if (!productImage) return null;
-
-              return (
-                <div key={lineItem.id} className={styles.item}>
-                  <CartItem
-                    lineItemId={lineItem.id}
-                    price={lineItem.price}
-                    quantity={lineItem.quantity}
-                    productImage={productImage}
-                    productName={lineItem.product?.name}
-                  />
-                </div>
-              );
-            }
-            return null;
-          })}
-        </div>
+        <CartItems lineItems={lineItems as any} />
         {lineItems?.length ? (
           <div className={styles.footer}>
             <CartTotals />

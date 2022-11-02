@@ -1,4 +1,5 @@
 import { Form, Formik, FormikHelpers } from "formik";
+import { useAddCartItemMutation } from "graphql/add-cart-item/add-cart-item.mutation";
 import Link from "next/link";
 import { useState } from "react";
 import {
@@ -17,7 +18,6 @@ import {
 import { formatCurrency } from "util/currency";
 import { roundNumber } from "util/math";
 import breakpoints from "../../../constants/breakpoints";
-import useCart from "../../../hooks/useCart";
 import { useMediaQuery } from "../../../hooks/useMediaQuery";
 import useUserPP from "../../../hooks/useUserPP";
 import { ProductStock } from "../../../models/product";
@@ -32,8 +32,16 @@ interface Props {
   product: PRODUCT_BY_ID_allProducts | null | undefined;
 }
 
-export default function ProductDetails({ product }: Props): JSX.Element {
+export default function ProductDetails({ product }: Props): JSX.Element | null {
   const [collapses, setCollapses] = useState([1]);
+  const addCartItemMutation = useAddCartItemMutation();
+  const { user } = useUserPP();
+  const isSM = useMediaQuery(`(max-width: ${breakpoints.sm}px)`);
+  const isMD = useMediaQuery(`(max-width: ${breakpoints.md}px)`);
+
+  if (!addCartItemMutation) return null;
+
+  const [addLineItem] = addCartItemMutation;
 
   const changeCollapse = (collapse: number) => {
     if (collapses.includes(collapse)) {
@@ -43,21 +51,20 @@ export default function ProductDetails({ product }: Props): JSX.Element {
     }
   };
 
-  const { addLineItem } = useCart();
-  const { user } = useUserPP();
-
   const handleCartAdd = async (
     values: ProductStock,
     { resetForm }: FormikHelpers<ProductStock>
   ) => {
     if (product?.id) {
-      addLineItem(product.id, values.stock);
+      addLineItem({
+        variables: {
+          productId: product.id,
+          quantity: values.stock,
+        },
+      });
       resetForm({ values: { stock: 0 } });
     }
   };
-
-  const isSM = useMediaQuery(`(max-width: ${breakpoints.sm}px)`);
-  const isMD = useMediaQuery(`(max-width: ${breakpoints.md}px)`);
 
   const categories = (
     <div

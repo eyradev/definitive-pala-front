@@ -1,6 +1,8 @@
-import Link from 'next/link';
-import router from 'next/router';
-import { useState } from 'react';
+import { useCartItemsQuery } from "graphql/cart-items/cart-items.query";
+import Link from "next/link";
+import router from "next/router";
+import useApp from "providers/AppProvider/useApp";
+import { useState } from "react";
 import {
   Badge,
   Collapse,
@@ -13,36 +15,38 @@ import {
   NavbarBrand,
   NavItem,
   NavLink,
-  UncontrolledDropdown
-} from 'reactstrap';
-import useCart from '../../../../hooks/useCart';
-import useUserPP from '../../../../hooks/useUserPP';
-import { Searchbar } from '../../../search';
-import { Logo } from '../../Logo';
-import styles from './StandardNavbar.module.css';
+  UncontrolledDropdown,
+} from "reactstrap";
+import useUserPP from "../../../../hooks/useUserPP";
+import { Searchbar } from "../../../search";
+import { Logo } from "../../Logo";
+import styles from "./StandardNavbar.module.css";
 
-export default function StandardNavbar(): JSX.Element {
+export default function StandardNavbar(): JSX.Element | null {
   const [isCollapseOpen, setCollapseOpen] = useState(false);
   const { signout, user } = useUserPP();
-  const { lineItems, toggleCart } = useCart();
+  const { data: itemData } = useCartItemsQuery();
+
+  const { toggleCart } = useApp();
+  if (!itemData?.items?.length) return null;
 
   const getCartCount = () =>
-    lineItems?.allLineItems?.reduce<number>(
+    itemData?.items?.reduce<number>(
       (acc, curr) => acc + (curr?.quantity || 0),
       0
     );
 
   const handleBodyClick = () => {
-    document.documentElement.classList.toggle('nav-open');
+    document.documentElement.classList.toggle("nav-open");
     setCollapseOpen(false);
   };
 
   const cart = (
     <div
       style={{
-        position: 'relative',
-        marginLeft: '5px',
-        marginRight: '-7px'
+        position: "relative",
+        marginLeft: "5px",
+        marginRight: "-7px",
       }}
       className={styles.cart}
       onClick={toggleCart}
@@ -51,21 +55,21 @@ export default function StandardNavbar(): JSX.Element {
         className="mr-1"
         color="light"
         style={{
-          border: '1px solid var(--primary)'
+          border: "1px solid var(--primary)",
         }}
       >
         <div
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-            fontSize: '0.6rem',
-            paddingRight: '3px',
-            color: 'var(--primary)'
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            fontSize: "0.6rem",
+            paddingRight: "3px",
+            color: "var(--primary)",
           }}
         >
           <Logo variant="icon" height={16} width={16} />
-          <p>&nbsp;{lineItems?.allLineItems?.length ? getCartCount() : 0}</p>
+          <p>&nbsp;{getCartCount()}</p>
         </div>
       </Badge>
     </div>
@@ -117,7 +121,7 @@ export default function StandardNavbar(): JSX.Element {
       </Link>
       <Link href="/login">
         <NavItem>
-          <NavLink style={{ whiteSpace: 'nowrap' }} className={styles.Navlink}>
+          <NavLink style={{ whiteSpace: "nowrap" }} className={styles.Navlink}>
             Iniciar Sesión
           </NavLink>
         </NavItem>
@@ -142,11 +146,11 @@ export default function StandardNavbar(): JSX.Element {
         <Container>
           <div
             className="navbar-translate"
-            style={{ display: 'flex', alignItems: 'center' }}
+            style={{ display: "flex", alignItems: "center" }}
           >
             <NavbarBrand
               className={styles.logo}
-              onClick={() => router.push('/')}
+              onClick={() => router.push("/")}
             >
               <Logo variant="typography" height={35} />
             </NavbarBrand>
@@ -154,7 +158,7 @@ export default function StandardNavbar(): JSX.Element {
             {cart}
             <button
               onClick={() => {
-                document.documentElement.classList.toggle('nav-open');
+                document.documentElement.classList.toggle("nav-open");
                 setCollapseOpen(!isCollapseOpen);
               }}
               aria-expanded={isCollapseOpen}

@@ -1,65 +1,60 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
+import { useRemoveCartItemMutation } from "graphql/remove-cart-item/remove-cart-item.mutation";
 import { Card, CardProps } from "reactstrap";
-import useCart from "../../../hooks/useCart";
-import useNotification from "../../../hooks/useNotification";
-import { ALL_LINE_ITEMS_allLineItems } from "../../../queries/__generated__/ALL_LINE_ITEMS";
 import styles from "./CartItem.module.css";
 
 interface Props extends Omit<CardProps, "className"> {
-  lineItem: ALL_LINE_ITEMS_allLineItems;
+  productName: string;
+  quantity: number;
+  productImage: string;
+  lineItemId: string;
+  price: number;
 }
 
 export default function CartItem({
-  lineItem,
+  title,
+  productImage,
+  lineItemId,
+  productName: originalProductName,
+  quantity,
+  price,
   ...cardProps
-}: Props): JSX.Element {
-  const { removeLineItem } = useCart();
-  const { addNotification } = useNotification();
+}: Props): JSX.Element | null {
+  const removeCartItemMutation = useRemoveCartItemMutation();
 
-  let productName = lineItem.product?.name;
+  if (!removeCartItemMutation) return null;
+
+  const [removeLineItem, { loading: removeItemLoading }] =
+    removeCartItemMutation;
+
+  let productName = originalProductName;
 
   if (productName && productName.length > 14) {
     productName = `${productName.substring(0, 11)}...`;
   }
 
   const handleLineItemDeleteClick = async () => {
-    if (!addNotification) {
-      console.warn("add notification not set");
-      return;
-    }
+    if (removeItemLoading) return;
 
-    const deleteItem = await removeLineItem(lineItem.id);
-    if (deleteItem && !deleteItem.errors) {
-      addNotification({
-        message: `Se elimino ${
-          deleteItem.data?.deleteLineItem?.product?.name || "producto"
-        } del carrito`,
-        type: "info",
-      });
-    } else {
-      addNotification({
-        message: "Error eliminando producto del carrito",
-        type: "danger",
-      });
-    }
+    await removeLineItem({
+      variables: {
+        lineItemId: lineItemId,
+      },
+    });
   };
 
   return (
     <Card className={styles.card} {...cardProps}>
-      {lineItem.product?.photo &&
-        lineItem.product.photo.length > 0 &&
-        lineItem.product.photo[0].image?.publicUrlTransformed && (
-          <div className={styles.imageContainer}>
-            <img src={lineItem.product?.photo[0].image?.publicUrlTransformed} />
-          </div>
-        )}
+      <div className={styles.imageContainer}>
+        <img src={productImage} />
+      </div>
+
       <div className={styles.content}>
         <h3>{productName}</h3>
         <div className={styles.footer}>
           <p>
-            ${lineItem.price} &times; {lineItem.quantity}
+            ${price} &times; {quantity}
           </p>
         </div>
       </div>

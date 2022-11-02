@@ -1,6 +1,8 @@
 import { useQuery } from "@apollo/client";
+import { useCartItemsQuery } from "graphql/cart-items/cart-items.query";
 import Link from "next/link";
 import router from "next/router";
+import useApp from "providers/AppProvider/useApp";
 import React, { useState } from "react";
 import {
   Badge,
@@ -19,7 +21,6 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 import breakpoints from "../../../../constants/breakpoints";
-import useCart from "../../../../hooks/useCart";
 import { useMediaQuery } from "../../../../hooks/useMediaQuery";
 import useUserPP from "../../../../hooks/useUserPP";
 import {
@@ -35,7 +36,7 @@ import { Searchbar } from "../../../search";
 import { Logo } from "../../Logo";
 import styles from "./DetailedNavbar.module.css";
 
-export default function DetailedNavbar(): JSX.Element {
+export default function DetailedNavbar(): JSX.Element | null {
   const [isCollapseOpen, setCollapseOpen] = useState(false);
   const { signout, user } = useUserPP();
 
@@ -43,7 +44,7 @@ export default function DetailedNavbar(): JSX.Element {
   const isSM = useMediaQuery(`(max-width: ${breakpoints.md}px)`);
   const isXS = useMediaQuery(`(max-width: ${breakpoints.sm}px)`);
 
-  const { lineItems, toggleCart } = useCart();
+  const { toggleCart } = useApp();
 
   const handleBodyClick = () => {
     document.documentElement.classList.toggle("nav-open");
@@ -52,6 +53,7 @@ export default function DetailedNavbar(): JSX.Element {
 
   const { data: categories } = useQuery<ALL_PREFERENCES>(GET_ALL_PREFERENCES);
   const { data: illnesses } = useQuery<ALL_ILLNESSES>(GET_ALL_ILLNESSES);
+  const { data: itemData } = useCartItemsQuery();
 
   const handleCategoryClick =
     (item: ALL_PREFERENCES_allCategories, type: "illness" | "category") =>
@@ -74,7 +76,7 @@ export default function DetailedNavbar(): JSX.Element {
     };
 
   const getCartCount = () =>
-    lineItems?.allLineItems?.reduce<number>(
+    itemData?.items?.reduce<number>(
       (acc, curr) => acc + (curr?.quantity || 0),
       0
     );

@@ -3,6 +3,7 @@ import CartTotalsSection from "components/cart/CartTotalsSection/CartTotalsSecti
 import { Section } from "components/home";
 import withCartAdjustment from "providers/CheckoutProvider/withCartAdjustment";
 import { Col, Row } from "reactstrap";
+import EpaycoButton from "../EpaycoButton/EpaycoButton";
 
 const CheckoutSection: React.FC = () => {
   return (
@@ -12,7 +13,9 @@ const CheckoutSection: React.FC = () => {
           <Col md={6}>
             <CartItemSection />
           </Col>
-          <Col>heeey5565</Col>
+          <Col>
+            <EpaycoButton disabled />
+          </Col>
         </Row>
         <Row>
           <CartTotalsSection />

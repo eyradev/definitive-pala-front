@@ -139,10 +139,11 @@ export type CartPrice = {
   __typename?: 'CartPrice';
   basePrice: Scalars['Float'];
   palanteDiscount: Scalars['Float'];
+  palanteTax: Scalars['Float'];
   palanteTotal: Scalars['Float'];
   storeDiscount: Scalars['Float'];
+  storeTax: Scalars['Float'];
   storeTotal: Scalars['Float'];
-  tax: Scalars['Float'];
   total: Scalars['Float'];
 };
 
@@ -346,6 +347,11 @@ export type CategoryWhereInput = {
 
 export type CategoryWhereUniqueInput = {
   id: Scalars['ID'];
+};
+
+export type CheckoutCartOutput = {
+  __typename?: 'CheckoutCartOutput';
+  epaycoData: Scalars['String'];
 };
 
 export type CitiesCreateInput = {
@@ -1745,6 +1751,7 @@ export type Mutation = {
   addToCart2?: Maybe<AddToCartResponse>;
   adjustCart?: Maybe<CartAdjustment>;
   authenticateUserWithPassword: UserAuthenticationWithPasswordResult;
+  checkoutCart?: Maybe<CheckoutCartOutput>;
   /**  Create a single Address item.  */
   createAddress?: Maybe<Address>;
   /**  Create multiple Address items.  */
@@ -5009,6 +5016,7 @@ export type Shipping = {
   __typename?: 'Shipping';
   distance?: Maybe<Scalars['Float']>;
   shippingPrice?: Maybe<Scalars['Float']>;
+  tax?: Maybe<Scalars['Float']>;
 };
 
 export type ShippingAddresses = {

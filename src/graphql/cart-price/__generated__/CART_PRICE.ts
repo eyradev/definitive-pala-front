@@ -15,7 +15,8 @@ export interface CART_PRICE_CartPrice {
   total: number;
   storeTotal: number;
   palanteTotal: number;
-  tax: number;
+  palanteTax: number;
+  storeTax: number;
 }
 
 export interface CART_PRICE {

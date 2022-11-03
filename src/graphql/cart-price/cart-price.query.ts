@@ -20,7 +20,8 @@ export const CART_PRICE_QUERY = gql`
       total
       storeTotal
       palanteTotal
-      tax
+      palanteTax
+      storeTax
     }
   }
 `;

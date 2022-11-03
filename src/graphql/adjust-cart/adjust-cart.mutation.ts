@@ -5,6 +5,7 @@ import {
 } from "@apollo/client";
 import gql from "graphql-tag";
 import { CART_ITEMS_QUERY } from "graphql/cart-items/cart-items.query";
+import { CART_PRICE_QUERY } from "graphql/cart-price/cart-price.query";
 import { useCurrentCartQuery } from "graphql/current-cart/current-cart.query";
 import useNotification from "hooks/useNotification";
 import { ADJUST_CART } from "./__generated__/ADJUST_CART";
@@ -46,12 +47,20 @@ export const useAdjustCartMutation = (
       const { deletedLineItems, updatedLineItems } = data.adjustments;
 
       if (deletedLineItems?.length || updatedLineItems?.length) {
-        refetchQueries.push({
-          query: CART_ITEMS_QUERY,
-          variables: {
-            cartId: cart?.id ?? "",
+        refetchQueries.push(
+          {
+            query: CART_ITEMS_QUERY,
+            variables: {
+              cartId: cart?.id ?? "",
+            },
           },
-        });
+          {
+            query: CART_PRICE_QUERY,
+            variables: {
+              cartId: cart?.id ?? "",
+            },
+          }
+        );
       }
       return refetchQueries;
     },

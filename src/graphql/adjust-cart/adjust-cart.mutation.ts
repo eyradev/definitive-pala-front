@@ -1,4 +1,8 @@
-import { MutationHookOptions, useMutation } from "@apollo/client";
+import {
+  InternalRefetchQueriesInclude,
+  MutationHookOptions,
+  useMutation,
+} from "@apollo/client";
 import gql from "graphql-tag";
 import { CART_ITEMS_QUERY } from "graphql/cart-items/cart-items.query";
 import { useCurrentCartQuery } from "graphql/current-cart/current-cart.query";
@@ -29,23 +33,30 @@ export const useAdjustCartMutation = (
     ...options,
     // only refetch if there's updates
     refetchQueries: ({ data }) => {
-      if (!data?.adjustments || !cart?.id) return [];
+      let refetchQueries: InternalRefetchQueriesInclude = [];
+
+      if (options?.refetchQueries) {
+        if (Array.isArray(options.refetchQueries)) {
+          refetchQueries = options.refetchQueries;
+        }
+      }
+
+      if (!data?.adjustments || !cart?.id) return refetchQueries;
 
       const { deletedLineItems, updatedLineItems } = data.adjustments;
 
       if (deletedLineItems?.length || updatedLineItems?.length) {
-        return [
-          {
-            query: CART_ITEMS_QUERY,
-            variables: {
-              cartId: cart?.id ?? "",
-            },
+        refetchQueries.push({
+          query: CART_ITEMS_QUERY,
+          variables: {
+            cartId: cart?.id ?? "",
           },
-        ];
+        });
       }
-      return [];
+      return refetchQueries;
     },
     onCompleted: (data) => {
+      if (options?.onCompleted) options.onCompleted(data);
       if (!data?.adjustments || !addNotification) return;
 
       const { deletedLineItems, updatedLineItems } = data.adjustments;

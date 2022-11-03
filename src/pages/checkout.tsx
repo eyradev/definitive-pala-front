@@ -45,15 +45,8 @@
 // import Image from "next/image";
 // import epaycoLogo from "public/images/epayco.png";
 
-import CartItemSection from "components/cart/CartItemsSection/CartItemsSection";
-import CartTotalsSection from "components/cart/CartTotalsSection/CartTotalsSection";
-import { Section } from "components/home";
+import CheckoutSection from "components/checkout/CheckoutSection/CheckoutSection";
 import { StandardLayout } from "components/layout";
-import { Loading } from "components/UI";
-import { useAdjustCartMutation } from "graphql/adjust-cart/adjust-cart.mutation";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { Col, Row } from "reactstrap";
 
 // export default function CheckoutPage(): JSX.Element {
 //   const { lineItems, cartData, cartTotals } = useCart();
@@ -345,49 +338,9 @@ import { Col, Row } from "reactstrap";
 
 // CheckoutPage.Layout = StandardLayout;
 
-export default function CheckoutPage() {
-  const router = useRouter();
-
-  const [cartAdjusted, setCartAdjusted] = useState(false);
-  const adjustCartMutation = useAdjustCartMutation({
-    onCompleted: () => {
-      setCartAdjusted(true);
-    },
-    onError: () => {
-      router.push("/");
-    },
-    awaitRefetchQueries: true,
-  });
-
-  const adjustCart = adjustCartMutation?.[0];
-  // when the page loads the cart must be updated
-  useEffect(() => {
-    if (!adjustCart) return;
-    (async () => {
-      await adjustCart();
-    })();
-
-    // could be useful to set a timeout for updating the cart at this point
-  }, [adjustCart]);
-
-  if (!adjustCartMutation) return null;
-
-  // wait for the cart to be updated
-  if (cartAdjusted) return <Loading />;
-  return (
-    <div className="main">
-      <Section title="Checkout">
-        <Row>
-          <Col md={6}>
-            <CartItemSection />
-          </Col>
-        </Row>
-        <Row>
-          <CartTotalsSection />
-        </Row>
-      </Section>
-    </div>
-  );
-}
+const CheckoutPage = () => {
+  return <CheckoutSection />;
+};
 
 CheckoutPage.Layout = StandardLayout;
+export default CheckoutPage;

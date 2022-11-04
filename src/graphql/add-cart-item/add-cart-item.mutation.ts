@@ -1,5 +1,4 @@
 import {
-  InternalRefetchQueriesInclude,
   InternalRefetchQueryDescriptor,
   MutationHookOptions,
   useMutation,

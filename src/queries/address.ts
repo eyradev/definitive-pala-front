@@ -13,22 +13,6 @@ export const ADDRESS_BY_USER_QUERY = gql`
   }
 `;
 
-export const CREATE_USER_ADDRESS_MUTATION = gql`
-  mutation CREATE_USER_ADDRESS(
-    $addresL1: String!
-    $cityId: ID!
-    $description: String
-  ) {
-    createUserAddress(
-      addressL1: $addresL1
-      cityId: $cityId
-      description: $description
-    ) {
-      id
-    }
-  }
-`;
-
 export const DELETE_ADDRESS_MUTATION = gql`
   mutation DELETE_ADDRESS($addressId: ID!) {
     deleteAddress(id: $addressId) {

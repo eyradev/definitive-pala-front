@@ -2,6 +2,7 @@ export enum PalanteErrorCodes {
   SESSION_NOT_FOUND = "SessionNotFound",
   CART_NOT_FOUND = "CartNotFound",
   EMPTY_CART = "EmptyCart",
+  CART_OUT_OF_DATE = "CartOutOfDate",
   STORE_NOT_FOUND = "StoreNotFound",
   ADDRESS_NOT_FOUND = "AddressNotFound",
   LINE_ITEM_NON_POSITIVE_QUANTITY = "LineItemNonPositiveQuantity",
@@ -10,6 +11,8 @@ export enum PalanteErrorCodes {
   PRODUCT_STOCK_EXCEEDED = "ProductStockExceeded",
   PRODUCT_MAX_STOCK_PER_ORDER_EXCEEDED = "ProductMaxStockPerOrderExceeded",
   USER_HAS_NO_ADDRESSES = "UserHasNoAddresses",
+  USER_NOT_FOUND = "UserNotFound",
+  USER_ADDRESS_LIMIT_EXCEEDED = "UserAddressLimitExceeded",
   LINE_ITEM_NOT_FOUND = "LineItemNotFound",
   LINE_ITEM_NOT_FROM_CART = "LineItemNotFromCart",
   CART_ADDRESS_NOT_SET = "CartAddressNotSet",
@@ -18,4 +21,6 @@ export enum PalanteErrorCodes {
   COUPON_NOT_VALID = "CouponNotValid",
   COUPON_EXPIRED = "CouponExpired",
   META_ITEM_NOT_FOUND = "MetaItemNotFound",
+  INVALID_PAYLOAD = "InvalidPayload",
+  INTERNAL_ERROR = "InternalError",
 }

@@ -35,4 +35,15 @@ export const PalanteErrorMessages = new Map<PalanteErrorCodes, string>([
   [PalanteErrorCodes.SESSION_NOT_FOUND, "No se ha iniciado sesión"],
   [PalanteErrorCodes.STORE_NOT_FOUND, "Tienda no encontrada"],
   [PalanteErrorCodes.USER_HAS_NO_ADDRESSES, "No tienes direcciones asociadas"],
+  [
+    PalanteErrorCodes.CART_OUT_OF_DATE,
+    "Carrito no actualizado, intenta refrescar la pagina",
+  ],
+  [PalanteErrorCodes.USER_NOT_FOUND, "Usuario no encontrado"],
+  [
+    PalanteErrorCodes.USER_ADDRESS_LIMIT_EXCEEDED,
+    "No puedes crear más direcciones",
+  ],
+  [PalanteErrorCodes.INVALID_PAYLOAD, "Información erronea"],
+  [PalanteErrorCodes.INTERNAL_ERROR, "Error procesando información"],
 ]);

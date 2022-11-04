@@ -1,4 +1,5 @@
 import { tcUrl } from "config";
+import { useCheckoutCartMutation } from "graphql/checkout-cart/checkout-cart.mutation";
 import useEpaycoScript from "hooks/useEpaycoScript";
 import Link from "next/link";
 import { useCallback, useState } from "react";
@@ -8,11 +9,17 @@ import EpaycoButton from "../EpaycoButton/EpaycoButton";
 const PaymentSection: React.FC = () => {
   const { epayco, isScriptLoaded } = useEpaycoScript();
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [checkoutCart, { loading }] = useCheckoutCartMutation();
 
-  const handlePayClick = useCallback(() => {
-    if (!isScriptLoaded || !epayco?.open) return;
-    console.log("hola");
-  }, [isScriptLoaded, epayco]);
+  const handlePayClick = useCallback(async () => {
+    if (!isScriptLoaded || !epayco?.open || loading) return;
+
+    const { data } = await checkoutCart();
+    const epaycoPayload = data?.checkoutCart?.epaycoData;
+    if (!epaycoPayload) return;
+    console.log(epaycoPayload);
+    epayco.open(JSON.parse(epaycoPayload));
+  }, [isScriptLoaded, epayco, loading, checkoutCart]);
 
   if (!isScriptLoaded) return null;
 
@@ -23,7 +30,10 @@ const PaymentSection: React.FC = () => {
   return (
     <div>
       <Label check>
-        <EpaycoButton disabled={!termsAccepted} onClick={handlePayClick} />
+        <EpaycoButton
+          disabled={!termsAccepted || loading}
+          onClick={handlePayClick}
+        />
         <Input
           checked={termsAccepted}
           onChange={handleTermsCheckBoxCange}

@@ -37,7 +37,7 @@ export const useCreateUserAddressMutation = (
   const { addNotification } = useNotification();
 
   // TODO: refetch user addresses
-  const createAddressMutation = useMutation<
+  const createUserAddressMutation = useMutation<
     CREATE_USER_ADDRESS,
     CREATE_USER_ADDRESSVariables
   >(CREATE_USER_ADDRESS_MUTATION, {
@@ -49,5 +49,5 @@ export const useCreateUserAddressMutation = (
     },
   });
 
-  if (user?.id) return createAddressMutation;
+  if (user?.id) return createUserAddressMutation;
 };

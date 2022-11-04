@@ -12,11 +12,3 @@ export const ADDRESS_BY_USER_QUERY = gql`
     }
   }
 `;
-
-export const DELETE_ADDRESS_MUTATION = gql`
-  mutation DELETE_ADDRESS($addressId: ID!) {
-    deleteAddress(id: $addressId) {
-      id
-    }
-  }
-`;

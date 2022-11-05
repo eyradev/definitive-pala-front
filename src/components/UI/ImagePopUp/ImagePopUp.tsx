@@ -1,5 +1,3 @@
-import breakpoints from "constants/breakpoints";
-import { useMediaQuery } from "hooks/useMediaQuery";
 import Image from "next/image";
 import { DetailedHTMLProps, HTMLAttributes, ReactNode, useState } from "react";
 import { Modal } from "reactstrap";

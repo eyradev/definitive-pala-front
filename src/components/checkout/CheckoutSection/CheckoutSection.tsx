@@ -1,5 +1,7 @@
 import UserAddressesSection from "components/address/UserAddressesSection/UserAddressesSection";
+import UserAddressSelector from "components/address/UserAddressSelectorSection/UserAddressSelectorSection";
 import CartItemSection from "components/cart/CartItemsSection/CartItemsSection";
+import CartTotalsSection from "components/cart/CartTotalsSection/CartTotalsSection";
 import { Section } from "components/home";
 import CheckoutProvider from "providers/CheckoutProvider/CheckoutProvider";
 import withCartAdjustment from "providers/CheckoutProvider/withCartAdjustment";
@@ -17,10 +19,12 @@ const CheckoutSection: React.FC = () => {
             </Col>
             <Col>
               <UserAddressesSection />
+              <UserAddressSelector>seleccionar direccion</UserAddressSelector>
             </Col>
           </Row>
           <Row>
             <Col md={8}>
+              <CartTotalsSection />
               <PaymentSection />
             </Col>
           </Row>

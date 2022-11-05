@@ -26,3 +26,18 @@
   width: 95%;
 }
 
+.selected {
+  border: 1.5px solid var(--primary);
+}
+
+.selectable:hover {
+  background-color: #f8fafc;
+  border: 1.5px solid #94a3b8;
+  cursor: pointer;
+}
+
+.selected.selectable:hover {
+  background-color: #fed7aa;
+  border: 1.5px solid var(--primary);
+  cursor: not-allowed;
+}

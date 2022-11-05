@@ -4,6 +4,7 @@ import { LineItem } from "generated/graphql";
 import { useRemoveCartItemMutation } from "graphql/remove-cart-item/remove-cart-item.mutation";
 import { FC } from "react";
 import { Card, CardProps } from "reactstrap";
+import { formatCurrency } from "util/currency";
 import { DeepPartial } from "util/ts-types";
 import styles from "./CartItem.module.css";
 
@@ -45,7 +46,7 @@ const CartItem: FC<{
         <h3>{productName}</h3>
         <div className={styles.footer}>
           <p>
-            ${price} &times; {quantity}
+            {formatCurrency(price)} &times; {quantity}
           </p>
         </div>
       </div>

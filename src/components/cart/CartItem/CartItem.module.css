@@ -1,14 +1,14 @@
 .card {
+  box-shadow: none !important;
   display: flex !important;
   flex-direction: row !important;
-  height: 100px;
-  padding: 10px;
-  margin: 0;
+  margin: 0 !important;
+  height: 80px;
   position: relative;
 }
 
 .imageContainer {
-  width: 35%;
+  width: 33%;
 }
 
 .imageContainer img {
@@ -41,7 +41,7 @@
 
 .delete {
   color: var(--danger);
-  right: 4;
+  left: 4;
   top: 4;
   position: absolute;
 }

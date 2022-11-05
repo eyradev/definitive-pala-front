@@ -40,7 +40,10 @@ export default function CartSidebar(): JSX.Element {
             </Row>
           </div>
         )}
-        <CartItemSection />
+        <div style={{ padding: "0px 15px" }}>
+          <CartItemSection />
+        </div>
+
         {user ? (
           <div className={styles.footer}>
             <CartTotalsSection />

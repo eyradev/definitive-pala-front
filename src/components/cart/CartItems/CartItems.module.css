@@ -5,7 +5,6 @@
 }
 
 .lineItem {
-  padding-right: 30px;
-  padding-left: 30px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+  padding: 10px 0px;
 }

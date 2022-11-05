@@ -1,43 +1,57 @@
-import { Card, CardHeader, Col, Row } from 'reactstrap';
-import { ADDRESS_BY_USER_allAddresses } from '../../../queries/__generated__/ADDRESS_BY_USER';
-import styles from './AddressCard.module.css';
+import { Address } from "generated/graphql";
+import { MouseEventHandler } from "react";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Col,
+  Row,
+} from "reactstrap";
+import styles from "./AddressCard.module.css";
 
-interface Props {
-  address: ADDRESS_BY_USER_allAddresses;
-  onDelete?: (addressId: string) => void | Promise<void>;
-}
-
-export default function AddressCard({ address, onDelete }: Props): JSX.Element {
-  const handleAddressDelete = (addressId: string) => async () => {
-    if (!onDelete) return;
-    await onDelete(addressId);
-  };
-
+export const AddressCard: React.FC<{
+  address: Address;
+  onDeleteClick?: MouseEventHandler<HTMLElement>;
+}> = ({ address, onDeleteClick }) => {
   return (
     <Card className={styles.root}>
-      <CardHeader>
-        <h3>
-          {address.addressL1} <small>{address.city?.name}</small>
-        </h3>
-      </CardHeader>
-      <Row>
-        <Col>
-          {address.description && (
-            <div>
-              <p>{address.description}</p>
-            </div>
-          )}
-        </Col>
-        {onDelete && (
-          <Col style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <div className={styles.content}>
+        <CardHeader
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <h3>
+            {address.addressL1} <small>{address.city?.name}</small>
+          </h3>
+        </CardHeader>
+
+        {address.description ? <p>{address.description}</p> : null}
+      </div>
+
+      <CardFooter>
+        {true ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "baseline",
+            }}
+          >
             <i
               className="fas fa-trash"
-              style={{ color: 'var(--danger)' }}
-              onClick={handleAddressDelete(address.id)}
+              style={{ color: "var(--danger)" }}
+              onClick={onDeleteClick}
             />
-          </Col>
-        )}
-      </Row>
+          </div>
+        ) : null}
+      </CardFooter>
     </Card>
   );
-}
+};
+
+export default AddressCard;

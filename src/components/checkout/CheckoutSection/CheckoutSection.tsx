@@ -1,10 +1,9 @@
+import UserAddressesSection from "components/address/UserAddressesSection/UserAddressesSection";
 import CartItemSection from "components/cart/CartItemsSection/CartItemsSection";
-import CartTotalsSection from "components/cart/CartTotalsSection/CartTotalsSection";
 import { Section } from "components/home";
 import CheckoutProvider from "providers/CheckoutProvider/CheckoutProvider";
 import withCartAdjustment from "providers/CheckoutProvider/withCartAdjustment";
 import { Col, Row } from "reactstrap";
-import EpaycoButton from "../EpaycoButton/EpaycoButton";
 import PaymentSection from "../PaymentSection/PaymentSection";
 
 const CheckoutSection: React.FC = () => {
@@ -16,7 +15,9 @@ const CheckoutSection: React.FC = () => {
             <Col md={6}>
               <CartItemSection />
             </Col>
-            <Col>Address section</Col>
+            <Col>
+              <UserAddressesSection />
+            </Col>
           </Row>
           <Row>
             <Col md={8}>

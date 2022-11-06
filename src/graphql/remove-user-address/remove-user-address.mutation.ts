@@ -1,5 +1,6 @@
 import { MutationHookOptions, useMutation } from "@apollo/client";
 import gql from "graphql-tag";
+import { USER_ADDRESSES_QUERY } from "graphql/user-addresses/user-addresses.query";
 import useNotification from "hooks/useNotification";
 import useUserPP from "hooks/useUserPP";
 import {
@@ -36,6 +37,21 @@ export const useRemoveUserAddressMutation = (
       if (data?.deleteAddress?.id) {
         addNotification({ type: "info", message: "dirección eliminada" });
       }
+    },
+    refetchQueries: (fetchResult) => {
+      const refetchQueries =
+        options?.refetchQueries && Array.isArray(options?.refetchQueries)
+          ? options.refetchQueries
+          : [];
+      if (user?.id && fetchResult.data?.deleteAddress?.id) {
+        refetchQueries.push({
+          query: USER_ADDRESSES_QUERY,
+          variables: {
+            userId: user.id,
+          },
+        });
+      }
+      return refetchQueries;
     },
   });
 

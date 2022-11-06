@@ -1,8 +1,0 @@
-.addressWrapper {
-  margin-bottom: 20px;
-}
-
-.addressWrapper:hover {
-  cursor: pointer;
-  background-color: rgb(245, 245, 245);
-}

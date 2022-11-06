@@ -1,5 +1,6 @@
 import { MutationHookOptions, useMutation } from "@apollo/client";
 import gql from "graphql-tag";
+import { USER_ADDRESSES_QUERY } from "graphql/user-addresses/user-addresses.query";
 import useNotification from "hooks/useNotification";
 import useUserPP from "hooks/useUserPP";
 import {
@@ -46,6 +47,21 @@ export const useCreateUserAddressMutation = (
       if (options?.onCompleted) options.onCompleted(data);
       if (!addNotification) return;
       addNotification({ type: "success", message: "dirección creada" });
+    },
+    refetchQueries: (fetchResult) => {
+      const refetchQueries =
+        options?.refetchQueries && Array.isArray(options?.refetchQueries)
+          ? options.refetchQueries
+          : [];
+      if (user?.id && fetchResult.data?.createUserAddress?.addressId) {
+        refetchQueries.push({
+          query: USER_ADDRESSES_QUERY,
+          variables: {
+            userId: user.id,
+          },
+        });
+      }
+      return refetchQueries;
     },
   });
 

@@ -59,11 +59,9 @@ export interface UserFormProps {
   docNumber: string;
 }
 
-function ProfilePage(): JSX.Element {
+function ProfilePage(): JSX.Element | null {
   const [nameFocus, setNameFocus] = useState(false);
   const [lastNameFocus, setLastNameFocus] = useState(false);
-  const [addressFocus, setAddressFocus] = useState(false);
-  const [addressDetailFocus, setAddressDetailFocus] = useState(false);
   const [emailFocus, setEmailFocus] = useState(false);
   const [numberFocus, setNumberFocus] = useState(false);
   const [docTypeFocus, setDocTypeFocus] = useState(false);
@@ -78,6 +76,8 @@ function ProfilePage(): JSX.Element {
 
   const { data: illness } = useQuery<ALL_ILLNESSES>(GET_ALL_ILLNESSES);
   const { data: preferences } = useQuery<ALL_PREFERENCES>(GET_ALL_PREFERENCES);
+
+  if (!addNotification) return null;
 
   const ProfileSchema = Yup.object().shape({
     name: Yup.string().required("Se requiere el nombre"),
@@ -180,6 +180,7 @@ function ProfilePage(): JSX.Element {
     );
 
     const AddressId = [{ id: addressId }];
+    // TODO Remove Address
     await updateUser({
       variables: {
         id: user.id,
@@ -198,7 +199,6 @@ function ProfilePage(): JSX.Element {
 
   return (
     <>
-      <ProfilePageHeader />
       <div className="section">
         <Container>
           <div className={styles.Title}>
@@ -286,48 +286,6 @@ function ProfilePage(): JSX.Element {
                         value={values.email}
                         onFocus={() => setEmailFocus(true)}
                         onBlur={() => setEmailFocus(false)}
-                        onChange={handleChange}
-                      ></Input>
-                    </InputGroup>
-                    <label className={styles.formato}>Dirección</label>
-                    <InputGroup
-                      className={addressFocus ? "input-group-focus" : ""}
-                    >
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="now-ui-icons location_map-big"></i>
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        aria-label="Dirección..."
-                        placeholder="Dirección..."
-                        name="address"
-                        value={values.address}
-                        type="text"
-                        onFocus={() => setAddressFocus(true)}
-                        onBlur={() => setAddressFocus(false)}
-                        onChange={handleChange}
-                      ></Input>
-                    </InputGroup>
-                    <label className={styles.formato}>
-                      Detalles de la Dirección
-                    </label>
-                    <InputGroup
-                      className={addressDetailFocus ? "input-group-focus" : ""}
-                    >
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="now-ui-icons location_map-big"></i>
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        placeholder="Ejemplo: Timbre en la puerta roja"
-                        name="addressDetails"
-                        value={values.addressDetails}
-                        type="text"
-                        bsSize="lg"
-                        onFocus={() => setAddressDetailFocus(true)}
-                        onBlur={() => setAddressDetailFocus(false)}
                         onChange={handleChange}
                       ></Input>
                     </InputGroup>

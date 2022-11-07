@@ -3,7 +3,6 @@ import { useAdjustCartMutation } from "graphql/adjust-cart/adjust-cart.mutation"
 import { useShippingQuery } from "graphql/shipping/shipping.query";
 import { useRouter } from "next/router";
 import { ComponentType, useEffect, useState } from "react";
-import { SHIPPING_QUERY } from "graphql/shipping/shipping.query";
 import { Loading } from "components/UI";
 
 const withCartAdjustment =
@@ -31,12 +30,19 @@ const withCartAdjustment =
 
     // when the page loads the cart must be updated
     useEffect(() => {
-      if (!adjustCart || !refetchShipping || cartAdjusted) return;
+      if (!adjustCart || cartAdjusted) return;
       (async () => {
-        await refetchShipping();
         await adjustCart();
       })();
-    }, [adjustCart, refetchShipping, cartAdjusted]);
+    }, [adjustCart, cartAdjusted]);
+
+    // reload cart shipping
+    useEffect(() => {
+      if (!refetchShipping) return;
+      (async () => {
+        await refetchShipping();
+      })();
+    }, [refetchShipping]);
 
     if (!adjustCartMutation) return null;
 

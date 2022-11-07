@@ -54,72 +54,75 @@ const CouponForm: React.FC = () => {
         isSubmitting,
       }) => (
         <Form>
-          {/* <Card>
-            <CardBody> */}
-          <div
-            style={{
-              padding: 8,
-              paddingLeft: 16,
-              paddingRight: 16,
-            }}
-          >
-            <Row>
-              <Col xs={12} sm={6} lg={12}>
-                <CardTitle tag="h4">Cupones</CardTitle>
-                <CardText>Si tienes un código de cupon ingresalo aquí</CardText>
-              </Col>
-              <Col xs={12} sm={6} lg={12}>
-                <FormGroup
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "flex-end",
-                    marginTop: "20px",
-                    marginRight: "20px",
-                  }}
-                  className={
-                    errors.code && touched.code ? "has-danger" : undefined
-                  }
-                >
-                  <Input
-                    type="text"
-                    id="code"
-                    name="code"
-                    placeholder="Código del cupón"
-                    value={values.code}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    className={
-                      errors.code && touched.code
-                        ? "form-control-danger"
-                        : undefined
-                    }
-                  />
-                  {touched.code && errors.code ? (
-                    <FormText
-                      className="text-muted"
-                      color="danger"
-                      id="regionErr"
+          <Card>
+            <CardBody>
+              <div>
+                <Row>
+                  <Col xs={12}>
+                    <CardTitle tag="h4" style={{ marginTop: 5 }}>
+                      Agregar Cupón
+                    </CardTitle>
+                    <CardText>
+                      Si tienes un código de cupon ingresalo aquí
+                    </CardText>
+                  </Col>
+                  <Col>
+                    <FormGroup
+                      style={{
+                        display: "inline-block",
+                        marginTop: 5,
+                        marginRight: 10,
+                        width: "55%",
+                      }}
+                      className={
+                        errors.code && touched.code ? "has-danger" : undefined
+                      }
                     >
-                      {errors.code}
-                    </FormText>
-                  ) : null}
-                  <Button
-                    type="submit"
-                    color="info"
-                    style={{ maxWidth: "120px" }}
-                    className="btn-raised btn-round"
-                    disabled={isSubmitting}
-                  >
-                    Agregar {isSubmitting && <Spinner size="sm" />}
-                  </Button>
-                </FormGroup>
-              </Col>
-            </Row>
-          </div>
-          {/* </CardBody>
-          </Card> */}
+                      <Input
+                        type="text"
+                        id="code"
+                        name="code"
+                        placeholder="Código del cupón"
+                        value={values.code}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        className={
+                          errors.code && touched.code
+                            ? "form-control-danger"
+                            : undefined
+                        }
+                      />
+                    </FormGroup>
+                    <Button
+                      type="submit"
+                      color="info"
+                      style={{
+                        maxWidth: "120px",
+                        display: "inline-block",
+                        margin: 0,
+                        padding: "7px 15px",
+                      }}
+                      className="btn-raised btn-round"
+                      disabled={isSubmitting}
+                    >
+                      Agregar {isSubmitting && <Spinner size="sm" />}
+                    </Button>
+                    {touched.code && errors.code ? (
+                      <p
+                        style={{
+                          color: "var(--danger)",
+                          marginLeft: "10px",
+                          fontWeight: "normal",
+                        }}
+                      >
+                        {errors.code}
+                      </p>
+                    ) : null}
+                  </Col>
+                </Row>
+              </div>
+            </CardBody>
+          </Card>
         </Form>
       )}
     </Formik>

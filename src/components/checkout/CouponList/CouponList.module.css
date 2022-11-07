@@ -1,7 +1,5 @@
 ul.coupon {
-  list-style: none;
-  padding: 0;
-  padding-left: 10px;
+  padding-left: 20px;
 }
 
 .coupon i {

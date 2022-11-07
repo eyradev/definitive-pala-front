@@ -1,3 +1,4 @@
+import CurrentCartAddressSection from "components/address/CurrentCartAddressSection/CurrentCartAddressSection";
 import UserAddressCreator from "components/address/UserAddressCreator/UserAddressCreator";
 import UserAddressesSection from "components/address/UserAddressesSection/UserAddressesSection";
 import UserAddressSelector from "components/address/UserAddressSelectorSection/UserAddressSelectorSection";
@@ -21,9 +22,7 @@ const CheckoutSection: React.FC = () => {
               <CartItemSection />
             </Col>
             <Col>
-              <UserAddressesSection />
-              <UserAddressSelector>seleccionar dirección</UserAddressSelector>
-              <UserAddressCreator>crear dirección</UserAddressCreator>
+              <CurrentCartAddressSection />
             </Col>
           </Row>
           <Row>

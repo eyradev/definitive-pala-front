@@ -3,9 +3,14 @@ import { useShippingQuery } from "graphql/shipping/shipping.query";
 import { Spinner } from "reactstrap";
 import CartTotals from "../CartTotals/CartTotals";
 
-const CartTotalsSection: React.FC = () => {
+const CartTotalsSection: React.FC<{
+  palanteCouponId?: string;
+  storeCouponId?: string;
+}> = ({ palanteCouponId, storeCouponId }) => {
   const shippingPriceQuery = useShippingQuery();
-  const cartPriceQuery = useCartPriceQuery();
+  const cartPriceQuery = useCartPriceQuery({
+    variables: { palanteCouponId, storeCouponId },
+  });
 
   const loading = shippingPriceQuery?.loading ?? cartPriceQuery?.loading;
   const error = shippingPriceQuery?.error ?? cartPriceQuery?.error;

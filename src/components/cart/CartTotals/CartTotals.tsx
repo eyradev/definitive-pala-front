@@ -1,7 +1,5 @@
 import { CartPrice, Shipping } from "generated/graphql";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import useApp from "providers/AppProvider/useApp";
 import { formatCurrency } from "../../../util/currency";
 import styles from "./CartTotals.module.css";
 
@@ -10,15 +8,6 @@ const CartTotals: React.FC<{
   shippingPrice?: Partial<Shipping>;
   shippingPaidBy: "palante" | "store" | "user";
 }> = ({ cartPrice, shippingPrice, shippingPaidBy }) => {
-  const { toggleCart } = useApp();
-  const router = useRouter();
-
-  const handleGoToCheckoutClick = () => {
-    if (!router.isReady || !toggleCart) return;
-    toggleCart();
-    router.push("/checkout");
-  };
-
   const cartTotal = cartPrice?.total;
   const shippingTotal = shippingPrice?.shippingPrice;
 
@@ -28,12 +17,21 @@ const CartTotals: React.FC<{
   if (shippingPaidBy === "user" && shippingTotal) {
     total += shippingTotal;
   }
+
+  const totalDiscount =
+    (cartPrice?.palanteDiscount || 0) + (cartPrice?.storeDiscount || 0);
+
   return (
     <div className={styles.root}>
       <ul>
-        {cartTotal ? (
+        {cartPrice?.basePrice ? (
           <li>
-            <h5>Productos:</h5> {formatCurrency(cartPrice.total)}
+            <h5>Productos:</h5> {formatCurrency(cartPrice.basePrice)}
+          </li>
+        ) : null}
+        {totalDiscount ? (
+          <li>
+            <h5>Descuento Cupones:</h5> {formatCurrency(totalDiscount)}
           </li>
         ) : null}
         {shippingPaidBy !== "user" ? (
@@ -55,13 +53,6 @@ const CartTotals: React.FC<{
           </li>
         ) : null}
       </ul>
-
-      {router?.isReady ? (
-        <a onClick={handleGoToCheckoutClick}>
-          Ir a Checkout
-          <i className="now-ui-icons arrows-1_minimal-right" />
-        </a>
-      ) : null}
     </div>
   );
 };

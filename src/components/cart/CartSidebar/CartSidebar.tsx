@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import useApp from "providers/AppProvider/useApp";
 import { Col, Row } from "reactstrap";
 import useUserPP from "../../../hooks/useUserPP";
@@ -10,7 +11,15 @@ import styles from "./CartSidebar.module.css";
 export default function CartSidebar(): JSX.Element {
   const { user } = useUserPP();
   const { isCartOpen, toggleCart } = useApp();
+  const router = useRouter();
 
+  const handleGoToCheckoutClick = () => {
+    if (!router.isReady || !toggleCart) return;
+    toggleCart();
+    router.push("/checkout");
+  };
+
+  const canCheckout = router.isReady && !router.pathname.includes("checkout");
   return (
     <>
       <div className={`${styles.sidebar} ${isCartOpen ? styles.isOpen : ""}`}>
@@ -47,6 +56,14 @@ export default function CartSidebar(): JSX.Element {
         {user ? (
           <div className={styles.footer}>
             <CartTotalsSection />
+            {canCheckout ? (
+              <div className={styles.checkoutLink}>
+                <a onClick={handleGoToCheckoutClick}>
+                  Ir a Checkout
+                  <i className="now-ui-icons arrows-1_minimal-right" />
+                </a>
+              </div>
+            ) : null}
           </div>
         ) : null}
       </div>

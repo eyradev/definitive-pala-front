@@ -53,9 +53,20 @@
 .footer {
   position: absolute;
   bottom: 0;
+  right: 0;
   width: 100%;
   padding: 1.5em;
   background-color: white;
+}
+
+.footer .checkoutLink {
+  position: relative;
+  text-align: right;
+}
+
+.footer .checkoutLink a:hover {
+  cursor: pointer;
+  color: var(--primary);
 }
 
 @media (max-width: 400px) {

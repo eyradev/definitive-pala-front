@@ -28,12 +28,18 @@ const PaymentSection: React.FC = () => {
   };
 
   return (
-    <div>
-      <Label check>
-        <EpaycoButton
-          disabled={!termsAccepted || loading}
-          onClick={handlePayClick}
-        />
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+      }}
+    >
+      <EpaycoButton
+        disabled={!termsAccepted || loading}
+        onClick={handlePayClick}
+      />
+      <Label check style={{ marginLeft: "20px" }}>
         <Input
           checked={termsAccepted}
           onChange={handleTermsCheckBoxCange}

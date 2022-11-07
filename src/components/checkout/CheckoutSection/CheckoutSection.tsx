@@ -7,6 +7,7 @@ import { Section } from "components/home";
 import CheckoutProvider from "providers/CheckoutProvider/CheckoutProvider";
 import withCartAdjustment from "providers/CheckoutProvider/withCartAdjustment";
 import { Col, Row } from "reactstrap";
+import CartPriceSection from "../CartPriceSection/CartPriceSection";
 import { CouponForm } from "../CouponForm";
 import PaymentSection from "../PaymentSection/PaymentSection";
 
@@ -28,7 +29,7 @@ const CheckoutSection: React.FC = () => {
           <Row>
             <Col md={8}>
               <CouponForm />
-              <CartTotalsSection />
+              <CartPriceSection />
               <PaymentSection />
             </Col>
           </Row>

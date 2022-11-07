@@ -1,5 +1,6 @@
-import { useMutation } from '@apollo/client';
-import { Form, Formik, FormikHelpers } from 'formik';
+import { useMutation } from "@apollo/client";
+import { Form, Formik, FormikHelpers } from "formik";
+import useCheckout from "providers/CheckoutProvider/useCheckout";
 import {
   Button,
   Card,
@@ -11,119 +12,118 @@ import {
   FormText,
   Input,
   Row,
-  Spinner
-} from 'reactstrap';
-import useUserPP from '../../../hooks/useUserPP';
-import { Coupon } from '../../../models/coupon';
-import {
-  CART_BY_USER,
-  CART_TOTALS,
-  USER_ADD_COUPON
-} from '../../../queries/sell-order';
-import {
-  USER_ADD_COUPON_MUTATION,
-  USER_ADD_COUPON_MUTATIONVariables
-} from '../../../queries/__generated__/USER_ADD_COUPON_MUTATION';
-import { couponSchema } from '../../../schemas/coupon';
+  Spinner,
+} from "reactstrap";
+import * as yup from "yup";
 
-export default function CouponForm(): JSX.Element {
-  const { user } = useUserPP();
+interface AddCouponInput {
+  code: string;
+}
 
-  const [addCoupon, { loading, error: submitError }] = useMutation<
-    USER_ADD_COUPON_MUTATION,
-    USER_ADD_COUPON_MUTATIONVariables
-  >(USER_ADD_COUPON, {
-    refetchQueries: [
-      { query: CART_TOTALS },
-      { query: CART_BY_USER, variables: { userId: user?.id || '' } }
-    ]
+const addCouponInputValidationSchema: yup.SchemaOf<AddCouponInput> = yup
+  .object()
+  .shape({
+    code: yup.string().required().min(3).max(20),
   });
 
-  const handleCouponSubmit = async (
-    { code }: Coupon,
-    { resetForm }: FormikHelpers<Coupon>
+const CouponForm: React.FC = () => {
+  const { addCoupon } = useCheckout();
+
+  if (!addCoupon) return null;
+
+  const handleSubmit = async (
+    input: AddCouponInput,
+    { resetForm }: FormikHelpers<AddCouponInput>
   ) => {
-    if (loading) return;
-    await addCoupon({ variables: { code } });
+    const { code } = await addCouponInputValidationSchema.validate(input);
+    await addCoupon(code);
     resetForm();
   };
-
   return (
-    <Formik<Coupon>
-      initialValues={{ code: '' }}
-      onSubmit={handleCouponSubmit}
-      validationSchema={couponSchema}
+    <Formik<AddCouponInput>
+      initialValues={{ code: "" }}
+      onSubmit={handleSubmit}
+      validationSchema={addCouponInputValidationSchema}
     >
-      {({ values, errors, handleChange, touched }) => (
+      {({
+        values,
+        errors,
+        touched,
+        handleChange,
+        handleBlur,
+        isSubmitting,
+      }) => (
         <Form>
-          <Card>
-            <CardBody>
-              <div
-                style={{
-                  padding: 8,
-                  paddingLeft: 16,
-                  paddingRight: 16
-                }}
-              >
-                <Row>
-                  <Col xs={12} sm={6} lg={12}>
-                    <CardTitle tag="h4">Cupón</CardTitle>
-                    <CardText>Si tienes un cupon ingresalo aquí</CardText>
-                  </Col>
-                  <Col xs={12} sm={6} lg={12}>
-                    <FormGroup
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'flex-end',
-                        marginTop: '20px',
-                        marginRight: '20px'
-                      }}
-                      className={
-                        errors.code && touched.code ? 'has-danger' : undefined
-                      }
+          {/* <Card>
+            <CardBody> */}
+          <div
+            style={{
+              padding: 8,
+              paddingLeft: 16,
+              paddingRight: 16,
+            }}
+          >
+            <Row>
+              <Col xs={12} sm={6} lg={12}>
+                <CardTitle tag="h4">Cupones</CardTitle>
+                <CardText>Si tienes un código de cupon ingresalo aquí</CardText>
+              </Col>
+              <Col xs={12} sm={6} lg={12}>
+                <FormGroup
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "flex-end",
+                    marginTop: "20px",
+                    marginRight: "20px",
+                  }}
+                  className={
+                    errors.code && touched.code ? "has-danger" : undefined
+                  }
+                >
+                  <Input
+                    type="text"
+                    id="code"
+                    name="code"
+                    placeholder="Código del cupón"
+                    value={values.code}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    className={
+                      errors.code && touched.code
+                        ? "form-control-danger"
+                        : undefined
+                    }
+                  />
+                  {touched.code && errors.code ? (
+                    <FormText
+                      className="text-muted"
+                      color="danger"
+                      id="regionErr"
                     >
-                      <Input
-                        type="text"
-                        id="code"
-                        name="code"
-                        placeholder="Código del cupón"
-                        value={values.code}
-                        onChange={handleChange}
-                        className={
-                          errors.code && touched.code
-                            ? 'form-control-danger'
-                            : undefined
-                        }
-                      />
-                      {((touched.code && errors.code) || submitError) && (
-                        <FormText
-                          className="text-muted"
-                          color="danger"
-                          id="regionErr"
-                        >
-                          {errors.code}
-                          {submitError?.message}
-                        </FormText>
-                      )}
-                      <Button
-                        type="submit"
-                        color="info"
-                        style={{ maxWidth: '120px' }}
-                        className="btn-raised btn-round"
-                        disabled={loading}
-                      >
-                        Agregar {loading && <Spinner size="sm" />}
-                      </Button>
-                    </FormGroup>
-                  </Col>
-                </Row>
-              </div>
-            </CardBody>
-          </Card>
+                      {errors.code}
+                    </FormText>
+                  ) : null}
+                  <Button
+                    type="submit"
+                    color="info"
+                    style={{ maxWidth: "120px" }}
+                    className="btn-raised btn-round"
+                    disabled={isSubmitting}
+                  >
+                    Agregar {isSubmitting && <Spinner size="sm" />}
+                  </Button>
+                </FormGroup>
+              </Col>
+            </Row>
+          </div>
+          {/* </CardBody>
+          </Card> */}
         </Form>
       )}
     </Formik>
   );
-}
+};
+
+export default CouponForm;

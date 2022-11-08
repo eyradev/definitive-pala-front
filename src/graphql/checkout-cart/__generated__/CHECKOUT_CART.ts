@@ -15,3 +15,8 @@ export interface CHECKOUT_CART_checkoutCart {
 export interface CHECKOUT_CART {
   checkoutCart: CHECKOUT_CART_checkoutCart | null;
 }
+
+export interface CHECKOUT_CARTVariables {
+  palanteCouponId?: string | null;
+  storeCouponId?: string | null;
+}

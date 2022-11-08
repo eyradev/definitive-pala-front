@@ -138,6 +138,7 @@ export type CartAdjustment = {
 export type CartPrice = {
   __typename?: 'CartPrice';
   basePrice: Scalars['Float'];
+  canCheckout: Scalars['Boolean'];
   palanteDiscount: Scalars['Float'];
   palanteTax: Scalars['Float'];
   palanteTotal: Scalars['Float'];
@@ -352,6 +353,11 @@ export type CategoryWhereUniqueInput = {
 export type CheckoutCartOutput = {
   __typename?: 'CheckoutCartOutput';
   epaycoData: Scalars['String'];
+};
+
+export type CheckoutCartWhereInput = {
+  palanteCouponId?: InputMaybe<Scalars['ID']>;
+  storeCouponId?: InputMaybe<Scalars['ID']>;
 };
 
 export type CitiesCreateInput = {
@@ -596,6 +602,13 @@ export type CloudinaryImage_File = {
 
 export type CloudinaryImage_FilePublicUrlTransformedArgs = {
   transformation?: InputMaybe<CloudinaryImageFormat>;
+};
+
+export type Configuration = {
+  __typename?: 'Configuration';
+  epaycoId: Scalars['String'];
+  minCheckoutAmount: Scalars['Float'];
+  taxValue: Scalars['Float'];
 };
 
 /**  A keystone list  */
@@ -1083,6 +1096,18 @@ export type CreateInitialUserInput = {
   email?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
+};
+
+export type CreateUserAddressInput = {
+  addressL1: Scalars['String'];
+  cityId: Scalars['ID'];
+  description: Scalars['String'];
+  userId?: InputMaybe<Scalars['ID']>;
+};
+
+export type CreateUserAddressOutput = {
+  __typename?: 'CreateUserAddressOutput';
+  addressId: Scalars['String'];
 };
 
 /**  Custom webpage content  */
@@ -1839,7 +1864,7 @@ export type Mutation = {
   createTaxes?: Maybe<Array<Maybe<Tax>>>;
   /**  Create a single User item.  */
   createUser?: Maybe<User>;
-  createUserAddress?: Maybe<Address>;
+  createUserAddress?: Maybe<CreateUserAddressOutput>;
   /**  Create multiple User items.  */
   createUsers?: Maybe<Array<Maybe<User>>>;
   /**  Create a single WeekDay item.  */
@@ -2069,6 +2094,11 @@ export type MutationAuthenticateUserWithPasswordArgs = {
 };
 
 
+export type MutationCheckoutCartArgs = {
+  where?: InputMaybe<CheckoutCartWhereInput>;
+};
+
+
 export type MutationCreateAddressArgs = {
   data?: InputMaybe<AddressCreateInput>;
 };
@@ -2290,9 +2320,7 @@ export type MutationCreateUserArgs = {
 
 
 export type MutationCreateUserAddressArgs = {
-  addressL1: Scalars['String'];
-  cityId: Scalars['ID'];
-  description?: InputMaybe<Scalars['String']>;
+  data: CreateUserAddressInput;
 };
 
 
@@ -3517,6 +3545,7 @@ export type Query = {
   Category?: Maybe<Category>;
   /**  Search for the City item with the matching ID.  */
   City?: Maybe<City>;
+  Configuration?: Maybe<Configuration>;
   /**  Search for the ContactRequest item with the matching ID.  */
   ContactRequest?: Maybe<ContactRequest>;
   /**  Search for the Country item with the matching ID.  */

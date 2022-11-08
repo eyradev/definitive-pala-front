@@ -8,6 +8,7 @@ import { CART_ITEMS_QUERY } from "graphql/cart-items/cart-items.query";
 import { CART_PRICE_QUERY } from "graphql/cart-price/cart-price.query";
 import { CART_STORE2_QUERY } from "graphql/cart-store/cart-store.query";
 import { useCurrentCartQuery } from "graphql/current-cart/current-cart.query";
+import useNotification from "hooks/useNotification";
 import {
   ADD_CART_ITEM,
   ADD_CART_ITEMVariables,
@@ -30,6 +31,7 @@ export const useAddCartItemMutation = (
   options?: MutationHookOptions<ADD_CART_ITEM, ADD_CART_ITEMVariables>
 ) => {
   const { data: cart } = useCurrentCartQuery();
+  const { addNotification } = useNotification();
 
   const cartItemsQuery: InternalRefetchQueryDescriptor = {
     query: CART_ITEMS_QUERY,
@@ -59,6 +61,13 @@ export const useAddCartItemMutation = (
         });
       }
       return refetchQueries;
+    },
+    onCompleted: () => {
+      if (!addNotification) return;
+      addNotification({
+        type: "success",
+        message: "Producto agregado al carrito",
+      });
     },
   });
 

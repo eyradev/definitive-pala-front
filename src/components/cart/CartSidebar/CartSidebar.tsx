@@ -1,3 +1,4 @@
+import { useCartPriceQuery } from "graphql/cart-price/cart-price.query";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useApp from "providers/AppProvider/useApp";
@@ -12,6 +13,7 @@ export default function CartSidebar(): JSX.Element {
   const { user } = useUserPP();
   const { isCartOpen, toggleCart } = useApp();
   const router = useRouter();
+  const cartPriceQuery = useCartPriceQuery();
 
   const handleGoToCheckoutClick = () => {
     if (!router.isReady || !toggleCart) return;
@@ -19,7 +21,11 @@ export default function CartSidebar(): JSX.Element {
     router.push("/checkout");
   };
 
-  const canCheckout = router.isReady && !router.pathname.includes("checkout");
+  const canCheckout =
+    router.isReady &&
+    !router.pathname.includes("checkout") &&
+    !!cartPriceQuery?.data?.CartPrice?.canCheckout;
+
   return (
     <>
       <div className={`${styles.sidebar} ${isCartOpen ? styles.isOpen : ""}`}>

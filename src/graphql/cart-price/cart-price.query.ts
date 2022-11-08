@@ -22,6 +22,7 @@ export const CART_PRICE_QUERY = gql`
       palanteTotal
       palanteTax
       storeTax
+      canCheckout
     }
   }
 `;

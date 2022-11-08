@@ -30,7 +30,7 @@ export const useCheckoutCartMutation = (
   const { storeCoupon, palanteCoupon } = useCheckout();
 
   const cartAddress = cartAddressQuery?.data?.cart?.address;
-  const cartPrice = cartPriceQuery?.data?.CartPrice;
+  const cartPrice = cartPriceQuery?.data?.CartPrice?.canCheckout;
 
   const storeCouponId = storeCoupon?.id;
   const palanteCouponId = palanteCoupon?.id;

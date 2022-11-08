@@ -2,16 +2,18 @@ import { tcUrl } from "config";
 import { useCheckoutCartMutation } from "graphql/checkout-cart/checkout-cart.mutation";
 import useEpaycoScript from "hooks/useEpaycoScript";
 import Link from "next/link";
+import useApp from "providers/AppProvider/useApp";
 import useCheckout from "providers/CheckoutProvider/useCheckout";
 import { useCallback, useState } from "react";
 import { Input, Label } from "reactstrap";
+import { formatCurrency } from "util/currency";
 import EpaycoButton from "../EpaycoButton/EpaycoButton";
 
 const PaymentSection: React.FC = () => {
   const { epayco, isScriptLoaded } = useEpaycoScript();
   const [termsAccepted, setTermsAccepted] = useState(false);
   const { checkoutMutation, hasAddress, hasAmount } = useCheckoutCartMutation();
-
+  const { config } = useApp();
   const [checkoutCart, { loading }] = checkoutMutation;
 
   const handlePayClick = useCallback(async () => {
@@ -35,7 +37,9 @@ const PaymentSection: React.FC = () => {
   } else if (!hasAddress) {
     errorMessage = "Debes seleccionar una dirección de envío";
   } else if (!hasAmount) {
-    errorMessage = "No llevas suficientes productos";
+    errorMessage = `Debes comprar un minimo de ${formatCurrency(
+      config.minCheckoutAmount
+    )} para poder hacer checkout`;
   }
 
   return (

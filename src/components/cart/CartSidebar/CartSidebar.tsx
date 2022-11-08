@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import useApp from "providers/AppProvider/useApp";
 import { Col, Row } from "reactstrap";
+import { formatCurrency } from "util/currency";
 import useUserPP from "../../../hooks/useUserPP";
 import { Backdrop } from "../../UI";
 import CartItemSection from "../CartItemsSection/CartItemsSection";
@@ -11,7 +12,7 @@ import styles from "./CartSidebar.module.css";
 
 export default function CartSidebar(): JSX.Element {
   const { user } = useUserPP();
-  const { isCartOpen, toggleCart } = useApp();
+  const { isCartOpen, toggleCart, config } = useApp();
   const router = useRouter();
   const cartPriceQuery = useCartPriceQuery();
 
@@ -21,10 +22,9 @@ export default function CartSidebar(): JSX.Element {
     router.push("/checkout");
   };
 
+  const hasCartPrice = !!cartPriceQuery?.data?.CartPrice?.canCheckout;
   const canCheckout =
-    router.isReady &&
-    !router.pathname.includes("checkout") &&
-    !!cartPriceQuery?.data?.CartPrice?.canCheckout;
+    router.isReady && !router.pathname.includes("checkout") && hasCartPrice;
 
   return (
     <>
@@ -68,6 +68,12 @@ export default function CartSidebar(): JSX.Element {
                   Ir a Checkout
                   <i className="now-ui-icons arrows-1_minimal-right" />
                 </a>
+              </div>
+            ) : null}
+            {!hasCartPrice ? (
+              <div>
+                debes llevar al menos {formatCurrency(config.minCheckoutAmount)}{" "}
+                para poder hacer checkout
               </div>
             ) : null}
           </div>

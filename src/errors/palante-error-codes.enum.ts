@@ -1,6 +1,7 @@
 export enum PalanteErrorCodes {
   SESSION_NOT_FOUND = "SessionNotFound",
   CART_NOT_FOUND = "CartNotFound",
+  CART_CANNOT_CHECKOUT = "CartCannotCheckout",
   EMPTY_CART = "EmptyCart",
   CART_OUT_OF_DATE = "CartOutOfDate",
   STORE_NOT_FOUND = "StoreNotFound",

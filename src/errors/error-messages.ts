@@ -46,4 +46,8 @@ export const PalanteErrorMessages = new Map<PalanteErrorCodes, string>([
   ],
   [PalanteErrorCodes.INVALID_PAYLOAD, "Información erronea"],
   [PalanteErrorCodes.INTERNAL_ERROR, "Error procesando información"],
+  [
+    PalanteErrorCodes.CART_CANNOT_CHECKOUT,
+    "Carrito no cumple con los requisitos para hacer checkout",
+  ],
 ]);

@@ -21,7 +21,6 @@ const AddLineItemComponent = () => {
     { productId, quantity }: FormValues,
     { resetForm }: FormikHelpers<FormValues>
   ) => {
-    console.log({ productId, quantity });
     await addCartItem({
       variables: {
         productId,

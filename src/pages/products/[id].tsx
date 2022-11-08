@@ -52,7 +52,6 @@ export default function ProductPage(): JSX.Element {
   const { user } = useUserPP();
   const productId = router.query.id as string | "";
 
-  console.log({ productId });
   const { data, error, loading } = useQuery<
     PRODUCT_BY_ID,
     PRODUCT_BY_IDVariables
@@ -62,8 +61,6 @@ export default function ProductPage(): JSX.Element {
     },
     skip: !productId,
   });
-
-  console.log(data);
 
   const { data: promoContent } = useQuery<
     CONTENT_BY_SECTION,

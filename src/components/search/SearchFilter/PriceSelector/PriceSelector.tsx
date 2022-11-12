@@ -1,8 +1,8 @@
-import { useFormikContext } from 'formik';
-import Slider from 'nouislider';
-import { useEffect } from 'react';
-import { CardBody, FormGroup, Input, Label } from 'reactstrap';
-import { ProductSearchFilter } from '../SearchFilter';
+import { useFormikContext } from "formik";
+import Slider from "nouislider";
+import { useEffect } from "react";
+import { CardBody, FormGroup, Input, Label } from "reactstrap";
+import { ProductSearchFilter } from "../SearchFilter";
 
 interface Props {
   min: number;
@@ -13,31 +13,31 @@ export default function PriceRangeSelector({ min, max }: Props): JSX.Element {
   const {
     values: formValues,
     setFieldValue,
-    handleChange
+    handleChange,
   } = useFormikContext<ProductSearchFilter>();
 
   const onUpdate = (values: (string | number)[]) => {
     // setSliderMin(Math.round(values[0] as number));
     // setSliderMax(Math.round(values[1] as number));
-    setFieldValue('priceRange.min', values[0], false);
-    setFieldValue('priceRange.max', values[1], false);
+    setFieldValue("priceRange.min", values[0], false);
+    setFieldValue("priceRange.max", values[1], false);
   };
 
   useEffect(() => {
     if (
       !document
-        .getElementById('sliderRefine')
-        ?.classList.contains('noUi-target')
+        .getElementById("sliderRefine")
+        ?.classList.contains("noUi-target")
     ) {
-      const slider = document.getElementById('sliderRefine');
+      const slider = document.getElementById("sliderRefine");
       if (!slider) return;
 
       Slider.create(slider, {
         start: [formValues.priceRange.min, formValues.priceRange.max],
         connect: [false, true, false],
         step: 1000,
-        range: { min, max }
-      }).on('update', onUpdate);
+        range: { min, max },
+      }).on("update", onUpdate);
     }
   });
 

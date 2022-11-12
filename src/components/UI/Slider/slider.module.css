@@ -1,0 +1,39 @@
+.slider {
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.track {
+  background: lightgray;
+  height: 1px;
+}
+
+.thumb {
+  cursor: pointer;
+}
+
+.thumb .selector {
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  border-radius: 100%;
+  height: 25px;
+  width: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: height 300ms, width 300ms;
+}
+
+.thumb .selector:active {
+  height: 30px;
+  width: 30px;
+}
+
+.thumb .value-wrapper {
+  position: absolute;
+  cursor: cell;
+  width: 25px;
+  top: 30px;
+  text-align: center;
+}

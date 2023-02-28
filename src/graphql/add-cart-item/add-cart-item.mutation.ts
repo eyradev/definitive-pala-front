@@ -7,8 +7,12 @@ import gql from "graphql-tag";
 import { CART_ITEMS_QUERY } from "graphql/cart-items/cart-items.query";
 import { CART_PRICE_QUERY } from "graphql/cart-price/cart-price.query";
 import { CART_STORE2_QUERY } from "graphql/cart-store/cart-store.query";
-import { useCurrentCartQuery } from "graphql/current-cart/current-cart.query";
+import {
+  CURRENT_CART_QUERY,
+  useCurrentCartQuery,
+} from "graphql/current-cart/current-cart.query";
 import useNotification from "hooks/useNotification";
+import useUserPP from "hooks/useUserPP";
 import {
   ADD_CART_ITEM,
   ADD_CART_ITEMVariables,
@@ -20,9 +24,6 @@ export const ADD_CART_ITEM_MUTATION = gql`
       lineItemCreated
       cartCreated
       storeUpdated
-      lineItem {
-        id
-      }
     }
   }
 `;
@@ -30,6 +31,7 @@ export const ADD_CART_ITEM_MUTATION = gql`
 export const useAddCartItemMutation = (
   options?: MutationHookOptions<ADD_CART_ITEM, ADD_CART_ITEMVariables>
 ) => {
+  const { user } = useUserPP();
   const { data: cart } = useCurrentCartQuery();
   const { addNotification } = useNotification();
 
@@ -54,6 +56,12 @@ export const useAddCartItemMutation = (
     ...options,
     refetchQueries: ({ data }) => {
       const refetchQueries = [cartItemsQuery, cartPriceQuery];
+      if (data?.addToCart2?.cartCreated) {
+        refetchQueries.push({
+          query: CURRENT_CART_QUERY,
+          variables: { userId: user?.id },
+        });
+      }
       if (data?.addToCart2?.storeUpdated) {
         refetchQueries.push({
           query: CART_STORE2_QUERY,
@@ -71,5 +79,5 @@ export const useAddCartItemMutation = (
     },
   });
 
-  return cart?.id ? addCartItemMutation : undefined;
+  return user?.id ? addCartItemMutation : undefined;
 };

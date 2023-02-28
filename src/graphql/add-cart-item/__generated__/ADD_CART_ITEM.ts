@@ -7,17 +7,11 @@
 // GraphQL mutation operation: ADD_CART_ITEM
 // ====================================================
 
-export interface ADD_CART_ITEM_addToCart2_lineItem {
-  __typename: "LineItem";
-  id: string;
-}
-
 export interface ADD_CART_ITEM_addToCart2 {
   __typename: "AddToCartResponse";
   lineItemCreated: boolean;
   cartCreated: boolean;
   storeUpdated: boolean;
-  lineItem: ADD_CART_ITEM_addToCart2_lineItem;
 }
 
 export interface ADD_CART_ITEM {

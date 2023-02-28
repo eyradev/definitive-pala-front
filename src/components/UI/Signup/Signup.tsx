@@ -56,8 +56,7 @@ export default function Signup(): JSX.Element {
   const [backgroundImage, setBackgroundImage] = useState<string | null>();
   const { addNotification } = useNotification();
   const router = useRouter();
-  const { user } = useUserPP();
-  const { signup } = useUserPP();
+  const { user, signup } = useUserPP();
 
   const { data: background } = useQuery<
     CONTENT_BY_SECTION,

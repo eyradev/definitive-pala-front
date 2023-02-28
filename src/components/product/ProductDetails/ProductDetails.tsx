@@ -19,7 +19,6 @@ import { formatCurrency } from "util/currency";
 import { roundNumber } from "util/math";
 import breakpoints from "../../../constants/breakpoints";
 import { useMediaQuery } from "../../../hooks/useMediaQuery";
-import useUserPP from "../../../hooks/useUserPP";
 import { ProductStock } from "../../../models/product";
 import { PRODUCT_BY_ID_allProducts } from "../../../queries/__generated__/PRODUCT_BY_ID";
 import { productStockSchema } from "../../../schemas/productStock";

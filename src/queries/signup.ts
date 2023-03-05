@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const SIGN_UP_MUTATION = gql`
   mutation SIGN_UP(
@@ -22,8 +22,6 @@ export const SIGN_UP_MUTATION = gql`
       }
     ) {
       id
-      email
-      name
     }
   }
 `;

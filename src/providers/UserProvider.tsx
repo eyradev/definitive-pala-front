@@ -240,19 +240,22 @@ export default function UserProvider({ children }: Props): JSX.Element | null {
     const categoriesToConnect: CategoryRelateToManyInput["connect"] =
       categoryIds?.map((cId) => ({ id: cId }));
 
+    const categorySection = {
+      connect: categoriesToConnect?.length ? categoriesToConnect : undefined,
+      disconnect: categoriesToDisconnect.length
+        ? categoriesToDisconnect
+        : undefined,
+    };
+
     const { data, errors } = await updateUserMutation({
       variables: {
         userId: user.id,
         data: {
           ...userUpdateData,
-          category: {
-            connect: categoriesToConnect?.length
-              ? categoriesToConnect
+          category:
+            categoriesToConnect?.length || categoriesToDisconnect?.length
+              ? categorySection
               : undefined,
-            disconnect: categoriesToDisconnect.length
-              ? categoriesToDisconnect
-              : undefined,
-          },
         },
       },
     });
